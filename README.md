@@ -44,4 +44,4 @@ There is of course in-code documentation but aside that, there are two options:
 
 ## License
 
-[LICENSE](MIT License)
+[MIT License](LICENSE)
