@@ -1,0 +1,80 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Feedback - Countries Management</h1>
+
+    <p>
+        This page is meant to be management for <a n:href="Feedback:">Feedback</a>, especially countries which are visible over there.
+        <b>Exchange Active</b> countries are countries which are involved in IFMSA organization.
+        Number of <b>Contracts</b> is number of students which can go in that country for year specified in <b>Contracts Year</b> field.
+    </p>
+
+    {form countriesManagementForm}
+        <div class="row" n:if="$form->errors">
+            <div class="col s12">
+                <ul class="collection form-error">
+                    <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["year"]}
+            <div class="col s12 {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["send"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                <div class="right">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <table class="bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Exchange Active</th>
+                            <th>Clinical Contracts</th>
+                            <th>Research Contracts</th>
+                        </tr>
+                    </thead>
+                    <tr n:foreach="$countries as $country">
+                        <td>
+                            <img class="flag_thumbnail" src="{$basePath}/images/flags/{$country->countryShortcut|lower}.png">
+                            {$country->countryName}
+                        </td>
+                        <td style="width:150px;">{input $form['isIfmsa'][$country->id]}</td>
+                        <td style="width:70px;">{input $form['clinicalContracts'][$country->id]}</td>
+                        <td style="width:70px;">{input $form['researchContracts'][$country->id]}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["send"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                <div class="right">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            </div>
+        </div>
+
+        <script>
+        $(document).ready(function() {
+            $('select').material_select();
+        });
+        </script>
+    {/form}
+
+</div>
+{/block}

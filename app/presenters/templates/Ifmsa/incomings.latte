@@ -1,0 +1,45 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Incomings</h1>
+
+    {include '../components/yearMonthForm.latte'}
+</div>
+<div class="divider"></div>
+<div class="section">
+    <div class="row">
+        <div class="col s12">
+            <table class="striped">
+                <thead><tr><th>AF</th><th>CC</th><th>Name</th><th>Desired</th><th>Nationality</th><th>Assigned to</th></tr></thead>
+                <tbody>
+                    <tr n:foreach="$personList as $person">
+                        <td>{$person->afNumber}</td>
+                        <td>{$person->confirmationNumber}</td>
+                        <td><a n:href="Ifmsa:person, $person->afNumber" onclick="loading();">{$person->name}</a></td>
+                        <td>{$person->desired}</td>
+                        <td>{substr($person->nationality, 0, strpos($person->nationality, '(') - 1)}</td>
+                        <td>
+                            {if !$assigned[$person->afNumber]}
+                                <a n:href="ContactPersons:afFindContactPerson, 'afNumber' => $person->afNumber"
+                                   style="color:red;text-decoration:none;font-style:italic;">Assign</a>
+                            {else}
+                                {var $assign = $assigned[$person->afNumber]}
+                                <a n:href="Officers:profile, 'id' => $assign->user->id">{$assign->user->firstname} {$assign->user->surname}</a>
+                                <a n:href="ContactPersons:afDelete, 'afNumber' => $person->afNumber, 'userId' => $assign->user->id"
+                                   class="delete_cross"><i class="tiny material-icons">delete</i></a>
+                            {/if}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <a class="btn waves-effect waves-light" n:href="Ifmsa:generateTable, 'afList' => $afList">
+                Generate Table
+            </a>
+        </div>
+    </div>
+</div>
+{/block}

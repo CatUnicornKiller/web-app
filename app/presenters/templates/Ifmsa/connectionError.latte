@@ -1,0 +1,16 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Connection Error</h1>
+
+    <p>
+        Error occured during fetching data from ifmsa.org, this is probably
+        caused by combination of wrong ifmsa.org credentials. Please check them
+        in your profile. Another cause of this error might be some problems
+        with connection to remote server, if this is the case, please try it
+        again in few minutes. Further description of error is provided below.
+    </p>
+
+    <h3>Error Description</h3>
+    <p>{$errorMessage}</p>
+</div>
+{/block}

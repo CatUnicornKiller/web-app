@@ -1,0 +1,102 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">List of Transactions</h1>
+
+    {form filterTransactionsListForm}
+    <div class="row" n:if="$form->errors">
+        <div class="col s12">
+            <ul class="collection form-error">
+                <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+    {var $formItem = $form["paid"]}
+        <div class="col s4 input-field {if $formItem->required}required{/if}">
+            {input $formItem}
+            {label $formItem /}
+        </div>
+    {var $formItem = $form["year"]}
+        <div class="col s4 input-field {if $formItem->required}required{/if}">
+            {input $formItem}
+            {label $formItem /}
+        </div>
+    {var $formItem = $form["month"]}
+        <div class="col s4 input-field {if $formItem->required}required{/if}">
+            {input $formItem}
+            {label $formItem /}
+        </div>
+    {var $formItem = $form["send"]}
+        <div class="col s12 input-field {if $formItem->required}required{/if}">
+            <div class="right">
+            {input $formItem}
+            </div>
+        </div>
+    </div>
+
+    <script>
+    $(document).ready(function() {
+        $('select').material_select();
+    });
+    </script>
+    {/form}
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+    {snippet transactionsList}
+    {if !empty($transactions)}
+        <div class="row">
+            <div class="col s12">
+                <a class="btn waves-effect waves-light" n:href="EventsPayment:generateTransactionsTable, 'transactionsList' => $transactionIdsList">
+                    Generate table
+                </a>
+            </div>
+        </div>
+    {/if}
+
+    <div class="row">
+        <div class="col s12">
+            <table class="stripped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Start Date</th>
+                        <th>Result</th>
+                        <th>Paid</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr n:foreach="$transactions as $trans">
+                        <td><a n:href="EventsPayment:transactionDetail, 'id' => $trans->id">{$trans->transId}</a></td>
+                        <td>{$trans->tDate|date:'d.m.Y H:i:s'}</td>
+                        <td>{$trans->result}</td>
+                        <td>
+                            {if $trans->result != 'OK'}
+                                No
+                            {else}
+                                Yes
+                            {/if}
+                        </td>
+                        <td>{$trans->amount / 100} CZK</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {if !empty($transactions)}
+        <div class="row">
+            <div class="col s12">
+                <a class="btn waves-effect waves-light" n:href="EventsPayment:generateTransactionsTable, 'transactionsList' => $transactionIdsList">
+                    Generate table
+                </a>
+            </div>
+        </div>
+    {/if}
+    {/snippet}
+</div>
+{/block}

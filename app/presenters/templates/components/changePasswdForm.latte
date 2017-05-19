@@ -1,0 +1,36 @@
+{form changePasswdForm}
+<div class="row" n:if="$form->errors">
+    <div class="col s12">
+        <ul class="collection form-error">
+            <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+{var $formItem = $form["oldPasswd"]}
+    <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["passwd"]}
+    <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+{var $formItem = $form["retypePasswd"]}
+    <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["send"]}
+<div class="col s12 input-field {if $formItem->required}required{/if}">
+	{label $formItem /}
+	{input $formItem}
+</div>
+</div>
+{/form}

@@ -1,0 +1,54 @@
+{form pdfForm}
+<div class="row" n:if="$form->errors">
+    <div class="col s12">
+        <ul class="collection form-error">
+            <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+        </ul>
+    </div>
+</div>
+
+{if $form['pdfType']->value == 'contactPerson' || $form['pdfType']->value == 'department'}
+
+    {if $form['pdfType']->value == 'contactPerson'}
+        <div class="row">
+        {var $formItem = $form["accommodation"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+    {/if}
+
+    <div class="row">
+    {var $formItem = $form["departmentChosen"]}
+        {foreach $formItem->items as $key => $label}
+            {if $key == 'other'}
+                <div class="col s1">
+                    {input departmentChosen:$key}{label departmentChosen:$key /}<br>
+                </div>
+                <div class="col s11">
+                    <input n:name="otherDepartment" onclick="$('#{$formItem->getControlPrototype()->id|noescape}-{$key|noescape}').prop('checked', true);">
+                </div>
+            {else}
+                <div class="col s12">
+                    {input departmentChosen:$key}{label departmentChosen:$key /}<br>
+                </div>
+            {/if}
+        {/foreach}
+    </div>
+{elseif $form['pdfType']->value == 'thirdParty'}
+    <div class="row">
+    {var $formItem = $form["contactPerson"]}
+        <div class="col s12 input-field {if $formItem->required}required{/if}">
+            {label $formItem /}
+            {input $formItem}
+        </div>
+    </div>
+{/if}
+<div class="row">
+{var $formItem = $form["send"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {input $formItem}
+    </div>
+</div>
+{/form}

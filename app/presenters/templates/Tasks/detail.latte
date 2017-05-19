@@ -1,0 +1,114 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Tasks Detail</h1>
+
+    <div class="row">
+        <div class="col s12">
+            <table class="bordered">
+                <tr><th>CP Name</th><td>{$userDetail->firstname} {$userDetail->surname}</td></tr>
+                <tr>
+                    <th>AF number</th><td>{$ifmsaPerson->afNumber}</td>
+                    <td class="hide-on-small-only" rowspan="6" width="200px">
+                        {if $ifmsaPerson->photo == ""}
+                            {var $profileImg = $basePath . '/images/profile.png' }
+                        {else}
+                            {var $profileImg = $ifmsaPerson->photo}
+                        {/if}
+                        <img width="200px" src="{$profileImg}">
+                    </td>
+                </tr>
+                <tr><th>Name</th><td>{$ifmsaPerson->firstname} {$ifmsaPerson->surname}</td></tr>
+                <tr><th>Email</th><td>{$ifmsaPerson->email}</td></tr>
+                <tr>
+                    <th>Arrival date and time</th>
+                    <td>{if $ifmsaPerson->afArrival != '-0001-11-30 00:00:00'}{$ifmsaPerson->afArrival|date:'j. n. Y'}{else}Unknown{/if}</td>
+                </tr>
+                <tr><th>Department</th><td>{$ifmsaPerson->department}</td></tr>
+                <tr><th>Accommodation</th><td>{$ifmsaPerson->accommodation}</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <h3>Tasks</h3>
+            {if count($tasks) > 0}
+                {if $userDetail->id == $user->id}
+                    {form changeTasksStatesForm}
+                        <div class="row" n:if="$form->errors">
+                            <div class="col s12">
+                                <ul class="collection form-error">
+                                    <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <ul class="collection">
+                            <li n:foreach="$tasks as $task" class="collection-item">
+                                {var $ftask = $form['cpTasks'][$task->id]}
+                                <input id="{$ftask->getHtmlId()}" name="cpTasks[{$ftask->name}]" type="checkbox" {if $ftask->value == 1}checked{/if}>
+                                <label for="{$ftask->getHtmlId()}"><b>{$task->cpTasksDescription}</b></label>
+                                <p>{$task->cpTasksNote}</p>
+                                {if $user->isAllowed('Tasks', 'edit') && $myAuthorizator->isAllowedTasks('delete', $userDetail->faculty->id)}
+                                    <p>
+                                        <a class="delete_cross" n:href="Tasks:deleteTask, 'id' => $task->id"><i class="material-icons">delete</i></a>
+                                    </p>
+                                {/if}
+                            </li>
+                        </ul>
+
+                        {var $formItem = $form["send"]}
+                        <div class="right input-field {if $formItem->required}required{/if}">
+                            {label $formItem /}
+                            {input $formItem}
+                        </div>
+                    {/form}
+                {else}
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>Task description</th>
+                                <th>Task sidenote</th>
+                                <th>Completed</th>
+                                <th><i class="material-icons">delete</i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr n:foreach="$tasks as $task">
+                                <td>{$task->cpTasksDescription}</td>
+                                <td>{$task->cpTasksNote}</td>
+                                <td>
+                                    <input type="checkbox" disabled {if $task->completed == 1}checked{/if}>
+                                    <label></label>
+                                </td>
+                                <td><a class="delete_cross" n:href="Tasks:deleteTask, 'taskId' => $task->id"><i class="tiny material-icons">delete</i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                {/if}
+            {else}
+                There are no tasks for this person.
+            {/if}
+        </div>
+    </div>
+
+    {if $canEdit}
+        {if count($tasks) > 0}
+            <div class="row">
+                <div class="col s12">
+                    <a class="btn white-text waves-effect waves-light" n:href="Tasks:editTasks, 'id' => $assignedAf->id">Edit tasks</a>
+                </div>
+            </div>
+        {/if}
+    {/if}
+
+    {if $canAdd}
+        <div class="row">
+            <div class="col s12">
+                <a class="btn white-text waves-effect waves-light" n:href="Tasks:addTasks, 'id' => $assignedAf->id">Add tasks</a>
+            </div>
+        </div>
+    {/if}
+
+</div>
+{/block}

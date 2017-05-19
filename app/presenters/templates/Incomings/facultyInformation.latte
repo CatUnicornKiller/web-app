@@ -1,0 +1,31 @@
+{block content}
+	<div class="section">
+        <h1 n:block="title">{$pageDefault->title}</h1>
+
+        <div class="row">
+            <div n:if="$user->isAllowed('IncomingsFacultyInformationList', 'view')" class="col s12">
+                <a class="btn" n:href="Incomings:facultyInformationList">List of all faculties information</a>
+            </div>
+
+            <div n:if="$user->isAllowed('IncomingsFacultyInformation', 'edit')" class="col s12">
+                <p style="color:red">This article is visible to Incomings!</p>
+            </div>
+
+            <div class="col s12">
+                <ul class="collection">
+                    <li class="collection-item">
+                        <div class="tinymce_output">
+                            {$presenter->sanitizeTinyMCEOutput($pageDefault->content)|noescape}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div n:if="$canEdit" class="row">
+            <div class="col s12">
+                <a class="btn white-text waves-effect waves-light" n:href="Incomings:editFacultyInformation">Edit this article</a>
+            </div>
+        </div>
+	</div>
+{/block}

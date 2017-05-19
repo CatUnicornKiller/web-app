@@ -1,0 +1,17 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Last 50 Logins into System</h1>
+
+    <table class="stripped">
+        <thead><tr><th>Username</th><th>Time of login</th><th>IP address</th></tr></thead>
+        <tbody>
+            <tr n:foreach="$loginLog as $entry">
+                <td>{$entry->user->username}</td>
+                <td>{$entry->loginTime|date:'j. n. Y H:i:s'}</td>
+                <td>{$entry->ipAddress}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+{/block}

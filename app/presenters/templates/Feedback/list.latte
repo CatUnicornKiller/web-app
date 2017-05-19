@@ -1,0 +1,94 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">List of All Feedback</h1>
+
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">search</i>Extended options</div>
+            <div class="collapsible-body my-collapsible-body">
+
+                {form filterFeedbackListForm}
+                    <div class="row" n:if="$form->errors">
+                        <div class="col s12">
+                            <ul class="collection form-error">
+                                <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                    {var $formItem = $form["country"]}
+                        <div class="col s12 {if $formItem->required}required{/if}">
+                            {label $formItem /}
+                            {input $formItem}
+                        </div>
+                    </div>
+                    <div class="row">
+                    {var $formItem = $form["startDate"]}
+                        <div class="col s6 input-field {if $formItem->required}required{/if}">
+                            {label $formItem /}
+                            {input $formItem}
+                            <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+                        </div>
+                    {var $formItem = $form["endDate"]}
+                        <div class="col s6 input-field {if $formItem->required}required{/if}">
+                            {label $formItem /}
+                            {input $formItem}
+                            <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+                        </div>
+                    </div>
+                    <div class="row">
+                    {var $formItem = $form["send"]}
+                        <div class="col s12 {if $formItem->required}required{/if}">
+                            <div class="right">
+                                {label $formItem /}
+                                {input $formItem}
+                            </div>
+                        </div>
+                    </div>
+                    <script>$('select').material_select();</script>
+                {/form}
+            </div>
+        </li>
+    </ul>
+
+    {snippet feedbackList}
+    <div class="row">
+        <div class="col s12">
+            {if !empty($feedbackList)}
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Name
+                            {include '../components/orderMarksAjax.latte', orderby => 'name'}
+                        </th>
+                        <th>Country
+                            {include '../components/orderMarksAjax.latte', orderby => 'country'}
+                        </th>
+                        <th>Faculty
+                            {include '../components/orderMarksAjax.latte', orderby => 'faculty'}
+                        </th>
+                        <th>Date
+                            {include '../components/orderMarksAjax.latte', orderby => 'startDate'}
+                        </th>
+                        <th><i class="material-icons">delete</i></th>
+                    </tr>
+                </thead>
+                <tr n:foreach="$feedbackList as $feedback">
+                    <td><a n:href="Feedback:feedbackDetail, 'id' => $feedback->id">{$feedback->name}</a></td>
+                    <td>{$feedback->country->countryName}</td>
+                    <td>{$feedback->hostFaculty}</td>
+                    <td>{$feedback->startDate|date:'j. n. Y'} - {$feedback->endDate|date:'j. n. Y'}</td>
+                    <td><a class="delete_cross" n:href="Feedback:deleteFeedback, 'id' => $feedback->id"><i class="material-icons tiny">delete</i></a></td>
+                </tr>
+            </table>
+            {include '../components/paginationAjax.latte'}
+            {else}
+            <p>There are no feedback for this filtering options.</p>
+            {/if}
+        </div>
+    </div>
+    {/snippet}
+
+</div>
+{/block}

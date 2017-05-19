@@ -1,0 +1,22 @@
+parameters:
+    payment:
+        publicAccessToken: "token"
+        currency: 203
+        language: en
+        ecomm: # configuration for ecomm merchant
+            server_url: https://server.url
+            client_url: https://client.url
+            cert_path: cert.pem # absolute path
+            cert_pass: passwd
+        services:
+            pret-tnt:
+                transactionParamId: "transId"
+                errorParamId: "error"
+                okRedirectionUrl: https://pret.tnt
+                failRedirectionUrl: https://pret.tnt
+
+doctrine:
+    host: localhost
+    user: root
+    password:
+    dbname: ifmsa_cuk

@@ -1,0 +1,23 @@
+{block tinyMCE}
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script>
+tinymce.init({
+    selector: {$tinyMCESelector},
+    plugins: [
+        "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern imagetools"
+    ],
+    toolbar1: "undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image{if $tinyMCEImages == true} jbimages{/if}",
+    toolbar2: "print preview media | forecolor backcolor emoticons",
+    relative_urls: false,
+    entity_encoding : "raw",
+	{if $tinyMCEImages == true}
+	external_plugins: {
+		"jbimages": "{$basePath|noescape}/js/tinymce/plugins/jbimages/plugin.min.js"
+	}
+	{/if}
+});
+</script>
+{/block}

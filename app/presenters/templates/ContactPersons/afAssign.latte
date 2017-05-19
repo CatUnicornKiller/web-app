@@ -1,0 +1,49 @@
+{block content}
+	<div class="section">
+        <h1 n:block="title">Assign</h1>
+
+        {form afAssignForm}
+            <div class="row" n:if="$form->errors">
+                <div class="col s12">
+                    <ul class="collection form-error">
+                        <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+            {var $formItem = $form["accommodation"]}
+                <div class="col s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            </div>
+
+            <div class="row">
+            {var $formItem = $form["department"]}
+                {foreach $formItem->items as $key => $label}
+                    {if $key == 'other'}
+                        <div class="col s1">
+                            {input department:$key}{label department:$key /}<br>
+                        </div>
+                        <div class="col s11">
+                            <input n:name="otherDepartment" onclick="$('#{$formItem->getControlPrototype()->id|noescape}-{$key|noescape}').prop('checked', true);">
+                        </div>
+                    {else}
+                        <div class="col s12">
+                            {input department:$key}{label department:$key /}<br>
+                        </div>
+                    {/if}
+                {/foreach}
+            </div>
+
+            <div class="row">
+            {var $formItem = $form["send"]}
+                <div class="col s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            </div>
+        {/form}
+	</div>
+{/block}

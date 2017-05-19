@@ -1,0 +1,44 @@
+{block menu}
+	<ul id="nav-mobile" class="side-nav fixed">
+		<li class="logo hide-on-med-and-down"><img alt="IFMSA logo" src="{$basePath}/images/ifmsa_logo.png"></li>
+        {var $collapsible = false}
+        {foreach $menuItems as $item}
+        {if count($item->subItems) == 0}
+            {if $collapsible == true}
+                </ul>
+                </li>
+                {var $collapsible = false}
+            {/if}
+            <li class="bold{if $item->active} active{/if}">
+                <a href="{plink $item->link}" class="waves-effect waves-red" onclick="loading();">{$item->name}</a>
+            </li>
+        {else}
+            {if $collapsible == false}
+            <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+            {var $collapsible = true}
+            {/if}
+            <li class="bold{if $item->active} active{/if}">
+                <a class="collapsible-header waves-effect waves-red{if $item->active} active{/if}">{$item->name}</a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li n:foreach="$item->subItems as $subItem" {if $subItem->active} class="active"{/if}>
+                            <a href="{plink $subItem->link}" onclick="loading();">{$subItem->name}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        {/if}
+        {/foreach}
+        {if $collapsible == true}
+            </ul>
+            </li>
+        {/if}
+        {if !$user->isLoggedIn()}
+            <li class="bold">
+                <a href="https://github.com/CatUnicornKiller/user-doc/wiki" class="waves-effect waves-red" target="_blank">User Documentation</a>
+            </li>
+        {/if}
+	</ul>
+	<script>$(".button-collapse").sideNav();</script>
+{/block}

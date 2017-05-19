@@ -1,0 +1,79 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Feedback Detail</h1>
+
+    <div class="row">
+        <div class="col s12">
+            <table class="bordered">
+                <tr>
+                    <th>{$feedbackHelpers->getItemDescription('name')}</th>
+                    <td>{$feed->name}</td>
+                </tr>
+                <tr>
+                    <th>{$feedbackHelpers->getItemDescription('grade')}</th>
+                    <td>{$feed->grade}</td>
+                </tr>
+                <tr>
+                    <th>{$feedbackHelpers->getItemDescription('hostCountry')}</th>
+                    <td>
+                        <a n:href="Feedback:country, 'id' => $country->id">
+                            <img class="flag_thumbnail" src="{$basePath}/images/flags/{$country->countryShortcut|lower}.png"> {$country->countryName}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{$feedbackHelpers->getItemDescription('hostCity')}</th>
+                    <td>{$feed->hostCity}</td>
+                </tr>
+                <tr>
+                    <th>{$feedbackHelpers->getItemDescription('hostFaculty')}</th>
+                    <td>{$feed->hostFaculty}</td>
+                </tr>
+                <tr>
+                    <th>{$feedbackHelpers->getItemDescription('hostDepartment')}</th>
+                    <td>{$feed->hostDepartment}</td>
+                </tr>
+                <tr>
+                    <th>{$feedbackHelpers->getItemDescription('startDate')} - {$feedbackHelpers->getItemDescription('endDate')}</th>
+                    <td>{$feed->startDate|date:'j. n. Y'} - {$feed->endDate|date:'j. n. Y'}</td>
+                </tr>
+                <tr>
+                    <th>{$feedbackHelpers->getItemDescription('exchangeType')}</th>
+                    <td>{$feed->exchangeType|upper}</td>
+                </tr>
+                <tr>
+                    <th>{$feedbackHelpers->getItemDescription('preparationVisa')}</th>
+                    <td>{$feed->preparationVisa?'Yes':'No'}</td>
+                </tr>
+                <tr>
+                    <th>{$feedbackHelpers->getItemDescription('preparationVaccination')}</th>
+                    <td>{$feed->preparationVaccination?'Yes':'No'}</td>
+                </tr>
+
+                {foreach $feedbackHelpers->getTextAnswersList() as $it}
+                <tr>
+                    <th colspan="2" class="grey lighten-4">{$feedbackHelpers->getItemDescription($it)}</th>
+                </tr>
+                <tr>
+                    <td colspan="2">{$feed->$it|escape|nl2br|noescape}</td>
+                </tr>
+                {/foreach}
+
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s6">
+            <a class="btn white-text waves-effect waves-light" n:href="Feedback:feedbackPdf, 'id' => $feed->id, 'fancy' => true">
+                Generate Fancy Pdf
+            </a>
+        </div>
+        <div class="col s6">
+            <a class="btn white-text waves-effect waves-light" n:href="Feedback:feedbackPdf, 'id' => $feed->id, 'fancy' => false">
+                Generate Printable Pdf
+            </a>
+        </div>
+    </div>
+</div>
+{/block}

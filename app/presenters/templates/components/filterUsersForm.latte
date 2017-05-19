@@ -1,0 +1,34 @@
+{form filterUsersForm}
+<div class="row" n:if="$form->errors">
+    <div class="col s12">
+        <ul class="collection form-error">
+            <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+{var $formItem = $form["faculty"]}
+    <div class="col s6 input-field {if $formItem->required}required{/if}">
+        {input $formItem}
+        {label $formItem /}
+    </div>
+{var $formItem = $form["privileges"]}
+    <div class="col s6 input-field {if $formItem->required}required{/if}">
+        {input $formItem}
+        {label $formItem /}
+    </div>
+{var $formItem = $form["send"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        <div class="right">
+            {input $formItem}
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+	$('select').material_select();
+});
+</script>
+{/form}

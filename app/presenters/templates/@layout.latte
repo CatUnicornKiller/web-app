@@ -1,0 +1,76 @@
+{**
+ * @param string   $basePath web base path
+ * @param array    $flashes  flash messages
+ *}
+<!DOCTYPE html>
+
+{includeblock '@head.latte'}
+{includeblock '@loading.latte'}
+{includeblock '@footer.latte'}
+{includeblock '@scripts.latte'}
+
+<html>
+<head>
+    {include head}
+</head>
+
+<body>
+
+    {include loading}
+
+	<header>
+        <nav class="top-nav red accent-4">
+            <div class="container">
+                <a href="#" data-activates="nav-mobile" class="button-collapse top-nav full hide-on-large-only">
+                    <i class="material-icons">menu</i>
+                </a>
+                <div class="row">
+                    <div class="col l8 s12"><h2 class="white-text left">CatUnicornKiller System</h2></div>
+                    <div n:if="$user->isLoggedIn()" class="col l4 s12">
+                        <button class="dropdown-user-button btn red darken-1 right" data-hover="true" data-beloworigin="true" data-alignment="right" data-activates="dropdown-user">
+                            <i class="user-icon material-icons left">perm_identity</i>
+                            {$currentUser->username}
+                        </button>
+                    </div>
+                    <ul id="dropdown-user" class="dropdown-content">
+                        <li><a n:href="User:">Profile Info</a></li>
+                        <li><a n:href="Homepage:logout">Logout</a></li>
+                    </ul>
+                    <script>
+                        $(".dropdown-user-button").dropdown();
+                    </script>
+                    <div class="col s12">
+                        <div class="grey-text text-lighten-2 center">{if $user->isLoggedIn()}{$currentUser->faculty->facultyName}{else}&nbsp;{/if}</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+	{control menu}
+
+	</header>
+	<main>
+        <div class="container">
+            {snippet flashes}
+            <div n:if="$flashes" class="section">
+                <div class="row">
+                    <div n:foreach="$flashes as $flash" class="col s12">
+                        <div class="card-panel cyan darken-4 white-text">
+                            <div n:class="flash, $flash->type">{$flash->message}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div n:if="$flashes" class="divider"></div>
+            {/snippet}
+
+        {include content}
+
+        </div>
+	</main>
+
+	{include footer}
+
+	{include scripts}
+</body>
+</html>

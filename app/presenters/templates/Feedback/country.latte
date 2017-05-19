@@ -1,0 +1,123 @@
+{block content}
+<div class="section">
+    <h1 n:block="title"><img class="flag_thumbnail" src="{$basePath}/images/flags/{$country->countryShortcut|lower}.png"> {$country->countryName}</h1>
+
+    <div class="row">
+        <div class="col s12">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">search</i>Extended options</div>
+                    <div class="collapsible-body my-collapsible-body">
+
+                        {form filterFeedbackForm}
+                        <div class="row" n:if="$form->errors">
+                            <div class="col s12">
+                                <ul class="collection form-error">
+                                    <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                        {var $formItem = $form["exchangeType"]}
+                            <div class="col l4 s12 input-field {if $formItem->required}required{/if}">
+                                {input $formItem}
+                                {label $formItem /}
+                            </div>
+                        {var $formItem = $form["startDate"]}
+                            <div class="col l4 s6 input-field {if $formItem->required}required{/if}">
+                                {input $formItem}
+                                {label $formItem /}
+                                <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+                            </div>
+                        {var $formItem = $form["endDate"]}
+                            <div class="col l4 s6 input-field {if $formItem->required}required{/if}">
+                                {input $formItem}
+                                {label $formItem /}
+                                <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+                            </div>
+                        {var $formItem = $form["hostCity"]}
+                            <div class="col s6 input-field {if $formItem->required}required{/if}">
+                                {input $formItem}
+                                {label $formItem /}
+                            </div>
+                        {var $formItem = $form["hostFaculty"]}
+                            <div class="col s6 input-field {if $formItem->required}required{/if}">
+                                {input $formItem}
+                                {label $formItem /}
+                            </div>
+                        {var $formItem = $form["send"]}
+                            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                                <div class="right">
+                                    {input $formItem}
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                        $(document).ready(function() {
+                            $('select').material_select();
+                        });
+                        </script>
+                        {/form}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    {snippet feedbackList}
+    <div class="row">
+        <div class="col s12">
+            {if !empty($feedback)}
+            <table class="bordered">
+                <thead>
+                    <tr>
+                        <th>Name
+                            {include '../components/orderMarksAjax.latte', orderby => 'name'}
+                        </th>
+                        <th>Exchange type
+                            {include '../components/orderMarksAjax.latte', orderby => 'exchangeType'}
+                        </th>
+                        <th>Host City
+                            {include '../components/orderMarksAjax.latte', orderby => 'city'}
+                        </th>
+                        <th>Host Faculty
+                            {include '../components/orderMarksAjax.latte', orderby => 'faculty'}
+                        </th>
+                        <th>Year
+                            {include '../components/orderMarksAjax.latte', orderby => 'date'}
+                        </th>
+                    </tr>
+                </thead>
+                <tr n:foreach="$feedback as $feed">
+                    <td><a n:href="Feedback:feedbackDetail, id => $feed->id">{$feed->name}</a></td>
+                    <td>{$feed->exchangeType|upper}</td>
+                    <td>{$feed->hostCity}</td>
+                    <td>{$feed->hostFaculty}</td>
+                    <td>
+                        {var $start_year = $feed->startDate->format('Y')}
+                        {var $end_year = $feed->endDate->format('Y')}
+                        {if $start_year == $end_year}
+                            {$start_year}
+                        {else}
+                            {$start_year}/{$end_year}
+                        {/if}
+                    </td>
+                </tr>
+            </table>
+            {include '../components/paginationAjax.latte'}
+            {else}
+            <p>There are no reviews yet! Do not hesitate to add one for yourself below.</p>
+            {/if}
+        </div>
+    </div>
+    {/snippet}
+
+    <div class="row">
+        <div class="col s12">
+            <a class="btn waves-effect waves-light" n:href="Feedback:addFeedback, id => $country->id">Add Feedback</a>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,11 @@
+{block content}
+	<div class="section">
+        <h1 n:block="title">Transaction Succeeded</h1>
+        <div class="row">
+            <div class="col s12">
+                <span class="ok_cross">Event successfully paid!</span><br>
+                Get back to <a n:href="Events:detail, 'id' => $participate->event->id">Event description</a>.
+            </div>
+        </div>
+	</div>
+{/block}

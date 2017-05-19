@@ -1,0 +1,90 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Profile of Incoming</h1>
+
+    <div class="row">
+    <div class="col s12">
+    <table class="bordered">
+        <tr>
+            <th width="40%">Username</th>
+            <td width="100%">{$profile->username}
+                {if $canDelete}
+                    <a n:href="Incomings:deleteIncoming, 'id' => $profile->id" class="delete_cross"><i class="tiny material-icons">delete</i></a>
+                {/if}
+            </td>
+            <td rowspan="6">
+                {if $profile->profileImg == ""}
+                    {var $profileImg = $basePath . '/images/profile.png' }
+                {else}
+                    {var $profileImg = $basePath . $presenter->configParams->profileImgDir . $profile->profileImg}
+                {/if}
+                <img src="{$profileImg}" height="220">
+            </td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{$profile->firstname} {$profile->surname}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{$profile->email}</td>
+        </tr>
+        <tr>
+            <th>Faculty</th>
+            <td>{$profile->faculty->facultyName}</td>
+        </tr>
+        <tr>
+            <th>Country</th>
+            <td>{$profile->country->countryName}</td>
+        </tr>
+        <tr>
+            <th>Role</th>
+            <td>{$presenter->rolesManager->incomingRoleToStr($profile->role)}
+                {if $canChangeRole}
+                    (<a n:href="Incomings:changeRole, 'id' => $profile->id">Edit</a>)
+                {/if}
+            </td>
+        </tr>
+    </table>
+    </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <h3>Signed up events</h3>
+        </div>
+        <div class="col s12">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Place</th>
+                        <th>Paid</th>
+                    </tr>
+                </thead>
+                <tbody n:if="$signedUpEvents">
+                    <tr n:foreach="$signedUpEvents as $event">
+                        <td><a n:href="Events:detail, 'id' => $event->event->id">{strip_tags($event->event->eventName)|substr:0,50}</a></td>
+                        <td>
+                            {if $event->event->date->format('j. n. Y') == $event->event->endDate->format('j. n. Y')}
+                                {$event->event->date->format('j. n. Y')}
+                            {else}
+                                {$event->event->date|date:'j. n. Y'} - {$event->event->endDate|date:'j. n. Y'}
+                            {/if}
+                        </td>
+                        <td>{$event->event->place}</td>
+                        <td>
+                            {if $event->paid == 0}
+                                <span class="delete_cross">No</span>
+                            {else}
+                                <span class="ok_cross">Yes</span>
+                            {/if}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{/block}

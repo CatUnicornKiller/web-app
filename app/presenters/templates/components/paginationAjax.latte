@@ -1,0 +1,45 @@
+{block pagination}
+
+{var blocks = 5}
+
+{if $paginator}
+    <ul class="pagination center">
+
+    {if $paginator->page > 1}
+        <li class="waves-effect">
+            <a class="ajax" n:href="this, 'page' => ($paginator->page - 1)">
+                <i class="material-icons">chevron_left</i>
+            </a>
+        </li>
+    {/if}
+
+    {for $i = $blocks; $i > 0; $i--}
+        {if ($paginator->page - $i) > 0}
+            <li class="waves-effect">
+                <a class="ajax" n:href="this, 'page' => ($paginator->page - $i)">{$paginator->page - $i}</a>
+            </li>
+        {/if}
+    {/for}
+
+        <li class="active red accent-4 white-text"><a href="#!">{$paginator->page}</a></li>
+
+    {for $i = 1; $i < $blocks; $i++}
+        {if ($paginator->page + $i) <= $paginator->getLastPage()}
+            <li class="waves-effect">
+                <a class="ajax" n:href="this, 'page' => ($paginator->page + $i)">{$paginator->page + $i}</a>
+            </li>
+        {/if}
+    {/for}
+
+    {if $paginator->page < $paginator->getLastPage()}
+        <li class="waves-effect">
+            <a class="ajax" n:href="this, 'page' => ($paginator->page + 1)">
+                <i class="material-icons">chevron_right</i>
+            </a>
+        </li>
+    {/if}
+
+    </ul>
+{/if}
+
+{/block}

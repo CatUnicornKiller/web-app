@@ -1,6 +1,7 @@
 log/*
 temp/*
 vendor/*
+certs/*
 !.gitignore
 !.htaccess
 !web.config
@@ -13,5 +14,4 @@ composer.lock
 /pdf/*
 /profiles_img/*
 /showroom_img/*
-certs/*
 app/payment/ecomm/Merchant.php

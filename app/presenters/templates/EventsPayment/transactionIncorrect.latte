@@ -1,0 +1,30 @@
+{block content}
+	<div class="section">
+        <h1 n:block="title">Transaction Failed</h1>
+        <div class="row">
+            <div class="col s12">
+                {if $result == 'FAILED' || $result == 'DECLINED'}
+                    <span class="delete_cross">YOUR PAYMENT REQUEST WAS DECLINED!</span><br>
+                    Your payment request was declined, due to one of the following reasons:
+                    <ul class="collection">
+                        <li class="collection-item">Incorrect payment card data were provided (either card brand, cardholder’s name, card number, expiry month/year, CVV2/CVC2 code) or</li>
+                        <li class="collection-item">Your bank declined your payment request. In this case please contact your bank.</li>
+                    </ul>
+                {elseif $result == 'REVERSED'}
+                    <span class="delete_cross">YOUR PAYMENT REQUEST WAS CANCELED!</span><br>
+                    Your payment request was canceled on the side of authorization center - <b>the payment will not be realized!</b><br>
+                {elseif $result == 'TIMEOUT'}
+                    <span class="delete_cross">YOUR PAYMENT REQUEST WASN’T PROCESSED – TIME OUT!</span><br>
+                    Your payment request was not processed, due to time out during the transaction. <b>The payment will not be realized!</b><br>
+                {elseif $result == 'PENDING'}
+                    <span class="delete_cross">YOUR PAYMENT REQUEST WASN’T PROCESSED!</span><br>
+                    Your payment request was not processed, due to incorrect transaction finish. <b>The payment will not be realized!</b><br>
+                {else}
+                    <span class="delete_cross">Result Code unknown. Event not paid!</span><br>
+                {/if}
+                Please repeat your payment request, either by using your payment card or other payment form provided.<br><br>
+                Get back to <a n:href="Events:detail, 'id' => $participate->event->id">Event description</a>.
+            </div>
+        </div>
+	</div>
+{/block}

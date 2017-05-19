@@ -1,0 +1,159 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">User Information</h1>
+
+    {if count($requested) > 0}
+    <div class="row">
+        <div class="col s12 red-text">
+            <span>Exclamation mark <i class="material-icons prefix">error</i> indicates fields which was requested to fill in.</span>
+        </div>
+    </div>
+    {/if}
+
+    {form editUserForm}
+        <div class="row" n:if="$form->errors">
+            <div class="col s12">
+                <ul class="collection form-error">
+                    <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["id"]}
+            <div class="col s9 {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+        {var $formItem = $form["username"]}
+                {label $formItem /}
+                {input $formItem}
+        {var $formItem = $form["profileImg"]}
+                <div class="file-field input-field {if $formItem->required}required{/if}">
+                    <div class="btn file-btn">
+                        <span>Profile Image</span>
+                        {input $formItem}
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="col s3">
+                {if $userProfile->profileImg == ""}
+                    {var $profileImg = $basePath . '/images/profile.png' }
+                {else}
+                    {var $profileImg = $basePath . $presenter->configParams->profileImgDir . $userProfile->profileImg}
+                {/if}
+                <div class="profile_img">
+                    <img src="{$profileImg}" height="230">
+                    <div class="delete_img" n:if="$userProfile->profileImg != ''">
+                        <a class="delete_cross" n:href="User:deleteProfileImage"><i class="material-icons">delete</i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        {var $formItem = $form["firstname"]}
+            <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                {if array_search('firstname', $requested) !== FALSE}<i class="material-icons prefix red-text">error</i>{/if}
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        {var $formItem = $form["surname"]}
+            <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                {if array_search('surname', $requested) !== FALSE}<i class="material-icons prefix red-text">error</i>{/if}
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        {var $formItem = $form["email"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {if array_search('email', $requested) !== FALSE}<i class="material-icons prefix red-text">error</i>{/if}
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <a class="btn waves-effect waves-light white-text" n:href="User:passwd">Change Password</a>
+            </div>
+        </div>
+
+        <div n:if="$user->isAllowed('MyIfmsaCredentials', 'edit')" class="row">
+        {var $formItem = $form["ifmsaUsername"]}
+            <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                {if array_search('ifmsaUsername', $requested) !== FALSE}<i class="material-icons prefix red-text">error</i>{/if}
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        {var $formItem = $form["ifmsaPassword"]}
+            <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                {if array_search('ifmsaPassword', $requested) !== FALSE}<i class="material-icons prefix red-text">error</i>{/if}
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["faculty"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        {var $formItem = $form["country"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        {var $formItem = $form["role"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div n:if="$currentUser->isOfficer()" class="row">
+            <div class="col s12">
+                <h4>
+                    {if array_search('additional_information', $requested) !== FALSE}<i class="material-icons prefix">error</i>{/if}
+                    Additional information
+                </h4>
+            </div>
+            {var $formItem = $form["address"]}
+                <div class="col s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            {var $formItem = $form["city"]}
+                <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            {var $formItem = $form["postCode"]}
+                <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            {var $formItem = $form["region"]}
+                <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            {var $formItem = $form["phone"]}
+                <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["send"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+    {/form}
+
+</div>
+{/block}

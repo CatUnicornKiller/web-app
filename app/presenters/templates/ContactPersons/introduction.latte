@@ -1,0 +1,23 @@
+{block content}
+	<div class="section">
+    <h1 n:block="title">{$page->title}</h1>
+
+        <div class="row">
+            <div class="col s12">
+                <ul class="collection">
+                    <li class="collection-item">
+                        <div class="tinymce_output">
+                            {$presenter->sanitizeTinyMCEOutput($page->content)|noescape}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div n:if="$user->isAllowed('CPIntroduction', 'edit')" class="row">
+            <div class="col s12">
+                <a class="btn white-text waves-effect waves-light" n:href="ContactPersons:editIntroduction">Edit this article</a>
+            </div>
+        </div>
+	</div>
+{/block}

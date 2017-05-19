@@ -1,0 +1,30 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Add Coorganizer</h1>
+
+    {form addCoorganizerForm}
+        <div class="row" n:if="$form->errors">
+            <div class="col s12">
+                <ul class="collection form-error">
+                    <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["coorganizer"]}
+            <div class="col s12 {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+        <div class="row">
+        {var $formItem = $form["send"]}
+            <div class="col s12 {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+    {/form}
+</div>
+{/block}

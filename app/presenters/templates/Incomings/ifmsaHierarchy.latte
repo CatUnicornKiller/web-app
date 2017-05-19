@@ -1,0 +1,52 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">IFMSA CZ Hierarchy</h1>
+
+    {var $onScreen = 2}
+    {foreach $officers as $name => $officerGroup}
+        {continueIf count($officerGroup) == 0}
+
+        <h3>{$name}</h3>
+
+
+        {var $i = 0}
+        {foreach $officerGroup as $officer}
+            {if $i % $onScreen == 0}
+                <div class="row">
+            {/if}
+
+            <div class="col l6 s12">
+                <div class="card-panel">
+                    <div class="row" style="margin:0px;">
+                        <div class="col s6">
+                            {if $officer->profileImg == ""}
+                                {var $profileImg = $basePath . '/images/profile.png' }
+                            {else}
+                                {var $profileImg = $basePath . $presenter->configParams->profileImgDir . $officer->profileImg}
+                            {/if}
+                            <img class="responsive-img" src="{$profileImg}" style="width:auto;height:200px;">
+                        </div>
+                        <div class="col s6">
+                            <p><span style="font-weight:bold;">{$officer->firstname} {$officer->surname}</span></p>
+                            <p><a href="mailto:{$officer->email}">{$officer->email}</a></p>
+                            <p>{$officer->faculty->facultyName}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {var $i = $i + 1}
+
+            {if $i > 0 && ($i % $onScreen) == 0}
+                </div>
+            {/if}
+        {/foreach}
+
+        {if $i > 0 && ($i % $onScreen) != 0}
+            </div>
+        {/if}
+
+    {/foreach}
+
+</div>
+{/block}

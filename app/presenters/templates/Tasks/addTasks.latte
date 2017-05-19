@@ -1,0 +1,61 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Add Tasks</h1>
+
+    {form addTasksForm}
+    <div class="row" n:if="$form->errors">
+        <div class="col s12">
+            <ul class="collection form-error">
+                <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <table id="add_tasks" class="striped">
+                <thead><tr><th>Selection</th><th>Task Description</th><th>Task Sidenote</th></tr></thead>
+                <tbody>
+                    <tr n:foreach="$form['cpTasks']->containers as $task">
+                        {var $fsel = $task['cpTasksSelection']}
+                        {var $fdesc = $task['cpTasksDescription']}
+                        {var $fnote = $task['cpTasksNote']}
+                        <td>
+                            <div class="input-field col s12">
+                                {input $fsel}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field col s12">
+                                {label $fdesc /}
+                                {input $fdesc}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field col s12">
+                                {label $fnote /}
+                                {input $fnote}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+    {var $formItem = $form['cpTasks']["add"]}
+        <div class="col s12 input-field {if $formItem->required}required{/if}">
+            {label $formItem /}
+            {input $formItem}
+        </div>
+    {var $formItem = $form["send"]}
+        <div class="col s12 input-field {if $formItem->required}required{/if}">
+            {label $formItem /}
+            {input $formItem}
+        </div>
+    </div>
+    {/form}
+
+</div>
+{/block}

@@ -1,0 +1,48 @@
+{block content}
+	<div class="section">
+    <h1 n:block="title">Log into System</h1>
+
+    <div class="row">
+        <div class="col s6">
+
+            {form loginForm}
+            <div class="row" n:if="$form->errors">
+                <div class="col s12">
+                    <ul class="collection form-error">
+                        <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                        <li class="collection-item red darken-3 white-text">Forgot your password? You may recover it <a n:href="Homepage:forgotten">here</a>!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+            {var $formItem = $form["username"]}
+                <div class="col s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            </div>
+            <div class="row">
+            {var $formItem = $form["password"]}
+                <div class="col s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            {var $formItem = $form["remember"]}
+                <div class="col s12 input-field {if $formItem->required}required{/if}">
+                    {$formItem->control}
+                </div>
+            </div>
+            <div class="row">
+            {var $formItem = $form["send"]}
+                <div class="col s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            </div>
+            {/form}
+        </div>
+    </div>
+
+	</div>
+{/block}

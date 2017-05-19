@@ -1,0 +1,51 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">List of Registered Incomings</h1>
+
+    {include '../components/filterUsersForm.latte'}
+
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+    {snippet incomingsList}
+    <small>Showing {$paginator->getOffset()}-{$paginator->getOffset()+$paginator->getLength()} of total {$paginator->getItemCount()}</small>
+
+    <table class="stripped">
+        <thead>
+            <tr>
+                <th>Username
+                    {include '../components/orderMarksAjax.latte', orderby => 'username'}
+                </th>
+                <th>Name
+                    {include '../components/orderMarksAjax.latte', orderby => 'name'}
+                </th>
+                <th>Privileges
+                    {include '../components/orderMarksAjax.latte', orderby => 'privileges'}
+                </th>
+                <th>
+                    Faculty
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr n:foreach="$incomings as $usr">
+                <td>
+                    {if $myAuthorizator->isAllowedIncomings('view', $usr->id, $usr->faculty->id)}
+                        <a n:href="Incomings:profile, 'id' => $usr->id">{$usr->username}</a>
+                    {else}
+                        {$usr->username}
+                    {/if}
+                </td>
+                <td>{$usr->firstname} {$usr->surname}</td>
+                <td>{$presenter->rolesManager->incomingRoleToStr($usr->role)}</td>
+                <td>{$usr->faculty->facultyShortcut}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {include '../components/paginationAjax.latte'}
+    {/snippet}
+</div>
+{/block}

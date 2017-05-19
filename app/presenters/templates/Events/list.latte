@@ -1,0 +1,95 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">List of All Events</h1>
+
+    {form filterEventsListForm}
+        <div class="row" n:if="$form->errors">
+            <div class="col s12">
+                <ul class="collection form-error">
+                    <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["faculty"]}
+            <div class="col s12 {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+        <div class="row">
+        {var $formItem = $form["startDate"]}
+            <div class="col s6 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+                <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+            </div>
+        {var $formItem = $form["endDate"]}
+            <div class="col s6 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+                <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+            </div>
+        </div>
+        <div class="row">
+        {var $formItem = $form["send"]}
+            <div class="col s12 {if $formItem->required}required{/if}">
+                <div class="right">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            </div>
+        </div>
+
+        <script>$('select').material_select();</script>
+    {/form}
+</div>
+<div class="divider"></div>
+<div class="section">
+    {snippet eventsList}
+    <div class="row">
+        <div class="col s12">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Organizer
+                            {include '../components/orderMarksAjax.latte', orderby => 'organizer'}
+                        </th>
+                        <th>Event Name
+                            {include '../components/orderMarksAjax.latte', orderby => 'eventName'}
+                        </th>
+                        <th>Date
+                            {include '../components/orderMarksAjax.latte', orderby => 'date'}
+                        </th>
+                        <th>
+                            Faculty
+                        </th>
+                    </tr>
+                </thead>
+                <tr n:foreach="$eventsList as $event">
+                    <td><a n:href="Officers:profile, 'id' => $event->user->id">{$event->user->firstname} {$event->user->surname}</a></td>
+                    <td><a n:href="Events:detail, 'id' => $event->id">{$event->eventName|substr:0,40}</a></td>
+                    <td>
+                        {if $event->date->format('j. n. Y') == $event->endDate->format('j. n. Y')}
+                            {$event->date->format('j. n. Y')}
+                        {else}
+                            {$event->date|date:'j. n. Y'} - {$event->endDate|date:'j. n. Y'}
+                        {/if}
+                    </td>
+                    <td>{$event->user->faculty->facultyShortcut}</td>
+                </tr>
+            </table>
+            <p n:if="empty($eventsList)">There are no events for this filtering options.</p>
+        </div>
+    </div>
+
+    <div n:if="!empty($eventsList)" class="row">
+        <div class="col s12">
+            <a class="btn waves-effect waves-light" n:href="Events:generateEventsTable, 'events' => $eventIdsList">Generate Events Table</a>
+        </div>
+    </div>
+    {/snippet}
+
+</div>
+{/block}

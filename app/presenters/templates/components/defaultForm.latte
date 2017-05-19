@@ -1,0 +1,16 @@
+<form n:name=$form>
+<div class="row" n:if="$form->errors">
+    <div class="col s12">
+        <ul class="collection form-error">
+            <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+<div n:foreach="$form->controls as $input" class="col s12 input-field {if $input->required}required{/if}">
+	{label $input /}
+	{input $input}
+</div>
+</div>
+</form>

@@ -1,0 +1,32 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Tasks Overview</h1>
+
+    <div class="row">
+        <div class="col s12">
+            {foreach $personTasks as $af => $person}
+                {var $img = $basePath . '/images/profile.png'}
+                {var $afName = ""}
+                {if $person[0]}
+                    {if $person[0]->photo != ""}
+                        {var $img = $person[0]->photo}
+                    {/if}
+                    {var $afName = $person[0]->firstname . " " . $person[0]->surname}
+                {/if}
+
+                <div class="tasks_detail">
+                    <a n:href="Tasks:detail, 'id' => $person[1]->id">
+                        <img src="{$img}">
+                        <div class="tasks_completed">
+                            <span>{$afName}<br>{$person[1]->getCompletedTasks()->count()}/{$person[1]->tasks->count()}</span>
+                        </div>
+                    </a>
+                </div>
+            {/foreach}
+            {if count($personTasks) == 0}
+                There are no tasks for you.
+            {/if}
+        </div>
+    </div>
+</div>
+{/block}

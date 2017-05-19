@@ -1,0 +1,35 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Outgoings</h1>
+
+    {include '../components/yearMonthForm.latte'}
+</div>
+<div class="divider"></div>
+<div class="section">
+    <div class="row">
+        <div class="col s12">
+            <table class="striped">
+                <thead><tr><th>AF</th><th>CC</th><th>Name</th><th>Desired</th><th>Nationality</th><th>Documents</th></tr></thead>
+                <tbody>
+                    <tr n:foreach="$personList as $person">
+                        <td>{$person->afNumber}</td>
+                        <td>{$person->confirmationNumber}</td>
+                        <td><a n:href="Ifmsa:person, $person->afNumber" onclick="loading();">{$person->name}</a></td>
+                        <td>{$person->desired}</td>
+                        <td>{substr($person->nationality, 0, strpos($person->nationality, '(') - 1)}</td>
+                        <td>{$person->documents}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <a class="btn waves-effect waves-light" n:href="Ifmsa:generateTable, 'afList' => $afList">
+                Generate Table
+            </a>
+        </div>
+    </div>
+</div>
+{/block}

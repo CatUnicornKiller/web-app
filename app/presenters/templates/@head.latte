@@ -1,0 +1,26 @@
+{define head}
+	<meta charset="utf-8">
+	<meta name="author" content="Martin Polanka">
+	<meta name="robots" content="noindex, nofollow">
+
+	<title>{ifset title}{include title|striptags} | {/ifset}CatUnicornKiller System</title>
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+	<link rel="stylesheet" href="{$basePath}/css/materialize.clockpicker.css">
+	<link rel="stylesheet" href="{$basePath}/css/lightbox.css">
+    <link rel="stylesheet" href="{$basePath}/css/dropzone.css">
+	<link rel="stylesheet" href="{$basePath}/css/ifmsa.css?version=3">
+
+	<link rel="shortcut icon" href="{$basePath}/images/favicon.ico">
+	<meta name="viewport" content="width=device-width">
+
+	<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+	<script src="{$basePath}/js/materialize.clockpicker.js"></script>
+    <script src="{$basePath}/js/dropzone.js"></script>
+	<script src="//nette.github.io/resources/js/netteForms.min.js"></script>
+    <script src="{$basePath}/js/nette.ajax.js"></script>
+    <script src="{$basePath}/js/spinner.ajax.js"></script>
+	<script src="{$basePath}/js/ifmsa.js?version=1"></script>
+{/define}

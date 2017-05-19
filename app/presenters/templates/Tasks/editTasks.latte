@@ -1,0 +1,56 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Edit CP Task</h1>
+
+    {form editTasksForm}
+    <div class="row" n:if="$form->errors">
+        <div class="col s12">
+            <ul class="collection form-error">
+                <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <table class="striped">
+                <thead><tr><th>Task description</th><th>Task sidenote</th><th>Sort Order</th></tr></thead>
+                <tbody>
+                    <tr n:foreach="$tasks as $task">
+                        {var $fdesc = $form['cpTasksDescription'][$task->id]}
+                        {var $fnote = $form['cpTasksNote'][$task->id]}
+                        {var $forder = $form['sortOrder'][$task->id]}
+                        <td>
+                            <div class="input-field col s12">
+                                {label $fdesc /}
+                                {input $fdesc}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field col s12">
+                                {label $fnote /}
+                                {input $fnote}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field col s12">
+                                {label $forder /}
+                                {input $forder}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+    {var $formItem = $form["send"]}
+        <div class="col s12 input-field {if $formItem->required}required{/if}">
+            {label $formItem /}
+            {input $formItem}
+        </div>
+    </div>
+    {/form}
+
+</div>
+{/block}

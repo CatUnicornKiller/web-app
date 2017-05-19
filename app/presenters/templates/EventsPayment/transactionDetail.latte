@@ -1,0 +1,82 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Transaction Detail</h1>
+
+    <div class="row">
+    <div class="col s12">
+    <table class="bordered">
+        <tr>
+            <th>ID</th>
+            <td>{$transaction->transId}</td>
+        </tr>
+        <tr>
+            <th>Amount</th>
+            <td>{$transaction->amount / 100} CZK</td>
+        </tr>
+        <tr>
+            <th>IP Address</th>
+            <td>{$transaction->clientIpAddr}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{$transaction->description}</td>
+        </tr>
+        <tr>
+            <th>Result</th>
+            <td>{$transaction->result}</td>
+        </tr>
+        <tr>
+            <th>Result Code</th>
+            <td>{$transaction->resultCode}</td>
+        </tr>
+        <tr>
+            <th>Result 3D Secure</th>
+            <td>{$transaction->result3dsecure}</td>
+        </tr>
+        <tr>
+            <th>Card Number</th>
+            <td>{$transaction->cardNumber}</td>
+        </tr>
+        <tr>
+            <th>Transaction Start</th>
+            <td>{$transaction->tDate|date:"d.m.Y H:i:s"}</td>
+        </tr>
+        <tr>
+            <th>Transaction End</th>
+            <td>{$transaction->transEndDate|date:"d.m.Y H:i:s"}</td>
+        </tr>
+        <tr>
+            <th>Response</th>
+            <td>{$transaction->response}</td>
+        </tr>
+    </table>
+    </div>
+    </div>
+
+    <div n:if="$transaction->isOk() && $participation" class="row">
+        <div class="col s12">
+            <h3>Paid Event</h3>
+
+            <table class="bordered">
+                <tr>
+                    <th>Incoming ID</th>
+                    <td>{$participation->user->id}</td>
+                </tr>
+                <tr>
+                    <th>Incoming Username</th>
+                    <td><a n:href="Incomings:profile, 'id' => $participation->user->id">{$participation->user->username}</a></td>
+                </tr>
+                <tr>
+                    <th>Event ID</th>
+                    <td>{$participation->event->id}</td>
+                </tr>
+                <tr>
+                    <th>Event Name</th>
+                    <td><a n:href="Events:detail, 'id' => $participation->event->id">{$participation->event->eventName}</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+{/block}

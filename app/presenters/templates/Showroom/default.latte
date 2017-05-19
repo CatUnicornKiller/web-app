@@ -1,0 +1,37 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">IFMSA CZ Officers Showroom</h1>
+
+    {foreach $officers as $name => $officerGroup}
+        {continueIf empty($officerGroup)}
+
+        <h3>{$name}</h3>
+
+        <div class="row">
+        {foreach $officerGroup as $officer}
+            <div class="col l6 s12">
+                <div class="card-panel">
+                    <div class="row" style="margin:0px;">
+                        <div class="col s6">
+                            {if $officer->profileImg == ""}
+                                {var $profileImg = $basePath . '/images/profile.png' }
+                            {else}
+                                {var $profileImg = $basePath . $presenter->configParams->showroomImgDir . $officer->profileImg}
+                            {/if}
+                            <img class="responsive-img" src="{$profileImg}" style="width:auto;height:200px;">
+                        </div>
+                        <div class="col s6">
+                            <span style="font-weight:bold;">{$officer->firstname} {$officer->surname}</span><br>
+                            {$officer->faculty->facultyName}<br>
+                            {$officer->startYear}/{$officer->endYear}<br>
+                            <br>
+                            {$officer->information}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {/foreach}
+        </div>
+    {/foreach}
+</div>
+{/block}

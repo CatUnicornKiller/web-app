@@ -1,0 +1,121 @@
+{form eventForm}
+<div class="row" n:if="$form->errors">
+    <div class="col s12">
+        <ul class="collection form-error">
+            <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+{var $formItem = $form["visibleToFaculties"]}
+    <div class="col s12 {if $formItem->required}required{/if}">
+        <h5>{$formItem->label}</h5>
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["eventName"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["socialProgram"]}
+    <div class="col s12 {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+{var $formItem = $form["academicQuality"]}
+    <div class="col s12 {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["startDate"]}
+    <div class="col l4 s8 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+        <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+    </div>
+{var $formItem = $form["startTime"]}
+    <div class="col l2 s4 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+        <script>$("#{$formItem->control->attrs['id']|noescape}").pickatime({ twelvehour: false });</script>
+    </div>
+{var $formItem = $form["endDate"]}
+    <div class="col l4 s8 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+        <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+    </div>
+{var $formItem = $form["endTime"]}
+    <div class="col l2 s4 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+        <script>$("#{$formItem->control->attrs['id']|noescape}").pickatime({ twelvehour: false });</script>
+    </div>
+{var $formItem = $form["signupDeadlineDate"]}
+    <div class="col l4 s8 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+        <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+    </div>
+{var $formItem = $form["signupDeadlineTime"]}
+    <div class="col l2 s4 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+        <script>$("#{$formItem->control->attrs['id']|noescape}").pickatime({ twelvehour: false });</script>
+    </div>
+{var $formItem = $form["place"]}
+    <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["price"]}
+    <div class="col s6 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+{var $formItem = $form["capacity"]}
+    <div class="col s6 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["eventLogo"]}
+    <div class="col s12">
+        <div class="file-field input-field {if $formItem->required}required{/if}">
+            <div class="btn file-btn">
+                <span>Event Logo</span>
+                {input $formItem}
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path" type="text">
+            </div>
+        </div>
+    </div>
+</div>
+
+{include 'tinyMCEInit.latte', tinyMCESelector => '#event_desc', tinyMCEImages => false}
+
+<div class="row">
+{var $formItem = $form["eventDescription"]}
+    <div class="col s12 {if $formItem->required}required{/if}">
+        <h5>Event description:</h5>
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["send"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {input $formItem}
+    </div>
+</div>
+{/form}

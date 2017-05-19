@@ -1,0 +1,223 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">{$event->eventName}</h1>
+
+    <div class="row">
+        <div class="col s12">
+            <table class="bordered" style="table-layout:fixed;width:100%;">
+                <tr><th>Organizer:</th><td>{$event->user->firstname} {$event->user->surname}</td></tr>
+                <tr><th>Organizer email:</th><td>{$event->user->email}</td></tr>
+                <tr><th>Organizer faculty:</th><td>{$event->user->faculty->facultyName}</td></tr>
+                <tr>
+                    <th>Visible to Faculties:</th>
+                    <td>
+                        <span n:foreach="$event->visibleToFaculties as $vFaculty">{$vFaculty->facultyName}<br></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Coorganizers:</th>
+                    <td>
+                        {foreach $event->coorganizers as $coorg}
+                            {$coorg->user->firstname} {$coorg->user->surname} ({$coorg->user->email})
+                            <a n:if="$canDeleteCoorg" n:href="Events:deleteCoorganizer, 'id' => $coorg->id" class="delete_cross"><i class="tiny material-icons">delete</i></a>
+                            <br>
+                        {/foreach}
+                        <a n:if="$canAddCoorg" n:href="Events:addCoorganizer, 'id' => $event->id">Add Coorganizer</a>
+                    </td>
+                </tr>
+                <tr><th>Is Social Program:</th><td>{if $event->socialProgram}Yes{else}No{/if}</td></tr>
+                <tr><th>Is Academic Quality:</th><td>{if $event->academicQuality}Yes{else}No{/if}</td></tr>
+                <tr><th>Date and time:</th><td>{$event->date|date:'j. n. Y H:i'} - {$event->endDate|date:'j. n. Y H:i'}</td></tr>
+                <tr><th>Signup and payment deadline:</th><td>{$event->signupDeadline|date:'j. n. Y H:i'}</td></tr>
+                <tr><th>Place:</th><td>{$event->place}</td></tr>
+                <tr>
+                    <th>Price:</th>
+                    <td>{if $event->price}{$event->price} CZK{else}For free!{/if}</td>
+                </tr>
+                <tr>
+                    <th>Free Capacity:</th>
+                    <td>{if $event->capacity}{$event->capacity - $event->participants->count()}{else}Unlimited{/if}</td>
+                </tr>
+
+                <tr><th colspan="2" class="grey lighten-4">Event description:</th></tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="tinymce_output">
+                            {$presenter->sanitizeTinyMCEOutput($event->eventDescription)|noescape}
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Logo:</th>
+                    <td>
+                        {if $event->eventLogo != ''}
+                            {var $logoPath = $basePath . $presenter->configParams->eventImgDir . $event->id . '/' . $event->eventLogo . '?version=1'}
+                            <a href="{$logoPath}" data-lightbox="event_logo">
+                                <img src="{$logoPath}" height="150px">
+                            </a>
+                        {/if}
+                    </td>
+                </tr>
+
+                {if $canEdit}
+                <tr><th colspan="2" class="grey lighten-4">Upload photos:</th></tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">
+                        <div class="img_upload_wrapper">
+                            {form uploadEventImageForm}{/form}
+                        </div>
+                        <script>
+                        Dropzone.options.imgUploadDropzone = {
+                            paramName: "image",
+                            maxFilesize: {$presenter->configParams->eventImgFileSize / 1000000}, // MB
+                            maxFiles: {$presenter->configParams->eventImgMaxCount},
+                            success: function(file, response){
+                                if (response.snippets) {
+                                    $.nette.ext("snippets").updateSnippets(response.snippets);
+                                    if (file.previewElement) { file.previewElement.classList.add("dz-success"); }
+                                }
+                            },
+                            acceptedFiles: "image/*"
+                        };
+                        </script>
+                    </td>
+                </tr>
+                {/if}
+
+                <tr><th colspan="2" class="grey lighten-4">Photos:</th></tr>
+                <tr>
+                    <td colspan="2">
+                        {snippet event_img}
+                        <div id="event_photos_cell">
+                            <div n:foreach="$event->files as $file" class="event_img">
+                                {var $filePath = $basePath . $presenter->configParams->eventImgDir . $event->id . '/' . $file->newName}
+                                <a href="{$filePath}" data-lightbox="event_img">
+                                    <img event_img_id="{$file->id}" src="{$filePath}" height="150px">
+                                </a>
+                                <div class="delete_img" n:if="$canDeleteImg">
+                                    <a class="delete_cross" n:href="Events:deleteEventImage, 'id' => $file->id"><i class="material-icons">delete</i></a>
+                                </div>
+                            </div>
+                        </div>
+                        {/snippet}
+                        <script>
+                        </script>
+                    </td>
+                </tr>
+
+                <tr><th>Received Points:</th><td>{$event->points}</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s6">
+            <a n:if="$canEdit" class="btn white-text waves-effect waves-light" n:href="Events:modifyEvent, 'id' => $event->id">Modify event</a>
+        </div>
+        <div class="col s6">
+            <a n:if="$canDelete" class="btn del-btn white-text waves-effect waves-light" n:href="Events:deleteEvent, 'id' => $event->id">Delete event</a>
+        </div>
+    </div>
+
+    <div n:if="$user->isAllowed('Event', 'sign')" class="row">
+        <div class="col s12">
+            <h3>Sign up</h3>
+        </div>
+        {if $myParticipation}
+            <div class="col s12">
+                <a class="btn del-btn white-text waves-effect waves-light" n:href="Events:unSign, 'id' => $myParticipation->id">Unsign</a>
+                &nbsp;<span class="ok_cross">You are signed up for the event!</span>
+            </div>
+        {else}
+            <div class="col s12">
+            {if $now > $event->signupDeadline}
+                Signup Deadline for this event exceeded!
+            {elseif ($event->capacity - $event->participants->count()) > 0 || $event->capacity == 0}
+                <a class="btn white-text waves-effect waves-light" n:href="Events:signUp, 'id' => $event->id">Sign up!</a>
+            {else}
+                This event is full!
+            {/if}
+            </div>
+        {/if}
+    </div>
+
+    <div n:if="$myParticipation && $event->price > 0" class="row">
+        <div class="col s12">
+            <h3>Event Payment</h3>
+            <p>You can easily pay for event here using payment gateway!</p>
+        </div>
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col s6">
+                            <span class="card-title">Payment options:</span>
+                            <p>
+                                <img style="padding:5px;padding-left:10px;" src="{$basePath}/images/mc_logos/mastercard.png">
+                                <img style="padding:5px;" src="{$basePath}/images/mc_logos/maestro.png">
+                                <img style="padding:5px;" src="{$basePath}/images/visa_logos/visa.png">
+                                <img style="padding:5px;" src="{$basePath}/images/visa_logos/visa-electron.png">
+                            </p>
+                        </div>
+                        <div class="col s6">
+                            <span class="card-title">Verified by:</span>
+                            <p>
+                                <img style="padding:5px;padding-left:10px;" height="60px" src="{$basePath}/images/mc_logos/mc_securecode.png">
+                                <img style="padding:5px;" height="60px" src="{$basePath}/images/visa_logos/ver_visa.png">
+                            </p>
+                        </div>
+                        <div class="col s6">
+                            <span class="card-title">Provided by:</span>
+                            <p>
+                                <img style="padding:5px;padding-left:10px;" height="50px" src="{$basePath}/images/bank_logos/logo_IB2.png">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s12">
+        {if $myParticipation->paid == 0 && $now > $event->signupDeadline}
+            <span class="delete_cross">Signup Deadline for this event exceeded! Event cannot be paid.</span>
+        {elseif $myParticipation->paid == 0}
+            <a class="btn white-text waves-effect waves-light" n:href="EventsPayment:startEventTransaction, 'id' => $event->id">
+                <i class="material-icons left">shopping_cart</i>Pay for Event
+            </a>
+        {else}
+            <span class="ok_cross">Event already paid!</span>
+        {/if}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <h3>Participants ({$event->participants->count()})</h3>
+            <table class="striped">
+                <thead><tr><th>Name</th><th>Email</th><th>Paid</th></tr></thead>
+                <tbody>
+                    <tr n:foreach="$event->participants as $part">
+                        <td><a n:href="Incomings:profile, 'id' => $part->user->id">{$part->user->firstname} {$part->user->surname}</a></td>
+                        <td>{$part->user->email}</td>
+                        <td>
+                            {if $part->paid == 0}
+                                <span class="delete_cross">No</span>
+                            {else}
+                                <span class="ok_cross">Yes</span>
+                            {/if}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div n:if="$canGenerateParticipants" class="col s12">
+            <a class="btn waves-effect waves-light" n:href="Events:generateParticipantsTable, 'id' => $event->id">
+                Generate participants table
+            </a>
+        </div>
+    </div>
+
+</div>
+{/block}

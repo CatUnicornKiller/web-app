@@ -1,0 +1,156 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# http://nette.org/security-warning
+#
+parameters:
+    profileImgDir: /profiles_img/
+    showroomImgDir: /showroom_img/
+    articlesImgDir: /articles_img/
+    eventImgDir: /events_img/
+    itemsPerPage: 50
+    eventImgMaxCount: 20
+    eventImgNameLength: 20
+    eventImgFileSize: 5000000
+
+php:
+    date.timezone: Europe/Prague
+
+
+application:
+    errorPresenter: Error
+    mapping:
+        *: App\*Module\Presenters\*Presenter
+
+
+extensions:
+    console: Kdyby\Console\DI\ConsoleExtension
+    events: Kdyby\Events\DI\EventsExtension
+    annotations: Kdyby\Annotations\DI\AnnotationsExtension
+    doctrine: Kdyby\Doctrine\DI\OrmExtension
+    replicator: Kdyby\Replicator\DI\ReplicatorExtension
+    doctrine2identity: Majkl578\NetteAddons\Doctrine2Identity\DI\IdentityExtension
+    fixtures: Zenify\DoctrineFixtures\DI\FixturesExtension
+
+
+session:
+    expiration: 14 days
+
+
+nette:
+    http:
+        proxy:
+            - 103.21.244.0/22
+            - 103.22.200.0/22
+            - 103.31.4.0/22
+            - 104.16.0.0/12
+            - 108.162.192.0/18
+            - 131.0.72.0/22
+            - 141.101.64.0/18
+            - 162.158.0.0/15
+            - 172.64.0.0/13
+            - 173.245.48.0/20
+            - 188.114.96.0/20
+            - 190.93.240.0/20
+            - 197.234.240.0/22
+            - 198.41.128.0/17
+            - 199.27.128.0/21
+
+
+services:
+    routerFactory: App\RouterFactory
+    router: @routerFactory::create
+    authorizatorFactory: App\Users\AuthorizatorFactory
+    authorizator: @authorizatorFactory::create
+
+    # console
+    - class: App\Console\DoctrineFixtures
+      tags: [kdyby.console.command]
+
+    # misc
+    - App\Users\MyAuthenticator
+    - App\Users\UserManager
+    - App\Users\MyAuthorizator
+    - App\Users\RolesManager
+
+    # form factories
+    - App\Forms\LoginFormFactory
+    - App\Forms\PagesFormsFactory
+    - App\Forms\RegistrationFormsFactory
+    - App\Forms\ForgottenPasswordFormsFactory
+    - App\Forms\UsersFormsFactory
+    - App\Forms\UserFormsFactory
+    - App\Forms\IfmsaFormsFactory
+    - App\Forms\ContactPersonsFormsFactory
+    - App\Forms\FacultiesFormsFactory
+    - App\Forms\IncomingsFormsFactory
+    - App\Forms\EventsFormsFactory
+    - App\Forms\TasksFormsFactory
+    - App\Forms\HomepageFormsFactory
+    - App\Forms\TransactionsFormsFactory
+    - App\Forms\FeedbackFormsFactory
+    - App\Forms\ShowroomFormsFactory
+
+    # factories
+    - App\Helpers\GuzzleFactory
+    - App\Helpers\Pdf\IfmsaRemotePdfFactory
+    - App\Helpers\Pdf\FeedbackPdfFactory
+    - App\Helpers\Table\IfmsaRemoteTableFactory
+    - App\Helpers\Table\EventsTableFactory
+    - App\Helpers\Table\TransactionsTableFactory
+
+    # repositories
+    - App\Model\Repository\Users
+    - App\Model\Repository\LoginLogs
+    - App\Model\Repository\NewsRepository
+    - App\Model\Repository\UserInfoRequests
+    - App\Model\Repository\EventFiles
+    - App\Model\Repository\Events
+    - App\Model\Repository\EcommTransactions
+    - App\Model\Repository\EcommBatchs
+    - App\Model\Repository\EcommErrors
+    - App\Model\Repository\ForgottenPasswords
+    - App\Model\Repository\RenewedPasswords
+    - App\Model\Repository\Faculties
+    - App\Model\Repository\Countries
+    - App\Model\Repository\FeedbackRepository
+    - App\Model\Repository\ShowroomRepository
+    - App\Model\Repository\CpAssignedAfs
+    - App\Model\Repository\EventCoorganizers
+    - App\Model\Repository\Pages
+    - App\Model\Repository\IfmsaPersons
+    - App\Model\Repository\EventParticipants
+    - App\Model\Repository\CpTasks
+    - App\Model\Repository\DefaultCpTasks
+    - App\Model\Repository\ExtraPointsRepository
+
+    # helpers
+    - App\Helpers\ConfigParams(@container::getParameters())
+    - App\Helpers\StringHelper
+    - App\Helpers\UserHelper
+    - App\Helpers\FeedbackHelper
+    - App\Helpers\ResponseHelper
+    - App\Helpers\HumanDetectorFormHelper
+    - App\Helpers\IfmsaConnectionHelper
+    - App\Helpers\Date\DateHelper
+
+    # payment
+    - App\Payment\ExternalTransactionsHelper
+    - App\Payment\EventsTransactionsHelper
+    - App\Payment\PaymentParams(%payment%)
+    - App\Payment\EcommMerchant\EcommTransactionsHelper
+    - App\Payment\EcommMerchant\EcommParams(%payment.ecomm%)
+    - App\Payment\External\ExternalServices(%payment.services%)
+
+
+fixtures:
+  locale: "en_US"
+  seed: 1
+
+
+doctrine:
+    host: localhost
+    user: root
+    password: pass
+    dbname: ifmsa_cuk
+    metadata:
+        App\Model\Entity: %appDir%/model/entity

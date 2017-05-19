@@ -1,0 +1,185 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Add Feedback</h1>
+
+    {form addFeedbackForm}
+        <div class="row" n:if="$form->errors">
+            <div class="col s12">
+                <ul class="collection form-error">
+                    <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["name"]}
+            <div class="col s9 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        {var $formItem = $form["grade"]}
+            <div class="col s3 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["hostCountry"]}
+            <div class="col l6 s12 {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        {var $formItem = $form["hostCity"]}
+            <div class="col l6 s12 {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["hostFaculty"]}
+            <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        {var $formItem = $form["hostDepartment"]}
+            <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["startDate"]}
+            <div class="col s6 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+                <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+            </div>
+        {var $formItem = $form["endDate"]}
+            <div class="col s6 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+                <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["exchangeType"]}
+            <div class="col s4 {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        {var $formItem = $form["preparationVisa"]}
+            <div class="col s4 {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        {var $formItem = $form["preparationVaccination"]}
+            <div class="col s4 {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["preparationComplications"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["preparationMoney"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["accommodation"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["cpHelp"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["exchangeCommunication"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["socialTravelling"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["socialProgram"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["furtherTips"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["overallReview"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["checkAnswer"]}
+            <div class="col s12">
+                <b>Human Detector:</b>
+            </div>
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {input $formItem}
+                {label $formItem /}
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["send"]}
+            <div class="col s12 input-field {if $formItem->required}required{/if}">
+                {label $formItem /}
+                {input $formItem}
+            </div>
+        </div>
+
+        <script>
+        $(document).ready(function() {
+            $('select').material_select();
+        });
+        </script>
+    {/form}
+
+</div>
+{/block}

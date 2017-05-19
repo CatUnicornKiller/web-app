@@ -1,0 +1,31 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Add News</h1>
+
+    {form addNewsForm}
+    <div class="row" n:if="$form->errors">
+        <div class="col s12">
+            <ul class="collection form-error">
+                <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+    {var $formItem = $form["message"]}
+        <div class="col s12 input-field {if $formItem->required}required{/if}">
+            {label $formItem /}
+            {input $formItem}
+        </div>
+    {var $formItem = $form["send"]}
+        <div class="col s12 input-field {if $formItem->required}required{/if}">
+            {label $formItem /}
+            {input $formItem}
+        </div>
+    </div>
+    {/form}
+
+     <span style="color:red;font-size:12px;">News are active and visible for 30 days!</span>
+
+</div>
+{/block}

@@ -1,0 +1,27 @@
+{block content}
+	<div class="section">
+    <h1 n:block="title">List of All Faculties in System</h1>
+
+    <div class="row">
+        <div class="col s12">
+            <table class="striped">
+                <thead><tr><th>Name</th><th>Address</th><th>Shortcut</th></tr></thead>
+                <tbody>
+                    <tr n:foreach="$faculties as $faculty">
+                        <td><a n:href="Faculties:editFaculty, 'id' => $faculty->id">{$faculty->facultyName}</a></td>
+                        <td>{$faculty->facultyAddress}</td>
+                        <td>{$faculty->facultyShortcut}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <a class="btn white-text waves-effect waves-light" n:href="Faculties:addFaculty">Add Faculty</a>
+        </div>
+    </div>
+
+	</div>
+{/block}

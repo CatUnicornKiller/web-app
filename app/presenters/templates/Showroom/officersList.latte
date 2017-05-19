@@ -1,0 +1,27 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Showroom - IFMSA CZ Officers</h1>
+
+    <p>
+        This list shows officers which are registered in CUK system and can be added to <a n:href="Showroom:">Showroom</a>.
+        Officers which are not registered can be added with <a n:href="Showroom:addOfficer">this link</a>.
+        Officers which are currently added into Showroom can be edit <a n:href="Showroom:list">here</a>.
+    </p>
+
+    {foreach $officers as $name => $officerGroup}
+        {continueIf empty($officerGroup)}
+
+        <h3>{$name}</h3>
+
+        <ul class="collection">
+        {foreach $officerGroup as $officer}
+            <li class="collection-item">
+                <a n:href="Officers:profile, id => $officer->id">{$officer->firstname} {$officer->surname}</a>
+                ({$officer->faculty->facultyName})
+                <a class="right" n:href="Showroom:addOfficer, id => $officer->id">Add to Showroom</a>
+            </li>
+        {/foreach}
+        </ul>
+    {/foreach}
+</div>
+{/block}

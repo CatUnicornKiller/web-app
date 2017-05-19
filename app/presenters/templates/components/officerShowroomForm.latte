@@ -1,0 +1,92 @@
+{form officerShowroomForm}
+<div class="row" n:if="$form->errors">
+    <div class="col s12">
+        <ul class="collection form-error">
+            <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+{var $formItem = $form["firstname"]}
+    <div class="col s6 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+{var $formItem = $form["surname"]}
+    <div class="col s6 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+
+<div class="row">
+{var $formItem = $form["faculty"]}
+    <div class="col s12 {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+
+<div class="row">
+{var $formItem = $form["role"]}
+    <div class="col s6 {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+{var $formItem = $form["startYear"]}
+    <div class="col s3 {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+{var $formItem = $form["endYear"]}
+    <div class="col s3 {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+
+<div class="row">
+{var $formItem = $form["useProfileImg"]}
+    <div class="col s9 {if $formItem->required}required{/if}">
+        {input $formItem}
+        {label $formItem /}
+    </div>
+    <div class="col s3">
+        {var $imgPath = empty($officerImg) ? ($basePath . '/images/profile.png') : ($basePath . $officerImg) }
+        <img class="right" width="100px;" src="{$imgPath}">
+    </div>
+{var $formItem = $form["uploadImg"]}
+    <div class="col s12 file-field input-field {if $formItem->required}required{/if}">
+        <div class="btn file-btn">
+            <span>{$formItem->label[0]}</span>
+            {input $formItem}
+        </div>
+        <div class="file-path-wrapper">
+            <input class="file-path" type="text">
+        </div>
+    </div>
+</div>
+
+<div class="row">
+{var $formItem = $form["information"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+
+<div class="row">
+{var $formItem = $form["send"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('select').material_select();
+});
+</script>
+{/form}

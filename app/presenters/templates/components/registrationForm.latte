@@ -1,0 +1,104 @@
+{form registrationForm}
+<div class="row" n:if="$form->errors">
+<div class="col s12">
+<ul class="collection form-error">
+    <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+</ul>
+</div>
+</div>
+
+<div class="row">
+{var $formItem = $form["username"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["password"]}
+    <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+{var $formItem = $form["password_retype"]}
+    <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+<ul class="collapsible">
+    <li>
+        <div class="collapsible-header"><i class="material-icons">supervisor_account</i>IFMSA.ORG users only</div>
+        <div class="my-collapsible-body-left-right collapsible-body">
+            <div class="row">
+                <div class="col s12">
+                    <span style="color:red;">Please fill out this field, if you have acces to <a href="http://www.ifmsa.org" target="_blank">www.ifmsa.org</a> database!</span>
+                </div>
+            {var $formItem = $form["ifmsaUsername"]}
+                <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            {var $formItem = $form["ifmsaPasswd"]}
+                <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+                    {label $formItem /}
+                    {input $formItem}
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>
+<div class="row">
+{var $formItem = $form["firstname"]}
+    <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+{var $formItem = $form["surname"]}
+    <div class="col l6 s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["email"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {label $formItem /}
+        {input $formItem}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["faculty"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {input $formItem}
+        {label $formItem /}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["country"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {input $formItem}
+        {label $formItem /}
+    </div>
+</div>
+<div class="row">
+{var $formItem = $form["checkAnswer"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {input $formItem}
+        {label $formItem /}
+    </div>
+</div>
+<div class="row">
+    <div class="col s12"><b>By clicking "Register Now" you agree with the <a n:href="Homepage:terms">Terms of use</a>.</b></div>
+{var $formItem = $form["send"]}
+    <div class="col s12 input-field {if $formItem->required}required{/if}">
+        {input $formItem}
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+	$('select').material_select();
+});
+</script>
+{/form}

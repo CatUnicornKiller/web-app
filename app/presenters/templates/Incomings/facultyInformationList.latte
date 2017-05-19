@@ -1,0 +1,21 @@
+{block content}
+	<div class="section">
+        <h1 n:block="title">Faculty Information List</h1>
+
+        <div class="row">
+            <div class="col s12">
+                <ul class="collection">
+                    {foreach $pages as $page}
+                        {if $page->faculty != null}
+                        <li class="collection-item">
+                            <a n:href="Incomings:facultyInformation, 'facultyId' => $page->faculty->id">
+                                {$page->faculty->facultyName}
+                            </a>
+                        </li>
+                        {/if}
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+	</div>
+{/block}

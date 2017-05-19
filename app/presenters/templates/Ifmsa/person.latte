@@ -1,0 +1,119 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">IFMSA Person Info</h1>
+
+    <div class="row">
+    <div class="col s12">
+    <table class="bordered">
+        <tr>
+            <th width="40%">AF Number</th>
+            <td width="100%">{$personInfo['afNumber']}</td>
+            <td rowspan="8" style="vertical-align: top; text-align: right;">
+                {if $personInfo['jpgPath'] == ''}
+                    {var $afImage = $basePath . '/images/profile.png'}
+                {else}
+                    {var $afImage = $personInfo['jpgPath']}
+                {/if}
+                <a border="0" href="{$afImage}"><img height="200" src="{$afImage}"></a>
+            </td>
+        </tr>
+        <tr><th>Confirmation Number</th><td>{$personInfo["confirmationNumber"]}</td></tr>
+        <tr><th>Name</th><td>{$personInfo["name"]}</td></tr>
+        <tr><th>Surname</th><td>{$personInfo["surname"]}</td></tr>
+        <tr>
+            <th>Assigned to</th>
+            <td>
+                {if !$assignedCP}
+                    <a n:href="ContactPersons:afFindContactPerson, 'afNumber' => $personInfo['afNumber']"
+                       style="color:red;text-decoration:none;font-style:italic;">Assign</a>
+                {else}
+                    <a n:href="Officers:profile, 'id' => $assignedCP->user->id">{$assignedCP->user->firstname} {$assignedCP->user->surname}</a>
+                    <a n:href="ContactPersons:afDelete, 'afNumber' => $personInfo['afNumber'], 'userId' => $assignedCP->user->id" class="delete_cross"><i class="tiny material-icons">delete</i></a>
+                {/if}
+            </td>
+        </tr>
+        <tr>
+            <th>Date of birth</th>
+            <td>
+            {if is_a($personInfo['dateOfBirth_'], 'DateTime')}
+                {$personInfo['dateOfBirth_']->format('d/m/Y')} ({$personInfo['age_']->y} years, {$personInfo['age_']->m} months, {$personInfo['age_']->d} days)
+            {/if}
+            </td>
+        </tr>
+        <tr><th>Exchange is unilateral</th><td>{$personInfo["unilateral"]}</td></tr>
+        <tr><th>Nationality</th><td>{$personInfo["nationality"]}</td></tr>
+        <tr><th>Languages</th><td>{foreach $personInfo['languages_'] as $item}{$item}<br>{/foreach}</td></tr>
+        <tr><th>Medical School</th><td>{$personInfo["medSchool"]}</td></tr>
+        <tr><th># Medical student since</th><td>{$personInfo["medStudentSince"]}</td></tr>
+        <tr><th># Clinical student since</th><td>{$personInfo["clinStudentSince"]}</td></tr>
+        <tr><th>Cellular</th><td>{$personInfo["cellular"]}</td></tr>
+        <tr><th>Email</th><td>{$personInfo["email"]}</td></tr>
+        <tr><th>Alternative Email</th><td>{$personInfo["altEmail"]}</td></tr>
+
+        <tr><th>1st Desired City</th><td>{$personInfo["desiredCity1"]}</td></tr>
+        <tr><th>2nd Desired City</th><td>{$personInfo["desiredCity2"]}</td></tr>
+        <tr><th>3rd Desired City</th><td>{$personInfo["desiredCity3"]}</td></tr>
+
+        {var $dep = "Department"}
+        {if !$myAuthorizator->isScope()}{var $dep = "Project"}{/if}
+        <tr><th>1st Desired {$dep}</th>
+            <td colspan="2">{foreach $personInfo["department1_"] as $item}{$item}<br>{/foreach}</td>
+        </tr>
+        <tr><th>2nd Desired {$dep}</th>
+            <td colspan="2">{foreach $personInfo["department2_"] as $item}{$item}<br>{/foreach}</td>
+        </tr>
+        <tr><th>3rd Desired {$dep}</th>
+            <td colspan="2">{foreach $personInfo["department3_"] as $item}{$item}<br>{/foreach}</td>
+        </tr>
+        <tr n:if="strlen($personInfo['department4']) > 0"><th>4rt Desired {$dep}</th>
+            <td colspan="2">{foreach $personInfo["department4_"] as $item}{$item}<br>{/foreach}</td>
+        </tr>
+        <tr><th>Exchange Start Date</th><td colspan="2">{$personInfo["exchStartDate"]}</td></tr>
+        <tr><th>Exchange End Date</th><td colspan="2">{$personInfo["exchEndDate"]}</td></tr>
+        <tr><th>Student remarks</th><td colspan="2">{$personInfo["studentRemarks"]}</td></tr>
+        <tr><th class="grey lighten-4" colspan="3">Card of documents:</th></tr>
+        <tr n:foreach="$cardOfDocuments as $key => $val">
+            <th>{$key}</th><td colspan="2"><a href="{$val}">{basename($val)}</a></td>
+        </tr>
+        <tr><th class="grey lighten-4" colspan="3">Card of confirmation:</th></tr>
+        <tr><th>Arrival date and time</th><td colspan="2">{$personInfo["arrivalDate"]}</td></tr>
+        <tr><th>Arrival location</th><td colspan="2">{$personInfo["arrivalLocation"]}</td></tr>
+        <tr><th>Flight/Bus/Train number</th><td colspan="2">{$personInfo["flightBusTrainNumber"]}</td></tr>
+        <tr><th>Arrival location details</th><td colspan="2">{$personInfo["arrivalLocationDetails"]}</td></tr>
+        <tr><th>Departure date</th><td colspan="2">{$personInfo["departureDate"]}</td></tr>
+        <tr><th>Other details</th><td colspan="2">{$personInfo["otherDetails"]}</td></tr>
+        <tr><th>Emergency Name</th><td colspan="2">{$personInfo["emergName"]}</td></tr>
+        <tr><th>Emergency Telephone number</th><td colspan="2">{$personInfo["emergCell"]}</td></tr>
+        <tr><th>Emergency E-mail</th><td colspan="2">{$personInfo["emergMail"]}</td></tr>
+    </table>
+    </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <h3>Generate PDF</h3>
+        </div>
+
+        {form pdfSelectionForm}
+        <div class="row" n:if="$form->errors">
+            <div class="col s12">
+                <ul class="collection form-error">
+                    <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+        {var $formItem = $form["pdfType"]}
+            <div class="col s6 input-field {if $formItem->required}required{/if}">
+                {input $formItem}
+            </div>
+        {var $formItem = $form["send"]}
+            <div class="col s6 input-field {if $formItem->required}required{/if}">
+                {input $formItem}
+            </div>
+        </div>
+        {/form}
+    </div>
+</div>
+{/block}

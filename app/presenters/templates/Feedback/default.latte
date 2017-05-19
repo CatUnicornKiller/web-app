@@ -1,0 +1,29 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">Exchange Feedback</h1>
+
+    <div class="row">
+        <div class="col l3 m6 s12" n:foreach="$countries as $country">
+            <a n:href="Feedback:country, id => $country->id">
+                <div class="card flag_list_item">
+                    <div class="card-content">
+                        <p>
+                            <img class="flag_list_item_img" src="{$basePath}/images/flags/{$country->countryShortcut|lower}.png">
+                        </p>
+                        <p class="black-text" n:if="$country->ifmsaClinicalContracts > 0">
+                            {$country->ifmsaClinicalContracts} clinical contracts in {$country->ifmsaContractsYear}/{$country->ifmsaContractsYear + 1}
+                        </p>
+                        <p class="black-text" n:if="$country->ifmsaResearchContracts > 0">
+                            {$country->ifmsaResearchContracts} research contracts in {$country->ifmsaContractsYear}/{$country->ifmsaContractsYear + 1}
+                        </p>
+                    </div>
+                    <div class="card-action">
+                        <span class="flag_list_item_title">{$country->countryName}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+</div>
+{/block}

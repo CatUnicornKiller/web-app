@@ -1,0 +1,106 @@
+{block content}
+<div class="section">
+    <h1 n:block="title">List of Events</h1>
+
+    <div class="row">
+        <div class="col s12">
+                <ul class="collection z-depth-1">
+                    <li class="collection-item">
+                        {form filterEventsForm}
+                        <div class="row" n:if="$form->errors">
+                            <div class="col s12">
+                                <ul class="collection form-error">
+                                    <li class="collection-item red darken-3 white-text" n:foreach="$form->errors as $error">{$error}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                        {var $formItem = $form["faculty"]}
+                            <div class="col s12 {if $formItem->required}required{/if}">
+                                {label $formItem /}
+                                {input $formItem}
+                            </div>
+                        </div>
+                        <div class="row">
+                        {var $formItem = $form["socialProgram"]}
+                            <div class="col s6 {if $formItem->required}required{/if}">
+                                {label $formItem /}
+                                {input $formItem}
+                            </div>
+                        {var $formItem = $form["academicQuality"]}
+                            <div class="col s6 {if $formItem->required}required{/if}">
+                                {label $formItem /}
+                                {input $formItem}
+                            </div>
+                        </div>
+                        <div class="row">
+                        {var $formItem = $form["startDate"]}
+                            <div class="col s6 input-field {if $formItem->required}required{/if}">
+                                {label $formItem /}
+                                {input $formItem}
+                                <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+                            </div>
+                        {var $formItem = $form["endDate"]}
+                            <div class="col s6 input-field {if $formItem->required}required{/if}">
+                                {label $formItem /}
+                                {input $formItem}
+                                <script>$("#{$formItem->control->attrs['id']|noescape}").pickadate({ format: "d. m. yyyy" });</script>
+                            </div>
+                        </div>
+                        <div class="row right">
+                        {var $formItem = $form["send"]}
+                            <div class="col s12 {if $formItem->required}required{/if}">
+                                {label $formItem /}
+                                {input $formItem}
+                            </div>
+                        </div>
+
+                        <script>$('select').material_select();</script>
+                        {/form}
+                    </li>
+                </ul>
+        </div>
+    </div>
+
+    {snippet eventsList}
+    <div class="row">
+        <div n:foreach="$eventsList as $event" class="col l6 s12">
+            <div class="card medium">
+                <div class="card-image waves-effect waves-block waves-light">
+                    {var $logo = $basePath . $presenter->configParams->eventImgDir . $event->id . '/' . $event->eventLogo . '?version=1';}
+                    {if $event->eventLogo == ''}{var $logo = $basePath . '/images/event_logo.jpg'}{/if}
+                    <img class="activator" src="{$logo}">
+                </div>
+                <div class="card-content">
+                    <span class="card-title activator grey-text text-darken-4">
+                        {$event->eventName}
+                        <i class="material-icons right">more_vert</i>
+                    </span>
+                    <p>{$event->date|date:'j.n.Y H:i'} - {$event->endDate|date:'j.n.Y H:i'}</p>
+                    <p>{$event->eventDescription|striptags|stripUnicode|truncate:80}</p>
+                    <p><a n:href="Events:detail, 'id' => $event->id">Event Details</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">
+                        {$event->eventName}
+                        <i class="material-icons right">close</i>
+                    </span>
+                    <p>{$event->date|date:'j.n.Y H:i'} - {$event->endDate|date:'j.n.Y H:i'}</p>
+                    <p>{$event->eventDescription|striptags|stripUnicode|truncate:400}</p>
+                    <p><a n:href="Events:detail, 'id' => $event->id">Event Details</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p n:if="empty($eventsList)">There are no events for this filtering options.</p>
+
+    <div n:if="!empty($eventsList) && $canGenerateTable" class="row">
+        <div class="col s12">
+            <a class="btn waves-effect waves-light" n:href="Events:generateEventsTable, 'events' => $eventIdsList">Generate Events Table</a>
+        </div>
+    </div>
+    {/snippet}
+
+</div>
+{/block}

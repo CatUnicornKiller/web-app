@@ -1,0 +1,20 @@
+{block order_marks}
+<span class="order_mark order_mark_left">
+    <a class="ajax" n:href="this, 'orderby' => $orderby, 'order' => 'asc'">
+        {if $presenter->getParam('orderby') == $orderby && strtolower($presenter->getParam('order')) == 'asc'}
+        &#9660;
+        {else}
+        &#9661;
+        {/if}
+    </a>
+</span>
+<span class="order_mark order_mark_right">
+    <a class="ajax" n:href="this, 'orderby' => $orderby, 'order' => 'desc'">
+        {if $presenter->getParam('orderby') == $orderby && strtolower($presenter->getParam('order')) == 'desc'}
+        &#9650;
+        {else}
+        &#9651;
+        {/if}
+    </a>
+</span>
+{/block}
