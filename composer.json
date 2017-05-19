@@ -1,0 +1,41 @@
+{
+	"name": "CatUnicornKiller",
+	"description": "CatUnicornKiller System (CUK) was originally written for IFMSA CZ and is supposed to manage several IFMSA activities",
+	"homepage": "https://github.com/CatUnicornKiller",
+	"type": "project",
+	"license": ["MIT"],
+	"minimum-stability": "stable",
+	"require": {
+		"php": ">= 7.0",
+		"nette/application": "~2.3.0",
+		"nette/bootstrap": "~2.3.0",
+		"nette/caching": "~2.3.0",
+		"nette/database": "~2.3.0",
+		"nette/di": "~2.3.0",
+		"nette/finder": "~2.3.0",
+		"nette/forms": "~2.3.0",
+		"nette/http": "~2.3.0",
+		"nette/mail": "~2.3.0",
+		"nette/robot-loader": "~2.3.0",
+		"nette/safe-stream": "~2.3.0",
+		"nette/security": "~2.3.0",
+		"nette/utils": "~2.3.0",
+		"nette/neon": "~2.3.0",
+		"latte/latte": "~2.3.0",
+		"tracy/tracy": "~2.3.0",
+		"guzzlehttp/guzzle": "~6.0",
+		"mk-j/php_xlsxwriter": "~0.22",
+		"tecnickcom/tcpdf": "^6.2",
+		"kdyby/forms-replicator": "@dev",
+		"ezyang/htmlpurifier": "^4.7",
+		"PHPOffice/PHPExcel": "~1.8",
+		"kdyby/doctrine": "^3.1",
+		"composer/ca-bundle": "^1.0",
+		"majkl578/nette-identity-doctrine": "^2.2",
+		"zenify/doctrine-fixtures": "~4.0.0",
+		"kdyby/console": "^2.6"
+	},
+	"require-dev": {
+		"nette/tester": "~1.3"
+	}
+}

@@ -1,0 +1,14 @@
+App\Model\Entity\User:
+    adminUser:
+        __construct:
+            createOfficer:
+                - "Admin"
+                - "<firstName()>"
+                - "<lastName()>"
+                - "admin@admin.admin"
+                - "123456"
+                - "admin"
+                - @defaultFaculty
+                - @country-60
+                - ""
+                - ""

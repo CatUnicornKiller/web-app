@@ -1,0 +1,37 @@
+App\Model\Entity\Page:
+    cpIntroduction:
+        __construct:
+            - "cp_introduction"
+            - "default"
+            - "CP Introduction"
+            - "Hello World!"
+    incomingsGeneralDefault:
+        __construct:
+            - "incomings_gen_info"
+            - "default"
+            - "General Information"
+            - "Hello World!"
+    incomingsGeneralBefore:
+        __construct:
+            - "incomings_gen_info"
+            - "before_clerkship"
+            - "Before Clerkship"
+            - "Hello World!"
+    incomingsGeneralDuring:
+        __construct:
+            - "incomings_gen_info"
+            - "during_clerkship"
+            - "During Clerkship"
+            - "Hello World!"
+    incomingsGeneralAfter:
+        __construct:
+            - "incomings_gen_info"
+            - "after_clerkship"
+            - "After Clerkship"
+            - "Hello World!"
+    incomingsFaculty:
+        __construct:
+            - "incomings_fac_info"
+            - "default"
+            - "Faculty Information"
+            - "Hello World!"

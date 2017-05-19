@@ -1,0 +1,997 @@
+App\Model\Entity\Country:
+    country-1:
+        id: 1
+        countryName: "Afghanistan"
+        countryShortcut: "AF"
+    country-2:
+        id: 2
+        countryName: "Åland Islands"
+        countryShortcut: "AX"
+    country-3:
+        id: 3
+        countryName: "Albania"
+        countryShortcut: "AL"
+    country-4:
+        id: 4
+        countryName: "Algeria"
+        countryShortcut: "DZ"
+    country-5:
+        id: 5
+        countryName: "American Samoa"
+        countryShortcut: "AS"
+    country-6:
+        id: 6
+        countryName: "Andorra"
+        countryShortcut: "AD"
+    country-7:
+        id: 7
+        countryName: "Angola"
+        countryShortcut: "AO"
+    country-8:
+        id: 8
+        countryName: "Anguilla"
+        countryShortcut: "AI"
+    country-9:
+        id: 9
+        countryName: "Antarctica"
+        countryShortcut: "AQ"
+    country-10:
+        id: 10
+        countryName: "Antigua and Barbuda"
+        countryShortcut: "AG"
+    country-11:
+        id: 11
+        countryName: "Argentina"
+        countryShortcut: "AR"
+    country-12:
+        id: 12
+        countryName: "Armenia"
+        countryShortcut: "AM"
+    country-13:
+        id: 13
+        countryName: "Aruba"
+        countryShortcut: "AW"
+    country-14:
+        id: 14
+        countryName: "Australia"
+        countryShortcut: "AU"
+    country-15:
+        id: 15
+        countryName: "Austria"
+        countryShortcut: "AT"
+    country-16:
+        id: 16
+        countryName: "Azerbaijan"
+        countryShortcut: "AZ"
+    country-17:
+        id: 17
+        countryName: "Bahamas"
+        countryShortcut: "BS"
+    country-18:
+        id: 18
+        countryName: "Bahrain"
+        countryShortcut: "BH"
+    country-19:
+        id: 19
+        countryName: "Bangladesh"
+        countryShortcut: "BD"
+    country-20:
+        id: 20
+        countryName: "Barbados"
+        countryShortcut: "BB"
+    country-21:
+        id: 21
+        countryName: "Belarus"
+        countryShortcut: "BY"
+    country-22:
+        id: 22
+        countryName: "Belgium"
+        countryShortcut: "BE"
+    country-23:
+        id: 23
+        countryName: "Belize"
+        countryShortcut: "BZ"
+    country-24:
+        id: 24
+        countryName: "Benin"
+        countryShortcut: "BJ"
+    country-25:
+        id: 25
+        countryName: "Bermuda"
+        countryShortcut: "BM"
+    country-26:
+        id: 26
+        countryName: "Bhutan"
+        countryShortcut: "BT"
+    country-27:
+        id: 27
+        countryName: "Bolivia, Plurinational State of"
+        countryShortcut: "BO"
+    country-28:
+        id: 28
+        countryName: "Bonaire, Sint Eustatius and Saba"
+        countryShortcut: "BQ"
+    country-29:
+        id: 29
+        countryName: "Bosnia and Herzegovina"
+        countryShortcut: "BA"
+    country-30:
+        id: 30
+        countryName: "Botswana"
+        countryShortcut: "BW"
+    country-31:
+        id: 31
+        countryName: "Bouvet Island"
+        countryShortcut: "BV"
+    country-32:
+        id: 32
+        countryName: "Brazil"
+        countryShortcut: "BR"
+    country-33:
+        id: 33
+        countryName: "British Indian Ocean Territory"
+        countryShortcut: "IO"
+    country-34:
+        id: 34
+        countryName: "Brunei Darussalam"
+        countryShortcut: "BN"
+    country-35:
+        id: 35
+        countryName: "Bulgaria"
+        countryShortcut: "BG"
+    country-36:
+        id: 36
+        countryName: "Burkina Faso"
+        countryShortcut: "BF"
+    country-37:
+        id: 37
+        countryName: "Burundi"
+        countryShortcut: "BI"
+    country-38:
+        id: 38
+        countryName: "Cambodia"
+        countryShortcut: "KH"
+    country-39:
+        id: 39
+        countryName: "Cameroon"
+        countryShortcut: "CM"
+    country-40:
+        id: 40
+        countryName: "Canada"
+        countryShortcut: "CA"
+    country-41:
+        id: 41
+        countryName: "Cape Verde"
+        countryShortcut: "CV"
+    country-42:
+        id: 42
+        countryName: "Cayman Islands"
+        countryShortcut: "KY"
+    country-43:
+        id: 43
+        countryName: "Central African Republic"
+        countryShortcut: "CF"
+    country-44:
+        id: 44
+        countryName: "Chad"
+        countryShortcut: "TD"
+    country-45:
+        id: 45
+        countryName: "Chile"
+        countryShortcut: "CL"
+    country-46:
+        id: 46
+        countryName: "China"
+        countryShortcut: "CN"
+    country-47:
+        id: 47
+        countryName: "Christmas Island"
+        countryShortcut: "CX"
+    country-48:
+        id: 48
+        countryName: "Cocos (Keeling) Islands"
+        countryShortcut: "CC"
+    country-49:
+        id: 49
+        countryName: "Colombia"
+        countryShortcut: "CO"
+    country-50:
+        id: 50
+        countryName: "Comoros"
+        countryShortcut: "KM"
+    country-51:
+        id: 51
+        countryName: "Congo"
+        countryShortcut: "CG"
+    country-52:
+        id: 52
+        countryName: "Congo, the Democratic Republic of the"
+        countryShortcut: "CD"
+    country-53:
+        id: 53
+        countryName: "Cook Islands"
+        countryShortcut: "CK"
+    country-54:
+        id: 54
+        countryName: "Costa Rica"
+        countryShortcut: "CR"
+    country-55:
+        id: 55
+        countryName: "Côte d'Ivoire"
+        countryShortcut: "CI"
+    country-56:
+        id: 56
+        countryName: "Croatia"
+        countryShortcut: "HR"
+    country-57:
+        id: 57
+        countryName: "Cuba"
+        countryShortcut: "CU"
+    country-58:
+        id: 58
+        countryName: "Curaçao"
+        countryShortcut: "CW"
+    country-59:
+        id: 59
+        countryName: "Cyprus"
+        countryShortcut: "CY"
+    country-60:
+        id: 60
+        countryName: "Czech Republic"
+        countryShortcut: "CZ"
+    country-61:
+        id: 61
+        countryName: "Denmark"
+        countryShortcut: "DK"
+    country-62:
+        id: 62
+        countryName: "Djibouti"
+        countryShortcut: "DJ"
+    country-63:
+        id: 63
+        countryName: "Dominica"
+        countryShortcut: "DM"
+    country-64:
+        id: 64
+        countryName: "Dominican Republic"
+        countryShortcut: "DO"
+    country-65:
+        id: 65
+        countryName: "Ecuador"
+        countryShortcut: "EC"
+    country-66:
+        id: 66
+        countryName: "Egypt"
+        countryShortcut: "EG"
+    country-67:
+        id: 67
+        countryName: "El Salvador"
+        countryShortcut: "SV"
+    country-68:
+        id: 68
+        countryName: "Equatorial Guinea"
+        countryShortcut: "GQ"
+    country-69:
+        id: 69
+        countryName: "Eritrea"
+        countryShortcut: "ER"
+    country-70:
+        id: 70
+        countryName: "Estonia"
+        countryShortcut: "EE"
+    country-71:
+        id: 71
+        countryName: "Ethiopia"
+        countryShortcut: "ET"
+    country-72:
+        id: 72
+        countryName: "Falkland Islands (Malvinas)"
+        countryShortcut: "FK"
+    country-73:
+        id: 73
+        countryName: "Faroe Islands"
+        countryShortcut: "FO"
+    country-74:
+        id: 74
+        countryName: "Fiji"
+        countryShortcut: "FJ"
+    country-75:
+        id: 75
+        countryName: "Finland"
+        countryShortcut: "FI"
+    country-76:
+        id: 76
+        countryName: "France"
+        countryShortcut: "FR"
+    country-77:
+        id: 77
+        countryName: "French Guiana"
+        countryShortcut: "GF"
+    country-78:
+        id: 78
+        countryName: "French Polynesia"
+        countryShortcut: "PF"
+    country-79:
+        id: 79
+        countryName: "French Southern Territories"
+        countryShortcut: "TF"
+    country-80:
+        id: 80
+        countryName: "Gabon"
+        countryShortcut: "GA"
+    country-81:
+        id: 81
+        countryName: "Gambia"
+        countryShortcut: "GM"
+    country-82:
+        id: 82
+        countryName: "Georgia"
+        countryShortcut: "GE"
+    country-83:
+        id: 83
+        countryName: "Germany"
+        countryShortcut: "DE"
+    country-84:
+        id: 84
+        countryName: "Ghana"
+        countryShortcut: "GH"
+    country-85:
+        id: 85
+        countryName: "Gibraltar"
+        countryShortcut: "GI"
+    country-86:
+        id: 86
+        countryName: "Greece"
+        countryShortcut: "GR"
+    country-87:
+        id: 87
+        countryName: "Greenland"
+        countryShortcut: "GL"
+    country-88:
+        id: 88
+        countryName: "Grenada"
+        countryShortcut: "GD"
+    country-89:
+        id: 89
+        countryName: "Guadeloupe"
+        countryShortcut: "GP"
+    country-90:
+        id: 90
+        countryName: "Guam"
+        countryShortcut: "GU"
+    country-91:
+        id: 91
+        countryName: "Guatemala"
+        countryShortcut: "GT"
+    country-92:
+        id: 92
+        countryName: "Guernsey"
+        countryShortcut: "GG"
+    country-93:
+        id: 93
+        countryName: "Guinea"
+        countryShortcut: "GN"
+    country-94:
+        id: 94
+        countryName: "Guinea-Bissau"
+        countryShortcut: "GW"
+    country-95:
+        id: 95
+        countryName: "Guyana"
+        countryShortcut: "GY"
+    country-96:
+        id: 96
+        countryName: "Haiti"
+        countryShortcut: "HT"
+    country-97:
+        id: 97
+        countryName: "Heard Island and McDonald Islands"
+        countryShortcut: "HM"
+    country-98:
+        id: 98
+        countryName: "Holy See (Vatican City State)"
+        countryShortcut: "VA"
+    country-99:
+        id: 99
+        countryName: "Honduras"
+        countryShortcut: "HN"
+    country-100:
+        id: 100
+        countryName: "Hong Kong"
+        countryShortcut: "HK"
+    country-101:
+        id: 101
+        countryName: "Hungary"
+        countryShortcut: "HU"
+    country-102:
+        id: 102
+        countryName: "Iceland"
+        countryShortcut: "IS"
+    country-103:
+        id: 103
+        countryName: "India"
+        countryShortcut: "IN"
+    country-104:
+        id: 104
+        countryName: "Indonesia"
+        countryShortcut: "ID"
+    country-105:
+        id: 105
+        countryName: "Iran, Islamic Republic of"
+        countryShortcut: "IR"
+    country-106:
+        id: 106
+        countryName: "Iraq"
+        countryShortcut: "IQ"
+    country-107:
+        id: 107
+        countryName: "Ireland"
+        countryShortcut: "IE"
+    country-108:
+        id: 108
+        countryName: "Isle of Man"
+        countryShortcut: "IM"
+    country-109:
+        id: 109
+        countryName: "Israel"
+        countryShortcut: "IL"
+    country-110:
+        id: 110
+        countryName: "Italy"
+        countryShortcut: "IT"
+    country-111:
+        id: 111
+        countryName: "Jamaica"
+        countryShortcut: "JM"
+    country-112:
+        id: 112
+        countryName: "Japan"
+        countryShortcut: "JP"
+    country-113:
+        id: 113
+        countryName: "Jersey"
+        countryShortcut: "JE"
+    country-114:
+        id: 114
+        countryName: "Jordan"
+        countryShortcut: "JO"
+    country-115:
+        id: 115
+        countryName: "Kazakhstan"
+        countryShortcut: "KZ"
+    country-116:
+        id: 116
+        countryName: "Kenya"
+        countryShortcut: "KE"
+    country-117:
+        id: 117
+        countryName: "Kiribati"
+        countryShortcut: "KI"
+    country-118:
+        id: 118
+        countryName: "Korea, Democratic People's Republic of"
+        countryShortcut: "KP"
+    country-119:
+        id: 119
+        countryName: "Korea, Republic of"
+        countryShortcut: "KR"
+    country-120:
+        id: 120
+        countryName: "Kuwait"
+        countryShortcut: "KW"
+    country-121:
+        id: 121
+        countryName: "Kyrgyzstan"
+        countryShortcut: "KG"
+    country-122:
+        id: 122
+        countryName: "Lao People's Democratic Republic"
+        countryShortcut: "LA"
+    country-123:
+        id: 123
+        countryName: "Latvia"
+        countryShortcut: "LV"
+    country-124:
+        id: 124
+        countryName: "Lebanon"
+        countryShortcut: "LB"
+    country-125:
+        id: 125
+        countryName: "Lesotho"
+        countryShortcut: "LS"
+    country-126:
+        id: 126
+        countryName: "Liberia"
+        countryShortcut: "LR"
+    country-127:
+        id: 127
+        countryName: "Libya"
+        countryShortcut: "LY"
+    country-128:
+        id: 128
+        countryName: "Liechtenstein"
+        countryShortcut: "LI"
+    country-129:
+        id: 129
+        countryName: "Lithuania"
+        countryShortcut: "LT"
+    country-130:
+        id: 130
+        countryName: "Luxembourg"
+        countryShortcut: "LU"
+    country-131:
+        id: 131
+        countryName: "Macao"
+        countryShortcut: "MO"
+    country-132:
+        id: 132
+        countryName: "Macedonia, the former Yugoslav Republic of"
+        countryShortcut: "MK"
+    country-133:
+        id: 133
+        countryName: "Madagascar"
+        countryShortcut: "MG"
+    country-134:
+        id: 134
+        countryName: "Malawi"
+        countryShortcut: "MW"
+    country-135:
+        id: 135
+        countryName: "Malaysia"
+        countryShortcut: "MY"
+    country-136:
+        id: 136
+        countryName: "Maldives"
+        countryShortcut: "MV"
+    country-137:
+        id: 137
+        countryName: "Mali"
+        countryShortcut: "ML"
+    country-138:
+        id: 138
+        countryName: "Malta"
+        countryShortcut: "MT"
+    country-139:
+        id: 139
+        countryName: "Marshall Islands"
+        countryShortcut: "MH"
+    country-140:
+        id: 140
+        countryName: "Martinique"
+        countryShortcut: "MQ"
+    country-141:
+        id: 141
+        countryName: "Mauritania"
+        countryShortcut: "MR"
+    country-142:
+        id: 142
+        countryName: "Mauritius"
+        countryShortcut: "MU"
+    country-143:
+        id: 143
+        countryName: "Mayotte"
+        countryShortcut: "YT"
+    country-144:
+        id: 144
+        countryName: "Mexico"
+        countryShortcut: "MX"
+    country-145:
+        id: 145
+        countryName: "Micronesia, Federated States of"
+        countryShortcut: "FM"
+    country-146:
+        id: 146
+        countryName: "Moldova, Republic of"
+        countryShortcut: "MD"
+    country-147:
+        id: 147
+        countryName: "Monaco"
+        countryShortcut: "MC"
+    country-148:
+        id: 148
+        countryName: "Mongolia"
+        countryShortcut: "MN"
+    country-149:
+        id: 149
+        countryName: "Montenegro"
+        countryShortcut: "ME"
+    country-150:
+        id: 150
+        countryName: "Montserrat"
+        countryShortcut: "MS"
+    country-151:
+        id: 151
+        countryName: "Morocco"
+        countryShortcut: "MA"
+    country-152:
+        id: 152
+        countryName: "Mozambique"
+        countryShortcut: "MZ"
+    country-153:
+        id: 153
+        countryName: "Myanmar"
+        countryShortcut: "MM"
+    country-154:
+        id: 154
+        countryName: "Namibia"
+        countryShortcut: "NA"
+    country-155:
+        id: 155
+        countryName: "Nauru"
+        countryShortcut: "NR"
+    country-156:
+        id: 156
+        countryName: "Nepal"
+        countryShortcut: "NP"
+    country-157:
+        id: 157
+        countryName: "Netherlands"
+        countryShortcut: "NL"
+    country-158:
+        id: 158
+        countryName: "New Caledonia"
+        countryShortcut: "NC"
+    country-159:
+        id: 159
+        countryName: "New Zealand"
+        countryShortcut: "NZ"
+    country-160:
+        id: 160
+        countryName: "Nicaragua"
+        countryShortcut: "NI"
+    country-161:
+        id: 161
+        countryName: "Niger"
+        countryShortcut: "NE"
+    country-162:
+        id: 162
+        countryName: "Nigeria"
+        countryShortcut: "NG"
+    country-163:
+        id: 163
+        countryName: "Niue"
+        countryShortcut: "NU"
+    country-164:
+        id: 164
+        countryName: "Norfolk Island"
+        countryShortcut: "NF"
+    country-165:
+        id: 165
+        countryName: "Northern Mariana Islands"
+        countryShortcut: "MP"
+    country-166:
+        id: 166
+        countryName: "Norway"
+        countryShortcut: "NO"
+    country-167:
+        id: 167
+        countryName: "Oman"
+        countryShortcut: "OM"
+    country-168:
+        id: 168
+        countryName: "Pakistan"
+        countryShortcut: "PK"
+    country-169:
+        id: 169
+        countryName: "Palau"
+        countryShortcut: "PW"
+    country-170:
+        id: 170
+        countryName: "Palestinian Territory, Occupied"
+        countryShortcut: "PS"
+    country-171:
+        id: 171
+        countryName: "Panama"
+        countryShortcut: "PA"
+    country-172:
+        id: 172
+        countryName: "Papua New Guinea"
+        countryShortcut: "PG"
+    country-173:
+        id: 173
+        countryName: "Paraguay"
+        countryShortcut: "PY"
+    country-174:
+        id: 174
+        countryName: "Peru"
+        countryShortcut: "PE"
+    country-175:
+        id: 175
+        countryName: "Philippines"
+        countryShortcut: "PH"
+    country-176:
+        id: 176
+        countryName: "Pitcairn"
+        countryShortcut: "PN"
+    country-177:
+        id: 177
+        countryName: "Poland"
+        countryShortcut: "PL"
+    country-178:
+        id: 178
+        countryName: "Portugal"
+        countryShortcut: "PT"
+    country-179:
+        id: 179
+        countryName: "Puerto Rico"
+        countryShortcut: "PR"
+    country-180:
+        id: 180
+        countryName: "Qatar"
+        countryShortcut: "QA"
+    country-181:
+        id: 181
+        countryName: "Réunion"
+        countryShortcut: "RE"
+    country-182:
+        id: 182
+        countryName: "Romania"
+        countryShortcut: "RO"
+    country-183:
+        id: 183
+        countryName: "Russian Federation"
+        countryShortcut: "RU"
+    country-184:
+        id: 184
+        countryName: "Rwanda"
+        countryShortcut: "RW"
+    country-185:
+        id: 185
+        countryName: "Saint Barthélemy"
+        countryShortcut: "BL"
+    country-186:
+        id: 186
+        countryName: "Saint Helena, Ascension and Tristan da Cunha"
+        countryShortcut: "SH"
+    country-187:
+        id: 187
+        countryName: "Saint Kitts and Nevis"
+        countryShortcut: "KN"
+    country-188:
+        id: 188
+        countryName: "Saint Lucia"
+        countryShortcut: "LC"
+    country-189:
+        id: 189
+        countryName: "Saint Martin (French part)"
+        countryShortcut: "MF"
+    country-190:
+        id: 190
+        countryName: "Saint Pierre and Miquelon"
+        countryShortcut: "PM"
+    country-191:
+        id: 191
+        countryName: "Saint Vincent and the Grenadines"
+        countryShortcut: "VC"
+    country-192:
+        id: 192
+        countryName: "Samoa"
+        countryShortcut: "WS"
+    country-193:
+        id: 193
+        countryName: "San Marino"
+        countryShortcut: "SM"
+    country-194:
+        id: 194
+        countryName: "Sao Tome and Principe"
+        countryShortcut: "ST"
+    country-195:
+        id: 195
+        countryName: "Saudi Arabia"
+        countryShortcut: "SA"
+    country-196:
+        id: 196
+        countryName: "Senegal"
+        countryShortcut: "SN"
+    country-197:
+        id: 197
+        countryName: "Serbia"
+        countryShortcut: "RS"
+    country-198:
+        id: 198
+        countryName: "Seychelles"
+        countryShortcut: "SC"
+    country-199:
+        id: 199
+        countryName: "Sierra Leone"
+        countryShortcut: "SL"
+    country-200:
+        id: 200
+        countryName: "Singapore"
+        countryShortcut: "SG"
+    country-201:
+        id: 201
+        countryName: "Sint Maarten (Dutch part)"
+        countryShortcut: "SX"
+    country-202:
+        id: 202
+        countryName: "Slovakia"
+        countryShortcut: "SK"
+    country-203:
+        id: 203
+        countryName: "Slovenia"
+        countryShortcut: "SI"
+    country-204:
+        id: 204
+        countryName: "Solomon Islands"
+        countryShortcut: "SB"
+    country-205:
+        id: 205
+        countryName: "Somalia"
+        countryShortcut: "SO"
+    country-206:
+        id: 206
+        countryName: "South Africa"
+        countryShortcut: "ZA"
+    country-207:
+        id: 207
+        countryName: "South Georgia and the South Sandwich Islands"
+        countryShortcut: "GS"
+    country-208:
+        id: 208
+        countryName: "South Sudan"
+        countryShortcut: "SS"
+    country-209:
+        id: 209
+        countryName: "Spain"
+        countryShortcut: "ES"
+    country-210:
+        id: 210
+        countryName: "Sri Lanka"
+        countryShortcut: "LK"
+    country-211:
+        id: 211
+        countryName: "Sudan"
+        countryShortcut: "SD"
+    country-212:
+        id: 212
+        countryName: "Suriname"
+        countryShortcut: "SR"
+    country-213:
+        id: 213
+        countryName: "Svalbard and Jan Mayen"
+        countryShortcut: "SJ"
+    country-214:
+        id: 214
+        countryName: "Swaziland"
+        countryShortcut: "SZ"
+    country-215:
+        id: 215
+        countryName: "Sweden"
+        countryShortcut: "SE"
+    country-216:
+        id: 216
+        countryName: "Switzerland"
+        countryShortcut: "CH"
+    country-217:
+        id: 217
+        countryName: "Syrian Arab Republic"
+        countryShortcut: "SY"
+    country-218:
+        id: 218
+        countryName: "Taiwan, Province of China"
+        countryShortcut: "TW"
+    country-219:
+        id: 219
+        countryName: "Tajikistan"
+        countryShortcut: "TJ"
+    country-220:
+        id: 220
+        countryName: "Tanzania, United Republic of"
+        countryShortcut: "TZ"
+    country-221:
+        id: 221
+        countryName: "Thailand"
+        countryShortcut: "TH"
+    country-222:
+        id: 222
+        countryName: "Timor-Leste"
+        countryShortcut: "TL"
+    country-223:
+        id: 223
+        countryName: "Togo"
+        countryShortcut: "TG"
+    country-224:
+        id: 224
+        countryName: "Tokelau"
+        countryShortcut: "TK"
+    country-225:
+        id: 225
+        countryName: "Tonga"
+        countryShortcut: "TO"
+    country-226:
+        id: 226
+        countryName: "Trinidad and Tobago"
+        countryShortcut: "TT"
+    country-227:
+        id: 227
+        countryName: "Tunisia"
+        countryShortcut: "TN"
+    country-228:
+        id: 228
+        countryName: "Turkey"
+        countryShortcut: "TR"
+    country-229:
+        id: 229
+        countryName: "Turkmenistan"
+        countryShortcut: "TM"
+    country-230:
+        id: 230
+        countryName: "Turks and Caicos Islands"
+        countryShortcut: "TC"
+    country-231:
+        id: 231
+        countryName: "Tuvalu"
+        countryShortcut: "TV"
+    country-232:
+        id: 232
+        countryName: "Uganda"
+        countryShortcut: "UG"
+    country-233:
+        id: 233
+        countryName: "Ukraine"
+        countryShortcut: "UA"
+    country-234:
+        id: 234
+        countryName: "United Arab Emirates"
+        countryShortcut: "AE"
+    country-235:
+        id: 235
+        countryName: "United Kingdom"
+        countryShortcut: "GB"
+    country-236:
+        id: 236
+        countryName: "United States"
+        countryShortcut: "US"
+    country-237:
+        id: 237
+        countryName: "United States Minor Outlying Islands"
+        countryShortcut: "UM"
+    country-238:
+        id: 238
+        countryName: "Uruguay"
+        countryShortcut: "UY"
+    country-239:
+        id: 239
+        countryName: "Uzbekistan"
+        countryShortcut: "UZ"
+    country-240:
+        id: 240
+        countryName: "Vanuatu"
+        countryShortcut: "VU"
+    country-241:
+        id: 241
+        countryName: "Venezuela, Bolivarian Republic of"
+        countryShortcut: "VE"
+    country-242:
+        id: 242
+        countryName: "Viet Nam"
+        countryShortcut: "VN"
+    country-243:
+        id: 243
+        countryName: "Virgin Islands, British"
+        countryShortcut: "VG"
+    country-244:
+        id: 244
+        countryName: "Virgin Islands, U.S."
+        countryShortcut: "VI"
+    country-245:
+        id: 245
+        countryName: "Wallis and Futuna"
+        countryShortcut: "WF"
+    country-246:
+        id: 246
+        countryName: "Western Sahara"
+        countryShortcut: "EH"
+    country-247:
+        id: 247
+        countryName: "Yemen"
+        countryShortcut: "YE"
+    country-248:
+        id: 248
+        countryName: "Zambia"
+        countryShortcut: "ZM"
+    country-249:
+        id: 249
+        countryName: "Zimbabwe"
+        countryShortcut: "ZW"

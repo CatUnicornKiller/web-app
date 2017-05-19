@@ -1,0 +1,17 @@
+log/*
+temp/*
+vendor/*
+!.gitignore
+!.htaccess
+!web.config
+app/config/config.local.neon
+composer.lock
+/nbproject/private/
+/nbproject
+/articles_img/*
+/events_img/*
+/pdf/*
+/profiles_img/*
+/showroom_img/*
+certs/*
+app/payment/ecomm/Merchant.php
