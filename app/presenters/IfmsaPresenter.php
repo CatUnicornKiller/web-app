@@ -8,6 +8,7 @@ use App\Model\Entity\IfmsaPerson;
 use App\Model\Repository\CpAssignedAfs;
 use App\Model\Repository\IfmsaPersons;
 use App\Exceptions\IfmsaConnectionException;
+use App\Helpers\Date\DateHelper;
 
 /**
  * Ifmsa presenter.
@@ -49,6 +50,11 @@ class IfmsaPresenter extends BasePresenter
      * @inject
      */
     public $ifmsaPersons;
+    /**
+     * @var DateHelper
+     * @inject
+     */
+    public $dateHelper;
 
     protected function startup()
     {
@@ -232,7 +238,7 @@ class IfmsaPresenter extends BasePresenter
             $person->surname = $personInfo['surname'];
             $person->email = $personInfo['email'];
             $person->photo = $personInfo['jpgPath'];
-            $person->afArrival = $personInfo['arrivalDate'];
+            $person->afArrival = $this->dateHelper->createDateOrDefault($personInfo['arrivalDate'])->typed;
         } else {
             $person = new IfmsaPerson(
                 $afNumber,
@@ -241,7 +247,7 @@ class IfmsaPresenter extends BasePresenter
                 $personInfo['surname'],
                 $personInfo['email'],
                 $personInfo['jpgPath'],
-                $personInfo['arrivalDate']
+                $this->dateHelper->createDateOrDefault($personInfo['arrivalDate'])->typed
             );
             $this->ifmsaPersons->persist($person);
         }

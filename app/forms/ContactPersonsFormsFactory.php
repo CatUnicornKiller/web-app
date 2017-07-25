@@ -11,6 +11,7 @@ use App\Users\UserManager;
 use App\Model\Repository\Users;
 use App\Model\Repository\CpAssignedAfs;
 use App\Model\Repository\IfmsaPersons;
+use App\Helpers\Date\DateHelper;
 
 /**
  * Class containing factory methods for forms mainly concerning contact persons
@@ -36,6 +37,8 @@ class ContactPersonsFormsFactory extends Nette\Object
     private $httpRequest;
     /** @var App\Users\MyAuthorizator */
     private $myAuthorizator;
+    /** @var DateHelper */
+    private $dateHelper;
 
     /**
      * DI Constructor.
@@ -48,6 +51,7 @@ class ContactPersonsFormsFactory extends Nette\Object
      * @param IfmsaPersons $ifmsaPersons
      * @param Nette\Http\Request $httpRequest
      * @param App\Users\MyAuthorizator $myAuthorizator
+     * @param DateHelper $dateHelper
      */
     public function __construct(
         UserManager $userManager,
@@ -58,7 +62,8 @@ class ContactPersonsFormsFactory extends Nette\Object
         App\Helpers\IfmsaConnectionHelper $ifmsaConnectionHelper,
         IfmsaPersons $ifmsaPersons,
         Nette\Http\Request $httpRequest,
-        App\Users\MyAuthorizator $myAuthorizator
+        App\Users\MyAuthorizator $myAuthorizator,
+        DateHelper $dateHelper
     ) {
 
         $this->user = $userManager->getCurrentUser();
@@ -70,6 +75,7 @@ class ContactPersonsFormsFactory extends Nette\Object
         $this->ifmsaPersons = $ifmsaPersons;
         $this->httpRequest = $httpRequest;
         $this->myAuthorizator = $myAuthorizator;
+        $this->dateHelper = $dateHelper;
     }
 
     public function createFindContactPersonForm($afNumber)
@@ -221,7 +227,7 @@ class ContactPersonsFormsFactory extends Nette\Object
             $person->surname = $personInfo['surname'];
             $person->email = $personInfo['email'];
             $person->photo = $personInfo['jpgPath'];
-            $person->afArrival = new \DateTime($personInfo['arrivalDate']);
+            $person->afArrival = $this->dateHelper->createDateOrDefault($personInfo['arrivalDate'])->typed;
             $this->ifmsaPersons->flush();
         } else {
             $person = new IfmsaPerson(
@@ -231,7 +237,7 @@ class ContactPersonsFormsFactory extends Nette\Object
                 $personInfo['surname'],
                 $personInfo['email'],
                 $personInfo['jpgPath'],
-                $personInfo['arrivalDate']
+                $this->dateHelper->createDateOrDefault($personInfo['arrivalDate'])->typed
             );
             $this->ifmsaPersons->persist($person);
         }

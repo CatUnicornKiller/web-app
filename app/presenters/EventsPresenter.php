@@ -244,10 +244,8 @@ class EventsPresenter extends BasePresenter
     public function actionSignUp($id)
     {
         $event = $this->events->findOrThrow($id);
-        $signed = $this->currentUser->getParticipatedEvent($event);
         if (!$this->isLoggedIn() ||
-                !$this->user->isAllowed("Event", "sign") ||
-                !$event || $signed ||
+                !$this->user->isAllowed("Event", "sign") || !$event ||
                 !$this->myAuthorizator->isAllowedEvent('signUp', $event)) {
             $this->error('Access Denied');
         }

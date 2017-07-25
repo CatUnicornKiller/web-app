@@ -39,4 +39,21 @@ class DateHelper extends Nette\Object
         $holder->textual = $holder->typed->format("j. n. Y");
         return $holder;
     }
+
+    /**
+     * Create date from given string, if not possible create fallback date (0000-00-00 00:00:00)
+     * @param string $text
+     * @return \App\Helpers\Date\DateTimeHolder
+     */
+    public function createDateOrDefault($text): DateTimeHolder {
+        $holder = new DateTimeHolder;
+        try {
+            $date = new \DateTime($text);
+        } catch (\Exception $e) {
+            $date = new \DateTime("0000-00-00 00:00:00");
+        }
+        $holder->typed = $date;
+        $holder->textual = $holder->typed->format("j. n. Y");
+        return $holder;
+    }
 }

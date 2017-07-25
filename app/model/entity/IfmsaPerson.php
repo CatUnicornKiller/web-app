@@ -74,18 +74,22 @@ class IfmsaPerson
         $surname = '',
         $email = '',
         $photo = '',
-        $afArrival = '0000-00-00 00:00:00',
+        \DateTime $afArrival = null,
         $accommodation = '',
         $department = ''
     ) {
+        if (!$afArrival) {
+            $afArrival = new \DateTime("0000-00-00 00:00:00");
+        }
+
         $this->afNumber = $afNumber;
         $this->confirmationNumber = $confirmationNumber;
         $this->firstname = $firstname;
         $this->surname = $surname;
         $this->email = $email;
         $this->photo = $photo;
-        $this->afArrival = new \DateTime($afArrival);
         $this->accommodation = $accommodation;
         $this->department = $department;
+        $this->afArrival = $afArrival;
     }
 }

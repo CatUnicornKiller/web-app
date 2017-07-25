@@ -3,6 +3,7 @@
 namespace App\Model\Repository;
 
 use Kdyby\Doctrine\EntityManager;
+use App\Exceptions\NotFoundException;
 use App\Model\Entity\User;
 use App\Model\Entity\Faculty;
 
