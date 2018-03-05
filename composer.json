@@ -33,7 +33,7 @@
 		"composer/ca-bundle": "^1.0",
 		"majkl578/nette-identity-doctrine": "^2.2",
 		"zenify/doctrine-fixtures": "~4.0.0",
-		"kdyby/console": "^2.6"
+		"kdyby/console": "~2.5.0"
 	},
 	"require-dev": {
 		"nette/tester": "~1.3"

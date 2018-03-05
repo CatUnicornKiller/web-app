@@ -45,7 +45,8 @@ class DateHelper extends Nette\Object
      * @param string $text
      * @return \App\Helpers\Date\DateTimeHolder
      */
-    public function createDateOrDefault($text): DateTimeHolder {
+    public function createDateOrDefault($text): DateTimeHolder
+    {
         $holder = new DateTimeHolder;
         try {
             $date = new \DateTime($text);

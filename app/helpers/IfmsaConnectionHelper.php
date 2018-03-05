@@ -987,7 +987,6 @@ class IfmsaConnectionHelper
             @$dom_view_cc->loadHTML($body);
 
             foreach ($dom_view_cc->getElementsByTagName('div') as $node) { // load information from Card of Confirmation
-
                 // get emergency contact
                 if (strpos($node->getAttribute('class'), 'item-title') !== false &&
                         $node->nodeValue == 'In case of emergency, please contact :') {

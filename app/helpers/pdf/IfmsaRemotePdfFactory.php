@@ -51,18 +51,18 @@ class IfmsaRemotePdfFactory
     {
         return @getimagesize($url);
         /*$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		$file_contents = curl_exec($ch);
-		curl_close($ch);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $file_contents = curl_exec($ch);
+        curl_close($ch);
 
-		$new_image = ImageCreateFromString($file_contents);
+        $new_image = ImageCreateFromString($file_contents);
 
-		$return = array(imagesx($new_image), imagesy($new_image));
+        $return = array(imagesx($new_image), imagesy($new_image));
 
-		imagedestroy($new_image);
+        imagedestroy($new_image);
 
-		return $return;*/
+        return $return;*/
     }
 
     /**

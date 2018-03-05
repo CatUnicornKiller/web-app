@@ -33,7 +33,7 @@ It is CRITICAL that whole `app/`, `log/` and `temp/` directories are not accessi
 
 ## Requirements
 
-PHP 7.0 or higher.
+PHP 7.0 or 7.1, Nette 2.3 is not compatible with newer versions of PHP starting with 7.2.
 
 ## Documentation
 

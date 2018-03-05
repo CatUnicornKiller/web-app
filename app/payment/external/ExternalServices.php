@@ -27,8 +27,8 @@ class ExternalServices
                 $value['okRedirectionUrl'],
                 $value['failRedirectionUrl']
             );
+            $this->services[$service->getId()] = $service;
         }
-        $this->services[$service->getId()] = $service;
     }
 
     /**
@@ -43,5 +43,14 @@ class ExternalServices
             return $this->services[$id];
         }
         throw new PaymentException("Service {$id} cannot be found");
+    }
+
+    /**
+     * Return all currently registered services.
+     * @return array
+     */
+    public function getServices(): array
+    {
+        return $this->services;
     }
 }
