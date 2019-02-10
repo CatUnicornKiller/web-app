@@ -5,6 +5,16 @@
 	"type": "project",
 	"license": ["MIT"],
 	"minimum-stability": "stable",
+	"config": {
+        "platform": {
+            "php": "7.0.33"
+        }
+    },
+	"scripts": {
+		"post-install-cmd": [
+			"composer dump-autoload --optimize --classmap-authoritative"
+		]
+	},
 	"require": {
 		"php": ">= 7.0",
 		"nette/application": "~2.3.0",
