@@ -311,11 +311,13 @@ class FeedbackFormsFactory
             $clinicalContracts->addText($country->id, '')
                     ->setType('number')
                     ->setDefaultValue($country->ifmsaClinicalContracts)
-                    ->addRule(Form::INTEGER, 'Clinical contracts has to be integer');
+                    ->addRule(Form::INTEGER, 'Clinical contracts has to be integer')
+                    ->setRequired('Clinical contracts are required');
             $researchContracts->addText($country->id, '')
                     ->setType('number')
                     ->setDefaultValue($country->ifmsaResearchContracts)
-                    ->addRule(Form::INTEGER, 'Research contracts has to be integer');
+                    ->addRule(Form::INTEGER, 'Research contracts has to be integer')
+                    ->setRequired('Research contracts are required');
         }
 
         $form->addSubmit('send', 'Save');

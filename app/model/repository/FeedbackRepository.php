@@ -2,6 +2,7 @@
 
 namespace App\Model\Repository;
 
+use App\Model\Entity\Country;
 use Kdyby\Doctrine\EntityManager;
 use App\Model\Entity\Feedback;
 
@@ -29,7 +30,7 @@ class FeedbackRepository extends BaseRepository
      * @param \DateTime $endDate
      * @param string $exchangeType
      * @param string $hostCity
-     * @param Faculty $hostFaculty
+     * @param string $hostFaculty
      * @return \Doctrine\ORM\Query
      */
     public function getCountryFeedbackListQuery(

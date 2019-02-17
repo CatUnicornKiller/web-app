@@ -223,7 +223,10 @@ class FeedbackPresenter extends BasePresenter
         }
 
         // parse and get all parameters
-        $countryTyped = $this->countries->get($country);
+        $countryTyped = null;
+        if ($country) {
+            $countryTyped = $this->countries->get($country);
+        }
         $year = date("Y");
         $startDateTyped = null;
         $endDateTyped = null;
