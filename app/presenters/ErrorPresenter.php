@@ -8,8 +8,9 @@ use Tracy\ILogger;
 class ErrorPresenter extends BasePresenter
 {
     /**
-     * @param  Exception
+     * @param  \Exception
      * @return void
+     * @throws Nette\Application\AbortException
      */
     public function renderDefault($exception)
     {

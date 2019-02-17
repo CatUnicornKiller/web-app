@@ -2,13 +2,17 @@
 
 namespace App\Forms;
 
+use App\Presenters\BasePresenter;
 use Nette;
 use Nette\Application\UI\Form;
+use Nette\Forms\Controls\TextArea;
 
 /**
  * Reimplementation of nette application Form suitable for material-css
  * framework. Automatic rendering is somehow working, but it is recommended to
  * write fresh latte template for forms.
+ *
+ * @property BasePresenter $presenter
  */
 class MyForm extends Form
 {
