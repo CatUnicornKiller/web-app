@@ -27,7 +27,7 @@ class ShowroomPresenter extends BasePresenter
         $form->onSuccess[] = function ($form, $values) {
             $form->presenter->flashMessage($values->firstname . ' ' .
                     $values->surname . ' was successfully added to Showroom');
-            $form->presenter->redirect("Showroom:OfficersList");
+            $form->presenter->redirect("Showroom:list");
         };
         return $form;
     }
@@ -56,7 +56,7 @@ class ShowroomPresenter extends BasePresenter
         $officers['NEOs'] = $this->showroomRepository->findByRole("neo");
         $officers['NOREs'] = $this->showroomRepository->findByRole("nore");
         $officers['NEO Assistants'] = $this->showroomRepository->findByRole("neo_assist");
-        $officers['LEOs'] = $this->showroomRepository->findByRole("leo_assist");
+        $officers['LEOs'] = $this->showroomRepository->findByRole("leo");
         $officers['LOREs'] = $this->showroomRepository->findByRole("lore");
         $this->template->officers = $officers;
     }
@@ -72,7 +72,7 @@ class ShowroomPresenter extends BasePresenter
         $officers['NEOs'] = $this->showroomRepository->findByRole("neo");
         $officers['NOREs'] = $this->showroomRepository->findByRole("nore");
         $officers['NEO Assistants'] = $this->showroomRepository->findByRole("neo_assist");
-        $officers['LEOs'] = $this->showroomRepository->findByRole("leo_assist");
+        $officers['LEOs'] = $this->showroomRepository->findByRole("leo");
         $officers['LOREs'] = $this->showroomRepository->findByRole("lore");
         $this->template->officers = $officers;
 

@@ -96,7 +96,7 @@ class ShowroomFormsFactory
                 ->setRequired('Surname is required')
                 ->addRule(Form::MAX_LENGTH, 'Surname is too long', 255)
                 ->setAttribute('length', 255);
-        $form->addSelect('role', 'Role', $this->rolesManager->getRoles())
+        $form->addSelect('role', 'Role', $this->rolesManager->getShowroomRoles())
                 ->setRequired('Role is required');
         $form->addSelect('faculty', 'Faculty', $this->getFacultiesSelect())
                 ->setRequired('Faculty is required');

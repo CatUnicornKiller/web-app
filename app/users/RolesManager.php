@@ -96,6 +96,21 @@ class RolesManager
     }
 
     /**
+     * Get list of possible showroom roles.
+     * @return array
+     */
+    public function getShowroomRoles()
+    {
+        $ret = array();
+        $ret['lore'] = 'LORE';
+        $ret['leo'] = 'LEO';
+        $ret['neo_assist'] = 'NEO Assistant';
+        $ret['nore'] = 'NORE';
+        $ret['neo'] = 'NEO';
+        return $ret;
+    }
+
+    /**
      * Get list of possible officer roles.
      * @return array
      */
