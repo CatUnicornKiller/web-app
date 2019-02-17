@@ -13,8 +13,10 @@ use App\Users\UserManager;
  * Class containing factory methods for forms mainly concerning incomings.
  * Alongside factories there can also be success callbacks.
  */
-class IncomingsFormsFactory extends Nette\Object
+class IncomingsFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var User */
     private $user;
     /** @var Users */

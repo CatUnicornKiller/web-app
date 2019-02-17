@@ -20,8 +20,10 @@ use App\Model\Repository\EventCoorganizers;
  * Class containing factory methods for forms mainly concerning events
  * management. Alongside factories there can also be success callbacks.
  */
-class EventsFormsFactory extends Nette\Object
+class EventsFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var User */
     private $user;
     /** @var \App\Helpers\StringHelper */

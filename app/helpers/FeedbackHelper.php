@@ -7,8 +7,10 @@ use Nette;
 /**
  * Feedback descriptions helper.
  */
-class FeedbackHelper extends Nette\Object
+class FeedbackHelper
 {
+    use Nette\SmartObject;
+
     /**
      * Items which are used within feedback with its keys and textual values.
      * @var array

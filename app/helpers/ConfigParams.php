@@ -7,8 +7,10 @@ use Nette;
 /**
  * Parameters of the application given in the configuration file.
  */
-class ConfigParams extends Nette\Object
+class ConfigParams
 {
+    use Nette\SmartObject;
+
     /** Default items per page */
     public $itemsPerPage;
     /** Max images per event */

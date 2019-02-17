@@ -13,8 +13,10 @@ use App\Model\Repository\Faculties;
  * Class containing factory methods for forms mainly concerning articles.
  * Alongside factories there can also be success callbacks.
  */
-class PagesFormsFactory extends Nette\Object
+class PagesFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var Pages */
     private $pages;
     /** @var Faculties */

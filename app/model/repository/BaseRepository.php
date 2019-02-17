@@ -11,8 +11,10 @@ use Doctrine\Common\Collections\Criteria;
 /**
  * Base repository for all others. Contains predefined handy operations.
  */
-class BaseRepository extends Nette\Object
+class BaseRepository
 {
+    use Nette\SmartObject;
+
     /**
      * @var EntityManager
      */
@@ -36,11 +38,11 @@ class BaseRepository extends Nette\Object
     /**
      * Get entity with given identification.
      * @param int $id entity identifier
-     * @return Entity|NULL
+     * @return object|null
      */
     public function get($id)
     {
-        return $this->repository->findOneById($id);
+        return $this->repository->find($id);
     }
 
     /**

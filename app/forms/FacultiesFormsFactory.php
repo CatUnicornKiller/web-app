@@ -11,8 +11,10 @@ use Nette\Application\UI\Form;
  * Class containing factory methods for forms mainly concerning faculties
  * management. Alongside factories there can also be success callbacks.
  */
-class FacultiesFormsFactory extends Nette\Object
+class FacultiesFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var Faculties */
     private $faculties;
 

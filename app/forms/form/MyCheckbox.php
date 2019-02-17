@@ -26,8 +26,8 @@ class MyCheckbox extends Checkbox
     public function getControl()
     {
         $c = new Html();
-        $c->add($this->getControlPart());
-        $c->add($this->getLabelPart());
+        $c->addHtml($this->getControlPart());
+        $c->addHtml($this->getLabelPart());
         return $c;
     }
 }

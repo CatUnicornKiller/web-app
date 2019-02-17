@@ -17,8 +17,10 @@ use App\Helpers\Date\DateHelper;
  * Class containing factory methods for forms mainly concerning contact persons
  * management. Alongside factories there can also be success callbacks.
  */
-class ContactPersonsFormsFactory extends Nette\Object
+class ContactPersonsFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var User */
     private $user;
     /** @var Users */

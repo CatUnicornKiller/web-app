@@ -10,8 +10,10 @@ use Nette\Security\User;
  * Class containing factory methods for forms mainly concerning user login.
  * Alongside factories there can also be success callbacks.
  */
-class LoginFormFactory extends Nette\Object
+class LoginFormFactory
 {
+    use Nette\SmartObject;
+
     /** @var User */
     private $user;
 

@@ -7,8 +7,10 @@ use Nette;
 /**
  * Helper class for frequent work with nette responses.
  */
-class ResponseHelper extends Nette\Object
+class ResponseHelper
 {
+    use Nette\SmartObject;
+
     /** @var Nette\Http\Response */
     private $httpResponse;
 

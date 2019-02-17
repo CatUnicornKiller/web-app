@@ -15,8 +15,10 @@ use App\Users\UserManager;
  * Class containing factory methods for forms mainly concerning showroom.
  * Alongside factories there can also be success callbacks.
  */
-class ShowroomFormsFactory extends Nette\Object
+class ShowroomFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var User */
     private $user;
     /** @var ShowroomRepository */

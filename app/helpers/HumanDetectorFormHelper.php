@@ -9,8 +9,10 @@ use App;
  * Human detector form helper which can be used to add item to form and check
  * if the answer is legit.
  */
-class HumanDetectorFormHelper extends Nette\Object
+class HumanDetectorFormHelper
 {
+    use Nette\SmartObject;
+
     /**
      * To given form add check answer textarea.
      * @param App\Forms\MyForm $form
@@ -26,7 +28,7 @@ class HumanDetectorFormHelper extends Nette\Object
      * Check if given string comply check question answer, if not add error to
      * given form.
      * @param App\Forms\MyForm $form
-     * @param string $values form values
+     * @param mixed $values form values
      * @return true if given string match, false otherwise
      */
     public function checkForm(App\Forms\MyForm $form, $values)

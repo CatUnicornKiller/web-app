@@ -8,8 +8,10 @@ use App;
 /**
  * Helper for various stuff concerning user management.
  */
-class UserHelper extends Nette\Object
+class UserHelper
 {
+    use Nette\SmartObject;
+
     /**
      * Checks if officer has filled all needed additional information.
      * @param App\Model\Entity\OfficersProfile $officerProfile

@@ -13,7 +13,7 @@
                     <div class="col l6 s12">
                         <div class="card-panel {$presenter->generateRandomColor()}">
                             <p class="white-text">
-                                {$n->message|escape|nl2br|noescape}
+                                {$n->message|escape|breaklines|noescape}
                             </p>
                                 <small>{$n->date|date:'j. n. Y H:i'}</small>
                             {if $user->isAllowed('News', 'delete')}

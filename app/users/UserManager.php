@@ -10,8 +10,10 @@ use Nette;
  * Users management, basically cache for the current user or any other needed
  * operation.
  */
-class UserManager extends Nette\Object
+class UserManager
 {
+    use Nette\SmartObject;
+
     /** @var Nette\Security\User */
     private $user;
     /** @var User */
@@ -38,7 +40,13 @@ class UserManager extends Nette\Object
      */
     public function getCurrentUser()
     {
+        if (!$this->user->isLoggedIn()) {
+            // user is not logged in, return null
+            return null;
+        }
+
         if (!$this->cachedUser) {
+            // user is not cached, load it from database
             $this->cachedUser = $this->users->get($this->user->id);
         }
         return $this->cachedUser;

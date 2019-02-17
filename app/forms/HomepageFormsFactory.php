@@ -14,8 +14,10 @@ use App\Users\UserManager;
  * Class containing factory methods for forms mainly concerning homepage.
  * Alongside factories there can also be success callbacks.
  */
-class HomepageFormsFactory extends Nette\Object
+class HomepageFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var User */
     private $user;
     /** @var Users */

@@ -10,8 +10,10 @@ use App\Model\Repository\IfmsaPersons;
  * Class containing factory methods for forms mainly concerning ifmsa.
  * Alongside factories there can also be success callbacks.
  */
-class IfmsaFormsFactory extends Nette\Object
+class IfmsaFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var App\Helpers\StringHelper */
     private $stringHelpers;
     /** @var App\Users\MyAuthorizator */

@@ -14,8 +14,10 @@ use App\Users\UserManager;
  * Class containing factory methods mainly concerning logged user forms.
  * Alongside factories there can also be success callbacks.
  */
-class UserFormsFactory extends Nette\Object
+class UserFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var Nette\Security\User */
     private $netteUser;
     /** @var User */

@@ -12,8 +12,10 @@ use Nette\Security\Passwords;
  * Simple doctrine authenticator through users repository, every user login is
  * also logged into login log.
  */
-class MyAuthenticator extends Nette\Object implements Nette\Security\IAuthenticator
+class MyAuthenticator implements Nette\Security\IAuthenticator
 {
+    use Nette\SmartObject;
+
     /** @var Users */
     private $users;
     /** @var LoginLogs */

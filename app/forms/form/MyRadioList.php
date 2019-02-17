@@ -40,9 +40,9 @@ class MyRadioList extends RadioList
 
         $items = $this->getItems();
         foreach ($items as $key => $value) {
-            $out->add($this->getControlPart($key));
-            $out->add($this->getLabelPart($key));
-            $out->add($this->separator);
+            $out->addHtml($this->getControlPart($key));
+            $out->addHtml($this->getLabelPart($key));
+            $out->addHtml($this->separator);
         }
 
         return $out;

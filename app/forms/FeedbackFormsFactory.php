@@ -16,8 +16,10 @@ use App\Model\Repository\FeedbackRepository;
  * Class containing factory methods for forms mainly concerning feedback.
  * Alongside factories there can also be success callbacks.
  */
-class FeedbackFormsFactory extends Nette\Object
+class FeedbackFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var User */
     private $user;
     /** @var Faculties */

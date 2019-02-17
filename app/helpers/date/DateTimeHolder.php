@@ -7,8 +7,10 @@ use Nette;
 /**
  * Holder of both textual description of the date and typed DateTime.
  */
-class DateTimeHolder extends Nette\Object
+class DateTimeHolder
 {
+    use Nette\SmartObject;
+
     /**
      * Textual description of the typed date and time below.
      * @var string

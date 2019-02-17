@@ -7,8 +7,10 @@ use Nette;
 /**
  * Helper class for some handy functions for string operations.
  */
-class StringHelper extends Nette\Object
+class StringHelper
 {
+    use Nette\SmartObject;
+
     /**
      * From department string obtained from ifmsa.org get only department
      * description.

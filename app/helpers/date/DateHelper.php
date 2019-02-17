@@ -8,8 +8,10 @@ use Nette;
  * Date and time helper for better work with dates. Functions return special
  * DateTimeHolder which contains both textual and typed DateTime.
  */
-class DateHelper extends Nette\Object
+class DateHelper
 {
+    use Nette\SmartObject;
+
     /**
      * Create datetime from the given text if valid, or otherwise return first
      * day of current month.

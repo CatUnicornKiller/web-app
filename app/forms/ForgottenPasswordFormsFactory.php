@@ -14,8 +14,10 @@ use App\Model\Repository\RenewedPasswords;
  * Class containing factory methods for forms mainly concerning forgotten
  * password feature. Alongside factories there can also be success callbacks.
  */
-class ForgottenPasswordFormsFactory extends Nette\Object
+class ForgottenPasswordFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var Users */
     protected $users;
     /** @var ForgottenPasswords */

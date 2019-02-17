@@ -17,8 +17,10 @@ use App\Model\Repository\ExtraPointsRepository;
  * Class containing factory methods mainly concerning officers forms. Alongside
  * factories there can also be success callbacks.
  */
-class UsersFormsFactory extends Nette\Object
+class UsersFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var User */
     private $user;
     /** @var Users */

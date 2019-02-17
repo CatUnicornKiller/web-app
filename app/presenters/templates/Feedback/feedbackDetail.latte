@@ -55,7 +55,7 @@
                     <th colspan="2" class="grey lighten-4">{$feedbackHelpers->getItemDescription($it)}</th>
                 </tr>
                 <tr>
-                    <td colspan="2">{$feed->$it|escape|nl2br|noescape}</td>
+                    <td colspan="2">{$feed->$it|escape|breaklines|noescape}</td>
                 </tr>
                 {/foreach}
 

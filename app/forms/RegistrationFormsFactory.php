@@ -14,8 +14,10 @@ use App\Model\Repository\Countries;
  * Class containing factory methods for forms mainly concerning registration of
  * new users. Alongside factories there can also be success callbacks.
  */
-class RegistrationFormsFactory extends Nette\Object
+class RegistrationFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var Users */
     protected $users;
     /** @var Faculties */

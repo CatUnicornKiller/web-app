@@ -8,8 +8,10 @@ use Nette;
  * Class containing factory methods for forms mainly concerning transactions.
  * Alongside factories there can also be success callbacks.
  */
-class TransactionsFormsFactory extends Nette\Object
+class TransactionsFormsFactory
 {
+    use Nette\SmartObject;
+
     /**
      * Create simple form for the filtering of the transaction list. Returns
      * simple form with GET method set.

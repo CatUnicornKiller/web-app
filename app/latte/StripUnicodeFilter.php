@@ -7,8 +7,10 @@ use Nette;
 /**
  * Latte extension filter.
  */
-class StripUnicodeFilter extends Nette\Object
+class StripUnicodeFilter
 {
+    use Nette\SmartObject;
+
     /**
      * Strips multiple whitespaces, default ones and Unicode ones too.
      * @param string $s

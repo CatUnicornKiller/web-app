@@ -31,10 +31,7 @@ class RouterFactory
     public function create()
     {
         $router = new RouteList;
-
-        // Route::SECURED flag should be used on https connections
-        $router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
-
+        $router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
         return $router;
     }
 }

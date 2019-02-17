@@ -17,8 +17,10 @@ use App\Model\Repository\DefaultCpTasks;
  * Class containing factory methods for forms mainly concerning tasks.
  * Alongside factories there can also be success callbacks.
  */
-class TasksFormsFactory extends Nette\Object
+class TasksFormsFactory
 {
+    use Nette\SmartObject;
+
     /** @var User */
     private $user;
     /** @var CpTasks */
