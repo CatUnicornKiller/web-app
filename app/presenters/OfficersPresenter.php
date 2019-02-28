@@ -229,7 +229,7 @@ class OfficersPresenter extends BasePresenter
 
     public function actionDeleteAdditionalInfoRequest($id)
     {
-        $request = $this->userInfoRequests->findOfficerOrThrow($id);
+        $request = $this->userInfoRequests->findOrThrow($id);
         $usr = $this->users->findOrThrow($request->requestedUser);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Users", "view") ||
