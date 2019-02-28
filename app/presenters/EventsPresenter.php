@@ -123,7 +123,7 @@ class EventsPresenter extends BasePresenter
             $this->error('Access Denied');
         }
 
-        $facultyTyped = $this->faculties->get($faculty);
+        $facultyTyped = $faculty ? $this->faculties->get($faculty) : null;
         $startDateHolder = $this->dateHelper->createFromDateOrFirstDayOfMonth($startDate);
         $endDateHolder = $this->dateHelper->createFromDateOrLastDayOfMonth($endDate);
 
@@ -373,7 +373,7 @@ class EventsPresenter extends BasePresenter
 
         $startDateHolder = $this->dateHelper->createFromDateOrFirstDayOfMonth($startDate);
         $endDateHolder = $this->dateHelper->createFromDateOrLastDayOfMonth($endDate);
-        $facultyTyped = $this->faculties->get($faculty);
+        $facultyTyped = $faculty ? $this->faculties->get($faculty) : null;
 
         $events = $this->events->getAllEventsListQuery(
             $orderby,

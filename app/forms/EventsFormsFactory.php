@@ -136,10 +136,12 @@ class EventsFormsFactory
                 ->setAttribute('length', 1000);
         $form->addText('price', 'Price in CZK (Zero = For free)')
                 ->setValue('0')->setType("number")
-                ->addRule(Form::INTEGER, 'Price is not a number');
+                ->addRule(Form::INTEGER, 'Price is not a number')
+                ->setRequired('Price is required');
         $form->addText('capacity', 'Capacity (Zero = Unlimited)')
                 ->setValue('0')->setType("number")
-                ->addRule(Form::INTEGER, 'Capacity is not a number');
+                ->addRule(Form::INTEGER, 'Capacity is not a number')
+                ->setRequired('Capacity is required');
         $form->addUpload('eventLogo', 'Event Logo');
         $form->addOriginalTextArea('eventDescription', 'Event Description')
                 ->setAttribute('id', 'event_desc')
@@ -273,7 +275,7 @@ class EventsFormsFactory
      * @param Event $event
      * @return MyForm
      */
-    public function createModifyEventForm($event)
+    public function createModifyEventForm(Event $event)
     {
         $form = $this->createEventForm();
         $form->addHidden('id', $event->id);
@@ -281,13 +283,14 @@ class EventsFormsFactory
         $form->onSuccess[] = array($this, 'modifyEventFormSucceeded');
 
         $form->setDefaults(array('startDate' => $event->date->format('j. n. Y'),
-            'startTime' => $event->date->format('H:i'), 'end_date' => $event->endDate->format('j. n. Y'),
-            'endTime' => $event->endDate->format('H:i'), 'signup_deadline_date' => $event->signupDeadline->format('j. n. Y'),
+            'startTime' => $event->date->format('H:i'), 'endDate' => $event->endDate->format('j. n. Y'),
+            'endTime' => $event->endDate->format('H:i'), 'signupDeadlineDate' => $event->signupDeadline->format('j. n. Y'),
             'signupDeadlineTime' => $event->signupDeadline->format('H:i'),
             'eventName' => $event->eventName,
             'eventDescription' => $event->eventDescription,
             'visibleToFaculties' => $event->visibleToFacultiesIds, 'place' => $event->place,
-            'price' => $event->price, 'capacity' => $event->capacity));
+            'price' => $event->price, 'capacity' => $event->capacity,
+            'socialProgram' => $event->socialProgram, 'academicQuality' => $event->academicQuality));
 
         return $form;
     }
@@ -502,7 +505,7 @@ class EventsFormsFactory
         if ($values->image->isOk() && $values->image->isImage()) {
             $event = $this->events->findOrThrow($values->id);
 
-            if ((count($event->files->count()) + 1) > $this->configParams->eventImgMaxCount) {
+            if (($event->files->count() + 1) > $this->configParams->eventImgMaxCount) {
                 $form->addError("Too much images were uploaded. Limit is " . $this->configParams->eventImgMaxCount);
                 return;
             }
