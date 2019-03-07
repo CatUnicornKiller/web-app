@@ -175,7 +175,9 @@
 
 .dropzone {
   min-height: 150px;
-  background-color: white; }
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  background: white;
+  padding: 20px 20px; }
   .dropzone.dz-clickable {
     cursor: pointer; }
     .dropzone.dz-clickable * {
@@ -190,8 +192,6 @@
       opacity: 0.5; }
   .dropzone .dz-message {
     text-align: center;
-	font-size: 19px;
-	font-weight: bold;
     margin: 2em 0; }
   .dropzone .dz-preview {
     position: relative;
@@ -204,7 +204,7 @@
       .dropzone .dz-preview:hover .dz-details {
         opacity: 1; }
     .dropzone .dz-preview.dz-file-preview .dz-image {
-      /* border-radius: 20px; */
+      border-radius: 20px;
       background: #999;
       background: linear-gradient(to bottom, #eee, #ddd); }
     .dropzone .dz-preview.dz-file-preview .dz-details {
@@ -266,7 +266,7 @@
       -webkit-filter: blur(8px);
       filter: blur(8px); }
     .dropzone .dz-preview .dz-image {
-      /* border-radius: 20px; */
+      border-radius: 20px;
       overflow: hidden;
       width: 120px;
       height: 120px;
@@ -282,14 +282,13 @@
       -o-animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1);
       animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1); }
     .dropzone .dz-preview.dz-error .dz-error-mark {
-      opacity: 0.4;
+      opacity: 1;
       -webkit-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
       -moz-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
       -ms-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
       -o-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
       animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1); }
     .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark {
-      /* border-radius: 8px; */
       pointer-events: none;
       opacity: 0;
       z-index: 500;
@@ -299,14 +298,8 @@
       left: 50%;
       margin-left: -27px;
       margin-top: -27px; }
-	.dropzone .dz-preview .dz-success-mark {
-		background-color: green;
-	} .dropzone .dz-preview .dz-error-mark {
-		background-color: red;
-	}
       .dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg {
         display: block;
-		opacity: 1;
         width: 54px;
         height: 54px; }
     .dropzone .dz-preview.dz-processing .dz-progress {
