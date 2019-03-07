@@ -84,13 +84,13 @@ class IfmsaFormsFactory
     /**
      * Create PDF type selection form.
      * @param array $personInfo person information obtained from ifmsa.org
-     * @param array $cardOfDocuments list of person documents obtainer from
+     * @param array $cardOfDocuments list of person documents obtained from
      * ifmsa.org
-     * @return \App\Forms\MyForm
+     * @return \App\Forms\MySimpleForm
      */
     public function createPdfSelectionForm(array $personInfo, array $cardOfDocuments)
     {
-        $form = new MyForm();
+        $form = new MySimpleForm();
         $form->addRadioList('pdfType', 'PDF Type', array(
             'contactPerson' => 'Contact Person',
             'department' => 'Department',

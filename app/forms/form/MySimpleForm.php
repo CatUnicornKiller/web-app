@@ -2,6 +2,7 @@
 
 namespace App\Forms;
 
+use Nette\Forms\Controls\TextArea;
 use Nette\Forms\Form;
 
 /**
