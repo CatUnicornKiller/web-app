@@ -6,6 +6,7 @@ use App;
 use App\Model\Entity\User;
 use App\Model\Entity\Faculty;
 use App\Users\UserManager;
+use GuzzleHttp;
 
 /**
  * Factory for the PDFs generated based on IfmsaRemote data.

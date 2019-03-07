@@ -16,7 +16,7 @@
             <table id="add_tasks" class="striped">
                 <thead><tr><th>Selection</th><th>Task Description</th><th>Task Sidenote</th></tr></thead>
                 <tbody>
-                    <tr n:foreach="$form['cpTasks']->containers as $task">
+                    <tr n:foreach="$form['cpTasks']->getContainers() as $task">
                         {var $fsel = $task['cpTasksSelection']}
                         {var $fdesc = $task['cpTasksDescription']}
                         {var $fnote = $task['cpTasksNote']}

@@ -82,7 +82,7 @@ class ContactPersonsFormsFactory
 
     public function createFindContactPersonForm($afNumber)
     {
-        $form = new MyForm();
+        $form = new MySimpleForm();
 
         $officers = $this->users->getFacultyOfficers($this->user->faculty);
         $cps = array();

@@ -113,7 +113,7 @@
                             <br>
                             Arrival date: {if $inc->afArrival != '-0001-11-30 00:00:00'}{$inc->afArrival|date:'j. n. Y'}{else}Unknown{/if}
                             <br>
-                            Completed {$inc->getCompletedTasks()->count()}/{$inc->tasks->count()} tasks (<a n:href="Tasks:detail, 'id' => $profile->id, 'afNumber' => $inc->afNumber">Task Manager</a>)
+                            Completed {$inc->getCompletedTasks()->count()}/{$inc->tasks->count()} tasks (<a n:href="Tasks:detail, 'id' => $inc->id">Task Manager</a>)
                         </p>
                     </div>
                 </li>

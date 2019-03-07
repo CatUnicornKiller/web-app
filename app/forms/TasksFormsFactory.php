@@ -96,6 +96,7 @@ class TasksFormsFactory
                 ->addRule(Form::MAX_LENGTH, 'Task Description is too long', 1000)
                 ->setAttribute('length', 1000);
         $form->addTextArea('cpTasksNote', 'Task Note')
+                ->setRequired('Task Note is required')
                 ->addRule(Form::MAX_LENGTH, 'Task Note is too long', 1000)
                 ->setAttribute('length', 1000);
     }
@@ -177,6 +178,7 @@ class TasksFormsFactory
                     ->addRule(Form::MAX_LENGTH, 'Task Description is too long', 1000)
                     ->setAttribute('length', 1000);
             $notes->addTextArea($task->id, 'Task Note')
+                    ->setRequired('Task Note is required')
                     ->setDefaultValue($task->cpTasksNote)
                     ->addRule(Form::MAX_LENGTH, 'Task Note is too long', 1000)
                     ->setAttribute('length', 1000);
@@ -232,6 +234,7 @@ class TasksFormsFactory
                     ->addRule(Form::MAX_LENGTH, 'Task Description is too long', 1000)
                     ->setAttribute('length', 1000);
             $cpTasks->addTextArea('cpTasksNote', 'Task Note')
+                    ->setRequired('Task Note is required')
                     ->addRule(Form::MAX_LENGTH, 'Task Note is too long', 1000)
                     ->setAttribute('length', 1000);
         });
