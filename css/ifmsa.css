@@ -74,19 +74,17 @@ ul.side-nav.fixed li.logo img {
     width: 210px }
 ul.side-nav.fixed {
 	overflow: hidden; }
-ul.side-nav.fixed li {
-    line-height: 44px; }
 ul.side-nav.fixed li:hover, ul.side-nav.fixed li.active {
     background-color: rgba(0, 0, 0, 0.05); }
-ul.side-nav.fixed li a {
-	color: black !important;
-    font-size: 13px;
-    line-height: 44px;
-    height: 44px; }
 ul.side-nav.fixed ul.collapsible-accordion {
     background-color: #FFF }
 ul.side-nav.fixed:hover {
     overflow-y: auto; }
+ul.side-nav.fixed ul.collapsible-accordion a.collapsible-header {
+	padding: 0 32px; }
+ul.side-nav.fixed ul.collapsible-accordion .collapsible-body li a {
+	font-weight: 400;
+	padding: 0 37.5px 0 45px; }
 
 .side-nav .collapsible-body li.active, .side-nav.fixed .collapsible-body li.active {
     background-color: #D50000 !important;
