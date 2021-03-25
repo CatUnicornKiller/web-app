@@ -1,5 +1,7 @@
 # CatUnicornKiller System
 
+[![CI](https://github.com/CatUnicornKiller/web-app/actions/workflows/ci.yml/badge.svg)](https://github.com/CatUnicornKiller/web-app/actions/workflows/ci.yml)
+
 CatUnicornKiller System (CUK) is web-based exchange system made for IFMSA student organization needs. The system is divided into two parts, the private one and public one. More detailed description of all features can be found in [User Documentation](https://github.com/CatUnicornKiller/user-doc/wiki). 
 
 The private part is accessible only through registration and after successful login. These parts are intended to be used by hosting country officers and incomings. There are many features but the most important are on-demand loading of information about incomings/outgoings from [ifmsa.org](www.ifmsa.org) and also creating of events by hosting officers. To these events incomings can sign-up and even pay for them using integrated payment gateway. 
