@@ -2,7 +2,7 @@
 
 namespace App\Model\Repository;
 
-use Kdyby\Doctrine\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Entity\Showroom;
 
 /**
@@ -12,9 +12,9 @@ class ShowroomRepository extends BaseRepository
 {
     /**
      * DI Contructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         parent::__construct($em, Showroom::class);
     }

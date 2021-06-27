@@ -3,10 +3,11 @@
 namespace App\Model\Repository;
 
 use App\Exceptions\NotFoundException;
-use Nette;
-use Kdyby\Doctrine\EntityManager;
-use Kdyby\Doctrine\EntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+use Nette;
 
 /**
  * Base repository for all others. Contains predefined handy operations.
@@ -16,7 +17,7 @@ class BaseRepository
     use Nette\SmartObject;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
     /**
@@ -26,10 +27,10 @@ class BaseRepository
 
     /**
      * Constructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @param string $entityType unique class name
      */
-    public function __construct(EntityManager $em, $entityType)
+    public function __construct(EntityManagerInterface $em, $entityType)
     {
         $this->em = $em;
         $this->repository = $em->getRepository($entityType);
@@ -96,7 +97,7 @@ class BaseRepository
      */
     public function countAll()
     {
-        return $this->repository->countBy();
+        return $this->repository->count();
     }
 
     /**
@@ -136,7 +137,7 @@ class BaseRepository
     /**
      * Find all matching entities based on given criteria.
      * @param Criteria $params
-     * @return array
+     * @return Collection
      */
     public function matching(Criteria $params)
     {

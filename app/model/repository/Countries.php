@@ -2,8 +2,8 @@
 
 namespace App\Model\Repository;
 
-use Kdyby\Doctrine\EntityManager;
 use App\Model\Entity\Country;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Repository of operations performed on Country entities.
@@ -12,9 +12,9 @@ class Countries extends BaseRepository
 {
     /**
      * DI Constructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         parent::__construct($em, Country::class);
     }

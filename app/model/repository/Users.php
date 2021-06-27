@@ -2,7 +2,7 @@
 
 namespace App\Model\Repository;
 
-use Kdyby\Doctrine\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Exceptions\NotFoundException;
 use App\Model\Entity\User;
 use App\Model\Entity\Faculty;
@@ -14,9 +14,9 @@ class Users extends BaseRepository
 {
     /**
      * DI Constructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         parent::__construct($em, User::class);
     }
