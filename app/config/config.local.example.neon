@@ -15,8 +15,10 @@ parameters:
                 okRedirectionUrl: https://pret.tnt
                 failRedirectionUrl: https://pret.tnt
 
-doctrine:
-    host: localhost
-    user: root
-    password:
-    dbname: ifmsa_cuk
+
+nettrine.dbal:
+    connection:
+        host: "localhost"
+        user: "root"
+        password: ""
+        dbname: ifmsa_cuk

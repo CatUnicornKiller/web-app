@@ -5,6 +5,9 @@
 
 define('WWW_DIR',  dirname(__FILE__));
 
-$container = require __DIR__ . '/app/bootstrap.php';
+require __DIR__ . './vendor/autoload.php';
 
-$container->getByType('Nette\Application\Application')->run();
+$configurator = App\Bootstrap::boot();
+$container = $configurator->createContainer();
+$application = $container->getByType(Nette\Application\Application::class);
+$application->run();
