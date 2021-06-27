@@ -4,7 +4,7 @@ namespace App\Model\Repository;
 
 use App\Model\Entity\Country;
 use DateTime;
-use Kdyby\Doctrine\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Entity\Feedback;
 
 /**
@@ -14,9 +14,9 @@ class FeedbackRepository extends BaseRepository
 {
     /**
      * DI Contructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         parent::__construct($em, Feedback::class);
     }

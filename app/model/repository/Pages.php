@@ -3,7 +3,7 @@
 namespace App\Model\Repository;
 
 use App\Model\Entity\Faculty;
-use Kdyby\Doctrine\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Entity\Page;
 
 /**
@@ -13,9 +13,9 @@ class Pages extends BaseRepository
 {
     /**
      * DI Constructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         parent::__construct($em, Page::class);
     }
