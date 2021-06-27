@@ -9,7 +9,7 @@ class MenuItem
 {
     /**
      * Holder construction.
-     * @param string $active
+     * @param bool $active
      * @param string $name
      * @param string $link
      * @param array $subItems

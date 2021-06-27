@@ -67,8 +67,8 @@ class ExternalService
 
     /**
      * Get complete redirection URL for failed transactions.
-     * @param type $transactionId transaction identification
-     * @param type $errorMsg error message
+     * @param string $transactionId transaction identification
+     * @param string $errorMsg error message
      * @return string URL
      */
     public function getFailRedirectionUrl($transactionId, $errorMsg): string
@@ -80,7 +80,7 @@ class ExternalService
 
     /**
      * Get complete redirection URL for successful transactions.
-     * @param type $transactionId
+     * @param string $transactionId
      * @return string URL
      */
     public function getOkRedirectionUrl($transactionId): string

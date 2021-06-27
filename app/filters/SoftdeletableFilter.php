@@ -13,7 +13,7 @@ final class SoftdeletableFilter extends SQLFilter
     /**
      * Apply soft deleted filter on the soft deletable entities.
      * @param ClassMetadata $targetEntity entity which can be filtered
-     * @param type $targetTableAlias alias for entity
+     * @param string $targetTableAlias alias for entity
      * @return string filter string
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string

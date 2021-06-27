@@ -2,6 +2,7 @@
 
 namespace App\Model\Repository;
 
+use App\Model\Entity\Faculty;
 use Kdyby\Doctrine\EntityManager;
 use App\Model\Entity\Page;
 

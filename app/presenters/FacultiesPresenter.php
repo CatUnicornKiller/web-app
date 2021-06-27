@@ -35,7 +35,7 @@ class FacultiesPresenter extends BasePresenter
 
     public function createEditFaculty($faculty)
     {
-        $form = $this->facultiesFormsFactory->createEditFacultyForm($faculty);
+        $form = $this->facultiesFormsFactory->createEditFacultyForm();
         $form->setDefaults($faculty->toArray());
         $form->onSuccess[] = function (App\Forms\MyForm $form, $values) {
             $form->presenter->flashMessage('Faculty was successfully edited.');

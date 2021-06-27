@@ -2,15 +2,17 @@
 
 namespace App\Exceptions;
 
+use Exception;
+
 /**
  * If doctrine entity could not be found this exception is raised.
  */
-class NotFoundException extends \Exception
+class NotFoundException extends Exception
 {
     /**
      * Constructor with message and previously thrown exception.
-     * @param type $message
-     * @param type $previous
+     * @param string $message
+     * @param Exception $previous
      */
     public function __construct($message, $previous = null)
     {

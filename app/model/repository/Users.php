@@ -85,7 +85,7 @@ class Users extends BaseRepository
     /**
      * Count users based on given type, faculty and privileges.
      * @param string $type
-     * @param Faculty $faculty
+     * @param ?Faculty $faculty
      * @param string $privileges
      * @return int
      */

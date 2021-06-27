@@ -2,6 +2,7 @@
 
 namespace App\Model\Repository;
 
+use DateTime;
 use Kdyby\Doctrine\EntityManager;
 use App\Model\Entity\Event;
 use App\Model\Entity\Faculty;
@@ -42,11 +43,11 @@ class Events extends BaseRepository
      * Get list of faculty events which comply all given parameters.
      * @note Returns only constructed query.
      * @param Faculty $faculty
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
+     * @param DateTime $startDate
+     * @param DateTime $endDate
      * @param bool $socialProgram
      * @param bool $academicQuality
-     * @param Faculty $organizerFaculty
+     * @param ?Faculty $organizerFaculty
      * @return \Doctrine\ORM\Query
      */
     public function getEventsListQuery(
@@ -91,9 +92,9 @@ class Events extends BaseRepository
      * @note Returns only constructed query.
      * @param string $orderby
      * @param string $order
-     * @param Faculty $faculty
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
+     * @param ?Faculty $faculty
+     * @param DateTime $startDate
+     * @param DateTime $endDate
      * @return \Doctrine\ORM\Query
      */
     public function getAllEventsListQuery(

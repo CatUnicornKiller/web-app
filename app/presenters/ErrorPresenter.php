@@ -2,13 +2,14 @@
 
 namespace App\Presenters;
 
+use Exception;
 use Nette;
 use Tracy\ILogger;
 
 class ErrorPresenter extends BasePresenter
 {
     /**
-     * @param  \Exception
+     * @param Exception $exception
      * @return void
      * @throws Nette\Application\AbortException
      */

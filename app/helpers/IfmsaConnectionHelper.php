@@ -3,11 +3,14 @@
 namespace App\Helpers;
 
 use App;
+use DOMDocument;
+use Exception;
 use GuzzleHttp;
 use App\Exceptions\IfmsaConnectionException;
 use App\Model\Entity\User;
 use App\Model\Entity\OfficersProfile;
 use App\Users\UserManager;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Holder for some basic person information obtained from ifmsa.org.
@@ -231,7 +234,7 @@ class IfmsaConnectionHelper
 
     /**
      * Login into ifmsa.org with credentials from officer account.
-     * @return string response
+     * @return ResponseInterface response
      * @throws IfmsaConnectionException in case of connection error
      */
     public function login()
@@ -241,12 +244,12 @@ class IfmsaConnectionHelper
                 $this->basePage . '/exchange/login',
                 [ 'cookies' => $this->guzzleMySessionCookieJar ]
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new IfmsaConnectionException("Ifmsa.org login error", $e);
         }
 
         $csrf_token = '';
-        $dom = new \DOMDocument;
+        $dom = new DOMDocument;
         $body = $responseCSRF->getBody();
         @$dom->loadHTML($body);
 
@@ -270,7 +273,7 @@ class IfmsaConnectionHelper
                     'cookies' => $this->guzzleMySessionCookieJar,
                 ]
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new IfmsaConnectionException("Ifmsa.org login error", $e);
         }
 
@@ -279,15 +282,14 @@ class IfmsaConnectionHelper
 
     /**
      * Logout from ifmsa.org.
-     * @return string response
+     * @return ResponseInterface response
      */
     public function logout()
     {
-        $response = $this->guzzleClient->get(
+        return $this->guzzleClient->get(
             $this->basePage . '/exchange/logout',
             [ 'cookies' => $this->guzzleMySessionCookieJar ]
         );
-        return $response;
     }
 
     /**
@@ -299,7 +301,7 @@ class IfmsaConnectionHelper
      */
     public function uploadCpInfo($user, $profile)
     {
-        $dom = new \DOMDocument;
+        $dom = new DOMDocument;
         for ($i = 0; $i < 2; $i++) {
             // first lets get csrf token
             try {
@@ -307,7 +309,7 @@ class IfmsaConnectionHelper
                     $this->basePage . '/exchange/' . $this->targetPage . '/explore/contact_persons/add',
                     [ 'cookies' => $this->guzzleMySessionCookieJar ]
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new IfmsaConnectionException("Something went wrong!", $e);
             }
 
@@ -339,7 +341,7 @@ class IfmsaConnectionHelper
                         'cookies' => $this->guzzleMySessionCookieJar
                     ]
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new IfmsaConnectionException("Something went wrong!", $e);
             }
 
@@ -373,7 +375,7 @@ class IfmsaConnectionHelper
     public function fetchOutgoings($year, $bottomLimit, $topLimit, & $personEntryList, array & $afList)
     {
         $found = false;
-        $dom = new \DOMDocument;
+        $dom = new DOMDocument;
         for ($i = 0; $i < 2; $i++) {
             try {
                 $response = $this->guzzleClient->post(
@@ -394,7 +396,7 @@ class IfmsaConnectionHelper
                         'cookies' => $this->guzzleMySessionCookieJar,
                     ]
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new IfmsaConnectionException("Something went wrong!", $e);
             }
 
@@ -458,9 +460,9 @@ class IfmsaConnectionHelper
                 $personEntryList[] = $entry;
             }
 
-            if ($found == true) {
+            if ($found) {
                 break;
-            } elseif ($found == false && $i == 1) {
+            } elseif (!$found && $i == 1) {
                 throw new IfmsaConnectionException("Page cannot be found or user logged in");
             } else {
                 $this->login();
@@ -480,7 +482,7 @@ class IfmsaConnectionHelper
     public function fetchIncomings($year, $bottomLimit, $topLimit, & $personEntryList, array & $afList)
     {
         $found = false;
-        $dom = new \DOMDocument;
+        $dom = new DOMDocument;
         for ($i = 0; $i < 2; $i++) {
             try {
                 $response = $this->guzzleClient->post(
@@ -503,7 +505,7 @@ class IfmsaConnectionHelper
                     ]
                 );
                 $body = $response->getBody();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $body = ""; // exchange.ifmsa.org for some reason returns 500
                 // on requested address, thus guzzle will throw an exception
 
@@ -628,11 +630,11 @@ class IfmsaConnectionHelper
                         $this->targetPage . '/exchange/student/application_form/' . $afNumber,
                     [ 'cookies' => $this->guzzleMySessionCookieJar ]
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new IfmsaConnectionException("Something went wrong!", $e);
             }
             $body = $response->getBody();
-            $dom_view_af = new \DOMDocument;
+            $dom_view_af = new DOMDocument;
             @$dom_view_af->loadHTML($body);
 
             foreach ($dom_view_af->getElementsByTagName('div') as $node) { // load information from Application Form
@@ -883,11 +885,11 @@ class IfmsaConnectionHelper
                         $this->targetPage . '/exchange/student/card_of_documents/' . $afNumber,
                     [ 'cookies' => $this->guzzleMySessionCookieJar ]
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new IfmsaConnectionException("Something went wrong!", $e);
             }
             $body = $response->getBody();
-            $dom_view_card = new \DOMDocument;
+            $dom_view_card = new DOMDocument;
             @$dom_view_card->loadHTML($body);
 
             foreach ($dom_view_card->getElementsByTagName('div') as $node) { // load information from Card of Documents
@@ -947,7 +949,6 @@ class IfmsaConnectionHelper
      * Fetch ConfirmationCard of particular person based on AF number.
      * @param string $afNumber
      * @param array $personInfo output param
-     * @return boolean true if successful
      * @throws IfmsaConnectionException in case of connection error
      */
     public function fetchPersonCC($afNumber, & $personInfo)
@@ -979,11 +980,11 @@ class IfmsaConnectionHelper
                         $this->targetPage . '/exchange/student/card_confirmation/' . $afNumber,
                     [ 'cookies' => $this->guzzleMySessionCookieJar ]
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new IfmsaConnectionException("Something went wrong!", $e);
             }
             $body = $response->getBody();
-            $dom_view_cc = new \DOMDocument;
+            $dom_view_cc = new DOMDocument;
             @$dom_view_cc->loadHTML($body);
 
             foreach ($dom_view_cc->getElementsByTagName('div') as $node) { // load information from Card of Confirmation

@@ -3,6 +3,7 @@
 namespace App\Model\Repository;
 
 use App\Model\Entity\Country;
+use DateTime;
 use Kdyby\Doctrine\EntityManager;
 use App\Model\Entity\Feedback;
 
@@ -25,9 +26,9 @@ class FeedbackRepository extends BaseRepository
      * parameters.
      * @param string $orderby
      * @param string $order
-     * @param Country $country
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
+     * @param ?Country $country
+     * @param ?DateTime $startDate
+     * @param ?DateTime $endDate
      * @param string $exchangeType
      * @param string $hostCity
      * @param string $hostFaculty

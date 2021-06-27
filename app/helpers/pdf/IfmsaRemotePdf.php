@@ -15,10 +15,10 @@ class IfmsaRemotePdf extends BasePdf
 
     /**
      * Constructor.
-     * @param type $documentType
-     * @param type $facultyName
-     * @param type $facultyAddress
-     * @param type $defaultFolder
+     * @param string $documentType
+     * @param string $facultyName
+     * @param string $facultyAddress
+     * @param string $defaultFolder
      * @param App\Users\MyAuthorizator $myAuthorizator
      */
     public function __construct(

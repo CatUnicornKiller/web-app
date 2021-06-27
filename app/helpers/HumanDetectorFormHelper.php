@@ -29,7 +29,7 @@ class HumanDetectorFormHelper
      * given form.
      * @param App\Forms\MyForm $form
      * @param mixed $values form values
-     * @return true if given string match, false otherwise
+     * @return bool true if given string match, false otherwise
      */
     public function checkForm(App\Forms\MyForm $form, $values)
     {

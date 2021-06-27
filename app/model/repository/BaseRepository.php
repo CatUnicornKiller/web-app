@@ -68,7 +68,7 @@ class BaseRepository
     /**
      * Find one entity by given parameters.
      * @param array $params
-     * @return Entity|NULL
+     * @return object|NULL
      */
     public function findOneBy($params)
     {
@@ -78,7 +78,7 @@ class BaseRepository
     /**
      * Find one entity with given identification or throw exception.
      * @param int $id
-     * @return Entity
+     * @return object
      * @throws NotFoundException
      */
     public function findOrThrow($id)
@@ -101,7 +101,7 @@ class BaseRepository
 
     /**
      * Persist given entity to database.
-     * @param Entity $entity
+     * @param object $entity
      * @param bool $autoFlush
      */
     public function persist($entity, $autoFlush = true)
@@ -114,7 +114,7 @@ class BaseRepository
 
     /**
      * Remove given entity from database.
-     * @param Entity $entity
+     * @param object $entity
      * @param bool $autoFlush
      */
     public function remove($entity, $autoFlush = true)

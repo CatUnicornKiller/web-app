@@ -2,15 +2,17 @@
 
 namespace App\Exceptions;
 
+use Exception;
+
 /**
  * Thrown if there was error in getting data from ifmsa.org
  */
-class IfmsaConnectionException extends \Exception
+class IfmsaConnectionException extends Exception
 {
     /**
      * Constructor with message and previous exception.
-     * @param type $message
-     * @param type $previous
+     * @param string $message
+     * @param Exception $previous
      */
     public function __construct($message, $previous = null)
     {
