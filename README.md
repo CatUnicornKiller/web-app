@@ -20,8 +20,8 @@ Installation is in more detail described in [Programmer Documentation](https://g
 2. Run `composer install`
 3. Create a database and fill in the access information in `app/config/config.local.neon` (for an example, see `app/config/config.local.example.neon`)
 4. Create directories for images which was specified in configuration
-5. Setup the database schema by running `php index.php orm:schema-tool:update --force`
-6. Fill database with initial values by running `php index.php db:fill`
+5. Setup the database schema by running `bin/console orm:schema-tool:update --force`
+6. Fill database with initial values by running `bin/console db:fill`
 
 Do not forget to make directories `temp/` and `log/` writable.
 
