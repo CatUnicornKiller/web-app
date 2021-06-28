@@ -2,6 +2,8 @@
 
 namespace App\Model\Entity;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -13,6 +15,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class EventParticipant
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -66,12 +70,17 @@ class EventParticipant
         return $this->id;
     }
 
-    public function getPaid(): string
+    public function getPaid(): int
     {
         return $this->paid;
     }
 
-    public function getEcommTransactions(): ArrayCollection
+    public function setPaid(int $paid): void
+    {
+        $this->paid = $paid;
+    }
+
+    public function getEcommTransactions(): Collection
     {
         return $this->ecommTransactions;
     }
@@ -81,7 +90,7 @@ class EventParticipant
         return $this->deleted;
     }
 
-    public function getModifications(): ArrayCollection
+    public function getModifications(): Collection
     {
         return $this->modifications;
     }
@@ -102,7 +111,7 @@ class EventParticipant
         try {
             $this->user->getDeleted();
             return $this->user; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }
@@ -112,7 +121,7 @@ class EventParticipant
         try {
             $this->event->getDeleted();
             return $this->event; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }

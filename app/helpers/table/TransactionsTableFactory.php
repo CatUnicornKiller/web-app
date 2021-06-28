@@ -38,31 +38,31 @@ class TransactionsTableFactory
         $content = "Transaction Start;Transaction End;Firstname;Surname;Amount;Currency;Paid;Event Name\n";
         foreach ($transactionsList as $transId) {
             $trans = $this->ecommTransactions->findOrThrow($transId);
-            $participate = $trans->eventParticipant;
+            $participate = $trans->getEventParticipant();
 
             $paid = "No";
             $firstname = "";
             $surname = "";
             $eventName = "";
             if ($participate) {
-                $firstname = $participate->user->firstname;
-                $surname = $participate->user->surname;
-                $eventName = $participate->event->eventName;
+                $firstname = $participate->getUser()->getFirstname();
+                $surname = $participate->getUser()->getSurname();
+                $eventName = $participate->getEvent()->getEventName();
             }
 
             $endDate = "";
-            if ($trans->transEndDate) {
-                $endDate = $trans->transEndDate->format("d.m.Y H:i:s");
+            if ($trans->getTransEndDate()) {
+                $endDate = $trans->getTransEndDate()->format("d.m.Y H:i:s");
             }
             if ($trans->isOk()) {
                 $paid = "Yes";
             }
 
-            $content .= $trans->tDate->format("d.m.Y H:i:s") . ";";
+            $content .= $trans->getTDate()->format("d.m.Y H:i:s") . ";";
             $content .= $endDate . ";";
             $content .= $firstname . ";";
             $content .= $surname . ";";
-            $content .= ($trans->amount / 100) . ";";
+            $content .= ($trans->getAmount() / 100) . ";";
             $content .= "CZK;";
             $content .= $paid . ";";
             $content .= "\"" . $eventName . "\";";

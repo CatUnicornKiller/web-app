@@ -2,6 +2,7 @@
 
 namespace App\Forms;
 
+use DateTime;
 use Nette;
 use Nette\Application\UI\Form;
 use App;
@@ -20,7 +21,7 @@ class UserFormsFactory
 
     /** @var Nette\Security\User */
     private $netteUser;
-    /** @var User */
+    /** @var User|null */
     private $user;
     /** @var Users */
     private $users;
@@ -74,14 +75,14 @@ class UserFormsFactory
 
     /**
      * Create change current user password form.
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createChangePasswdForm()
     {
         $form = new MyForm;
         $form->addPassword('oldPasswd', 'Old password')
                 ->setRequired('Old password is required')
-                ->setAttribute('autofocus');
+                ->setHtmlAttribute('autofocus');
         $form->addPassword('passwd', 'New password')
                 ->setRequired('New password is required');
         $form->addPassword('retypePasswd', 'Retype new password')
@@ -94,77 +95,77 @@ class UserFormsFactory
 
     /**
      * Success callback for the change password form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function changePasswdFormSucceeded(MyForm $form, $values)
     {
-        if (!Nette\Security\Passwords::verify($values->oldPasswd, $this->user->password)) {
+        if (!$this->user->matchPasswords($values->oldPasswd)) {
             $form->addError('Old password does not match');
             return;
         }
 
-        $this->user->password = $values->passwd;
+        $this->user->hashPassword($values->passwd);
         $this->users->flush();
     }
 
     /**
      * Create edit current user form.
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createEditUserForm()
     {
         $officer = false;
         if ($this->user->isOfficer()) {
-            $officer = $this->user->officersProfile;
+            $officer = $this->user->getOfficersProfile();
         }
 
         $form = new MyForm;
         $form->addText('id', 'ID')->setDisabled()
-                ->setDefaultValue($this->user->id);
+                ->setDefaultValue($this->user->getId());
         $form->addText('username', 'Username')->setDisabled()
-                ->setDefaultValue($this->user->username);
+                ->setDefaultValue($this->user->getUsername());
         $form->addUpload('profileImg', 'Profile Image');
         $form->addText('firstname', 'Firstname')
-                ->setDefaultValue($this->user->firstname)
+                ->setDefaultValue($this->user->getFirstname())
                 ->setRequired('Firstname cannot be empty')
                 ->addRule(Form::MAX_LENGTH, 'Firstname is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addText('surname', 'Surname')
-                ->setDefaultValue($this->user->surname)
+                ->setDefaultValue($this->user->getSurname())
                 ->setRequired('Surname cannot be empty')
                 ->addRule(Form::MAX_LENGTH, 'Surname is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addText('email', 'Email')->setType('email')
-                ->setDefaultValue($this->user->email)
+                ->setDefaultValue($this->user->getEmail())
                 ->setRequired('Email cannot be empty')
                 ->addRule(Form::MAX_LENGTH, 'Email is too long', 255)
-                ->setAttribute('length', 255)
+                ->setHtmlAttribute('length', 255)
                 ->addRule(Form::EMAIL, 'Email is in bad format');
         if ($officer && $this->netteUser->isAllowed('MyIfmsaCredentials', 'edit')) {
             $form->addText('ifmsaUsername', 'IFMSA Username')
-                    ->setDefaultValue($officer->ifmsaUsername);
+                    ->setDefaultValue($officer->getIfmsaUsername());
             $form->addText('ifmsaPassword', 'IFMSA Password')
-                    ->setDefaultValue($officer->ifmsaPassword);
+                    ->setDefaultValue($officer->getIfmsaPassword());
                     //->setType('password');
         }
         $form->addText('faculty', 'Faculty')->setDisabled()
-                ->setDefaultValue($this->user->faculty->facultyName);
+                ->setDefaultValue($this->user->getFaculty()->getFacultyName());
         $form->addText('country', 'Country')->setDisabled()
-                ->setDefaultValue($this->user->country->countryName);
+                ->setDefaultValue($this->user->getCountry()->getCountryName());
         $form->addText('role', 'Role')->setDisabled()
-                ->setDefaultValue($this->rolesManager->roleToStr($this->user->role));
+                ->setDefaultValue($this->rolesManager->roleToStr($this->user->getRole()));
         if ($officer) {
             $form->addText('address', 'Address')
-                    ->setDefaultValue($officer->address);
+                    ->setDefaultValue($officer->getAddress());
             $form->addText('city', 'City')
-                    ->setDefaultValue($officer->city);
+                    ->setDefaultValue($officer->getCity());
             $form->addText('postCode', 'Post Code')
-                    ->setDefaultValue($officer->postCode);
+                    ->setDefaultValue($officer->getPostCode());
             $form->addText('region', 'Region')
-                    ->setDefaultValue($officer->region);
+                    ->setDefaultValue($officer->getRegion());
             $form->addText('phone', 'Phone')
-                    ->setDefaultValue($officer->phone);
+                    ->setDefaultValue($officer->getPhone());
         }
         $form->addSubmit('send', 'Edit User info');
         $form->onSuccess[] = array($this, 'editUserFormSucceeded');
@@ -173,8 +174,8 @@ class UserFormsFactory
 
     /**
      * Success callback for the edit current user form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function editUserFormSucceeded(MyForm $form, $values)
     {
@@ -198,30 +199,30 @@ class UserFormsFactory
         $profileImg = "";
         if ($values->profileImg->isOk()) {
             $imgExt = pathinfo($values->profileImg->sanitizedName, PATHINFO_EXTENSION);
-            $profileImg = $this->user->id . '.' . $imgExt;
+            $profileImg = $this->user->getId() . '.' . $imgExt;
         }
 
         // save general things about user
         $user = $this->user;
-        $user->firstname = $values->firstname;
-        $user->surname = $values->surname;
-        $user->email = $values->email;
+        $user->setFirstname($values->firstname);
+        $user->setSurname($values->surname);
+        $user->setEmail($values->email);
         if (!empty($profileImg)) {
-            $user->profileImg = $profileImg;
+            $user->setProfileImg($profileImg);
         }
 
         // ... and now save officer specialities
         if ($this->user->isOfficer()) {
-            $officer = $this->user->officersProfile;
-            $officer->address = $values->address;
-            $officer->city = $values->city;
-            $officer->postCode = $values->postCode;
-            $officer->region = $values->region;
-            $officer->phone = $values->phone;
+            $officer = $this->user->getOfficersProfile();
+            $officer->setAddress($values->address);
+            $officer->setCity($values->city);
+            $officer->setPostCode($values->postCode);
+            $officer->setRegion($values->region);
+            $officer->setPhone($values->phone);
 
             if ($this->netteUser->isAllowed('MyIfmsaCredentials', 'edit')) {
-                $officer->ifmsaUsername = $values->ifmsaUsername;
-                $officer->ifmsaPassword = $values->ifmsaPassword;
+                $officer->setIfmsaUsername($values->ifmsaUsername);
+                $officer->setIfmsaPassword($values->ifmsaPassword);
 
                 // in case of change of ifmsa credentials
                 $this->guzzleFactory->destroySessionCookie();
@@ -251,21 +252,21 @@ class UserFormsFactory
         $requestedDesc[] = "email";
         if ($this->myAuthorizator->isAllowedUsers(
             'changeIfmsa',
-            $this->user->id,
-            $this->user->faculty->id,
-            $this->user->role
+            $this->user->getId(),
+            $this->user->getFaculty()->getId(),
+            $this->user->getRole()
         )) {
             $requestedDesc[] = "ifmsa_username";
             $requestedDesc[] = "ifmsa_password";
         }
 
-        foreach ($this->user->infoRequests as $request) {
+        foreach ($this->user->getInfoRequests() as $request) {
             if (in_array($request->requestDesc, $requestedDesc) ||
                     ($request->requestDesc == "additional_information"
                     && $this->userHelpers->isAdditionalInfoFilled($values))) {
                 $request->delete();
                 $request->deletedByUser = $this->user;
-                $request->deletedTime = new \DateTime;
+                $request->deletedTime = new DateTime;
                 $request->completed = true;
             }
         }

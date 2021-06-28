@@ -9,6 +9,7 @@ use App\Model\Repository\CpAssignedAfs;
 use App\Model\Repository\IfmsaPersons;
 use App\Exceptions\IfmsaConnectionException;
 use App\Helpers\Date\DateHelper;
+use Traversable;
 
 /**
  * Ifmsa presenter.
@@ -64,8 +65,7 @@ class IfmsaPresenter extends BasePresenter
 
     private function createComponentYearMonthForm($year, $month)
     {
-        $form = $this->ifmsaFormsFactory->createYearMonthForm($year, $month);
-        return $form;
+        return $this->ifmsaFormsFactory->createYearMonthForm($year, $month);
     }
 
     private function createComponentPdfSelectionForm(array $personInfo, array $cardOfDocuments)
@@ -95,11 +95,11 @@ class IfmsaPresenter extends BasePresenter
         }
 
         $person = $this->ifmsaPersons->findByAfNumber($personInfo['afNumber']);
-        $person->department = $personInfo['departmentChosen'];
+        $person->setDepartment($personInfo['departmentChosen']);
 
         if ($pdfType == 'contactPerson') {
             $personInfo['accommodation'] = $values->accommodation;
-            $person->accommodation = $values->accommodation;
+            $person->setAccommodation($values->accommodation);
             $this->ifmsaRemotePdfFactory->generateContactPersonPdf($personInfo, $cardOfDocuments);
         } elseif ($pdfType == 'department') {
             $this->ifmsaRemotePdfFactory->generateDepartmentPdf($personInfo);
@@ -110,9 +110,9 @@ class IfmsaPresenter extends BasePresenter
 
     private function redirectIfUserHasEmptyIfmsaCredentials()
     {
-        $userProfile = $this->currentUser->officersProfile;
-        $ifmsaUsername = trim($userProfile->ifmsaUsername);
-        $ifmsaPassword = trim($userProfile->ifmsaPassword);
+        $userProfile = $this->currentUser->getOfficersProfile();
+        $ifmsaUsername = trim($userProfile->getIfmsaUsername());
+        $ifmsaPassword = trim($userProfile->getIfmsaPassword());
 
         if (empty($ifmsaUsername) || empty($ifmsaPassword)) {
             $this->flashMessage("Please enter your credentials to www.ifmsa.org before visiting proper sections in CUK."
@@ -166,7 +166,7 @@ class IfmsaPresenter extends BasePresenter
         foreach ($this->template->personList as $person) {
             $ifmsaPerson = $this->ifmsaPersons->findByAfNumber($person->afNumber);
             if ($ifmsaPerson) {
-                $ifmsaPerson->confirmationNumber = $person->confirmationNumber;
+                $ifmsaPerson->setConfirmationNumber($person->confirmationNumber);
                 $this->ifmsaPersons->flush();
             } else {
                 $ifmsaPerson = new IfmsaPerson($person->afNumber, $person->confirmationNumber);
@@ -217,7 +217,7 @@ class IfmsaPresenter extends BasePresenter
         $person = $this->ifmsaPersons->findByAfNumber($afNumber);
         $confNumber = '';
         if ($person) {
-            $confNumber = $person->confirmationNumber;
+            $confNumber = $person->getConfirmationNumber();
         }
 
         $personInfo = array();
@@ -233,12 +233,12 @@ class IfmsaPresenter extends BasePresenter
 
         // update or create new ifmsa person in database
         if ($person) {
-            $person->confirmationNumber = $confNumber;
-            $person->firstname = $personInfo['name'];
-            $person->surname = $personInfo['surname'];
-            $person->email = $personInfo['email'];
-            $person->photo = $personInfo['jpgPath'];
-            $person->afArrival = $this->dateHelper->createDateOrDefault($personInfo['arrivalDate'])->typed;
+            $person->setConfirmationNumber($confNumber);
+            $person->setFirstname($personInfo['name']);
+            $person->setSurname($personInfo['surname']);
+            $person->setEmail($personInfo['email']);
+            $person->setPhoto($personInfo['jpgPath']);
+            $person->setAfArrival($this->dateHelper->createDateOrDefault($personInfo['arrivalDate'])->typed);
         } else {
             $person = new IfmsaPerson(
                 $afNumber,
@@ -276,8 +276,8 @@ class IfmsaPresenter extends BasePresenter
             $cardOfDocuments = array();
         }
 
-        if ((!is_array($personInfo) && !$personInfo instanceof \Traversable) ||
-                (!is_array($cardOfDocuments) && !$cardOfDocuments instanceof \Traversable)) {
+        if ((!is_array($personInfo) && !$personInfo instanceof Traversable) ||
+                (!is_array($cardOfDocuments) && !$cardOfDocuments instanceof Traversable)) {
             $this->error('Data in wrong format');
         }
 
@@ -287,7 +287,7 @@ class IfmsaPresenter extends BasePresenter
             $cp = $this->cpAssignedAfs->findOneByAfNumber($personInfo['afNumber']);
             $personInfo['contactPerson'] = '';
             if ($cp) {
-                $personInfo['contactPerson'] = $cp->user->firstname . ' ' . $cp->user->surname;
+                $personInfo['contactPerson'] = $cp->getUser()->getFirstname() . ' ' . $cp->getUser()->getSurname();
             }
             $this->ifmsaRemotePdfFactory->generateThirdPartyPdf($personInfo);
         } else {
@@ -312,15 +312,15 @@ class IfmsaPresenter extends BasePresenter
     public function actionUploadOfficerInfo($id)
     {
         $officer = $this->users->findOfficerOrThrow($id);
-        $profile = $officer->officersProfile;
+        $profile = $officer->getOfficersProfile();
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("IfmsaRemote", "view") ||
                 !$this->user->isAllowed("Users", "view") ||
                 !$this->myAuthorizator->isAllowedUsers(
                     'view',
-                    $officer->id,
-                    $officer->faculty->id,
-                    $officer->role
+                    $officer->getId(),
+                    $officer->getFaculty()->getId(),
+                    $officer->getRole()
                 )) {
             $this->error('Access Denied');
         }

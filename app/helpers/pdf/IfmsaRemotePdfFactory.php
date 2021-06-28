@@ -6,6 +6,8 @@ use App;
 use App\Model\Entity\User;
 use App\Model\Entity\Faculty;
 use App\Users\UserManager;
+use DateTime;
+use Exception;
 use GuzzleHttp;
 
 /**
@@ -13,9 +15,9 @@ use GuzzleHttp;
  */
 class IfmsaRemotePdfFactory
 {
-    /** @var User */
+    /** @var User|null */
     private $user;
-    /** @var Faculty */
+    /** @var Faculty|null */
     private $faculty;
     /** @var App\Helpers\GuzzleFactory */
     private $guzzleFactory;
@@ -37,7 +39,7 @@ class IfmsaRemotePdfFactory
     ) {
 
         $this->user = $userManager->getCurrentUser();
-        $this->faculty = $this->user->faculty;
+        $this->faculty = $this->user->getFaculty();
         $this->guzzleFactory = $guzzleFactory;
         $this->guzzleClient = $guzzleFactory->createGuzzleClient();
         $this->myAuthorizator = $myAuthorizator;
@@ -78,7 +80,7 @@ class IfmsaRemotePdfFactory
     public function generateContactPersonPdf($list, $cardOfDocuments, $output = "", $defaultFolder = './')
     {
         $dateOfBirth = date_create_from_format("d/m/Y", $list["dateOfBirth"]);
-        $now = new \DateTime();
+        $now = new DateTime();
         $age = $now->diff($dateOfBirth);
 
 
@@ -96,8 +98,8 @@ class IfmsaRemotePdfFactory
         $facultyName = '';
         $facultyAddress = '';
         if ($this->faculty) {
-            $facultyName = $this->faculty->facultyName;
-            $facultyAddress = $this->faculty->facultyAddress;
+            $facultyName = $this->faculty->getFacultyName();
+            $facultyAddress = $this->faculty->getFacultyAddress();
         }
         $pdf = new IfmsaRemotePdf(
             'Contact Person',
@@ -126,7 +128,7 @@ class IfmsaRemotePdfFactory
                     $pdf->Image($list["jpgPath"], $img_left_pos, $img_top_pos, $imgwidth, 0, "", $list["jpgPath"], '', true);
                     $imgheight = ($imgwidth / $imginfo[0]) * $imginfo[1];
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
         $pdf->setPageMark();
@@ -438,7 +440,7 @@ class IfmsaRemotePdfFactory
     public function generateThirdPartyPdf($list, $output = "")
     {
         $dateOfBirth = date_create_from_format("d/m/Y", $list["dateOfBirth"]);
-        $now = new \DateTime();
+        $now = new DateTime();
         $age = $now->diff($dateOfBirth);
 
 
@@ -455,8 +457,8 @@ class IfmsaRemotePdfFactory
         $facultyName = '';
         $facultyAddress = '';
         if ($this->faculty) {
-            $facultyName = $this->faculty->facultyName;
-            $facultyAddress = $this->faculty->facultyAddress;
+            $facultyName = $this->faculty->getFacultyName();
+            $facultyAddress = $this->faculty->getFacultyAddress();
         }
         $pdf = new IfmsaRemotePdf(
             'Third Party',
@@ -486,7 +488,7 @@ class IfmsaRemotePdfFactory
                     $pdf->Image($list["jpgPath"], $img_left_pos, $img_top_pos, $imgwidth, 0, "", $list["jpgPath"], '', true);
                     $imgheight = ($imgwidth / $imginfo[0]) * $imginfo[1];
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
         $pdf->setPageMark();
@@ -548,7 +550,7 @@ class IfmsaRemotePdfFactory
     public function generateDepartmentPdf($list, $output = "")
     {
         $dateOfBirth = date_create_from_format("d/m/Y", $list["dateOfBirth"]);
-        $now = new \DateTime();
+        $now = new DateTime();
         $age = $now->diff($dateOfBirth);
 
 
@@ -564,8 +566,8 @@ class IfmsaRemotePdfFactory
         $facultyName = '';
         $facultyAddress = '';
         if ($this->faculty) {
-            $facultyName = $this->faculty->facultyName;
-            $facultyAddress = $this->faculty->facultyAddress;
+            $facultyName = $this->faculty->getFacultyName();
+            $facultyAddress = $this->faculty->getFacultyAddress();
         }
         $pdf = new IfmsaRemotePdf(
             'Department',
@@ -595,7 +597,7 @@ class IfmsaRemotePdfFactory
                     $pdf->Image($list["jpgPath"], $img_left_pos, $img_top_pos, $imgwidth, 0, "", $list["jpgPath"], '', true);
                     $imgheight = ($imgwidth / $imginfo[0]) * $imginfo[1];
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
         $pdf->setPageMark();

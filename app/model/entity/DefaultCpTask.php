@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DefaultCpTask extends BaseEntity
 {
+    use MagicGetters;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -47,8 +49,18 @@ class DefaultCpTask extends BaseEntity
         return $this->cpTasksDescription;
     }
 
+    public function setCpTasksDescription(string $cpTasksDescription): void
+    {
+        $this->cpTasksDescription = $cpTasksDescription;
+    }
+
     public function getCpTasksNote(): string
     {
         return $this->cpTasksNote;
+    }
+
+    public function setCpTasksNote(string $cpTasksNote): void
+    {
+        $this->cpTasksNote = $cpTasksNote;
     }
 }

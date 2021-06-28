@@ -7,6 +7,12 @@ use App\Model\Entity\EcommError;
 
 /**
  * Repository of operations performed on EcommError entities.
+ *
+ * @method EcommError|null get($id)
+ * @method EcommError[] findAll()
+ * @method EcommError[] findBy($params, $orderBy = [])
+ * @method EcommError|null findOneBy($params)
+ * @method EcommError findOrThrow($id)
  */
 class EcommErrors extends BaseRepository
 {

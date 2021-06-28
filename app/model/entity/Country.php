@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Country
 {
+    use MagicGetters;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -55,9 +57,19 @@ class Country
         return $this->id;
     }
 
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
     public function getCountryName(): string
     {
         return $this->countryName;
+    }
+
+    public function setCountryName(string $countryName): void
+    {
+        $this->countryName = $countryName;
     }
 
     public function getCountryShortcut(): string
@@ -65,9 +77,19 @@ class Country
         return $this->countryShortcut;
     }
 
+    public function setCountryShortcut(string $countryShortcut): void
+    {
+        $this->countryShortcut = $countryShortcut;
+    }
+
     public function getIsIfmsa(): int
     {
         return (int)$this->isIfmsa;
+    }
+
+    public function setIsIfmsa(int $isIfmsa): void
+    {
+        $this->isIfmsa = $isIfmsa;
     }
 
     public function getIfmsaClinicalContracts(): string
@@ -75,13 +97,28 @@ class Country
         return $this->ifmsaClinicalContracts;
     }
 
+    public function setIfmsaClinicalContracts(string $ifmsaClinicalContracts): void
+    {
+        $this->ifmsaClinicalContracts = $ifmsaClinicalContracts;
+    }
+
     public function getIfmsaResearchContracts(): string
     {
         return $this->ifmsaResearchContracts;
     }
 
+    public function setIfmsaResearchContracts(string $ifmsaResearchContracts): void
+    {
+        $this->ifmsaResearchContracts = $ifmsaResearchContracts;
+    }
+
     public function getIfmsaContractsYear(): string
     {
         return $this->ifmsaContractsYear;
+    }
+
+    public function setIfmsaContractsYear(string $ifmsaContractsYear): void
+    {
+        $this->ifmsaContractsYear = $ifmsaContractsYear;
     }
 }

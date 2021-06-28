@@ -59,21 +59,21 @@ class ForgottenPasswordFormsFactory
 
     /**
      * Create forgotten password request form.
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createForgottenPasswordForm()
     {
         $form = new MyForm;
         $form->addText('username', '*Username')
                 ->setRequired('Please enter your username.')
-                ->setAttribute('autofocus')
+                ->setHtmlAttribute('autofocus')
                 ->addRule(Form::MAX_LENGTH, 'Username is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addText('email', '*Email')
-                ->setType('email')
+                ->setHtmlType('email')
                 ->setRequired('Please enter your email.')
                 ->addRule(Form::MAX_LENGTH, 'Email is too long', 255)
-                ->setAttribute('length', 255)
+                ->setHtmlAttribute('length', 255)
                 ->addRule(Form::EMAIL, 'Email is in bad format');
 
         $form->addSubmit('send', 'Send Email');
@@ -84,8 +84,8 @@ class ForgottenPasswordFormsFactory
 
     /**
      * Success callback for the forgotten password form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function forgottenPasswordFormSucceeded(MyForm $form, $values)
     {
@@ -117,21 +117,21 @@ class ForgottenPasswordFormsFactory
     /**
      * Create renew password form.
      * @param string $ftoken
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createRenewPasswordForm($ftoken)
     {
         $form = new MyForm;
         $form->addText('username', '*Username')
                 ->setRequired('Please enter your username.')
-                ->setAttribute('autofocus')
+                ->setHtmlAttribute('autofocus')
                 ->addRule(Form::MAX_LENGTH, 'Username is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addText('email', '*Email')
-                ->setType('email')
+                ->setHtmlType('email')
                 ->setRequired('Please enter your email.')
                 ->addRule(Form::MAX_LENGTH, 'Email is too long', 255)
-                ->setAttribute('length', 255)
+                ->setHtmlAttribute('length', 255)
                 ->addRule(Form::EMAIL, 'Email is in bad format');
 
         $form->addPassword('password', '*Password')
@@ -149,8 +149,8 @@ class ForgottenPasswordFormsFactory
 
     /**
      * Success callback for the renew password form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function renewPasswordFormSucceeded(MyForm $form, $values)
     {
@@ -160,13 +160,13 @@ class ForgottenPasswordFormsFactory
             return;
         }
 
-        $user = $forgottenPassword->user;
+        $user = $forgottenPassword->getUser();
 
         $error = false;
-        if ($user->username != $values->username) {
+        if ($user->getUsername() != $values->username) {
             $form->addError('Username does not match!');
             $error = true;
-        } elseif ($user->email != $values->email) {
+        } elseif ($user->getEmail() != $values->email) {
             $form->addError('Email does not match!');
             $error = true;
         }
@@ -175,7 +175,7 @@ class ForgottenPasswordFormsFactory
             return;
         }
 
-        $user->password = $values->password;
+        $user->hashPassword($values->password);
         $user->modified($user);
         $this->users->flush();
 

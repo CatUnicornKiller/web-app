@@ -43,7 +43,7 @@ class HomepageFormsFactory
 
     /**
      * Create add news form.
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createAddNewsForm()
     {
@@ -51,7 +51,7 @@ class HomepageFormsFactory
         $form->addTextArea('message', 'Message')
                 ->setRequired('Message is required')
                 ->addRule(Form::MAX_LENGTH, 'Message is too long', 1000)
-                ->setAttribute('length', 1000);
+                ->setHtmlAttribute('length', 1000);
         $form->addSubmit('send', 'Add News');
         $form->onSuccess[] = array($this, 'addNewsFormSucceeded');
         return $form;
@@ -59,8 +59,8 @@ class HomepageFormsFactory
 
     /**
      * Success callback for the add news form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function addNewsFormSucceeded(MyForm $form, $values)
     {

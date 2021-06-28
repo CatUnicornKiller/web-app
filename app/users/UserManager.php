@@ -16,7 +16,7 @@ class UserManager
 
     /** @var Nette\Security\User */
     private $user;
-    /** @var User */
+    /** @var User|null */
     private $cachedUser;
     /** @var Users */
     private $users;
@@ -36,9 +36,9 @@ class UserManager
 
     /**
      * Get currently logged user.
-     * @return User|NULL
+     * @return User|null
      */
-    public function getCurrentUser()
+    public function getCurrentUser(): ?User
     {
         if (!$this->user->isLoggedIn()) {
             // user is not logged in, return null

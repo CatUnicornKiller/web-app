@@ -3,6 +3,7 @@
 namespace App\Forms;
 
 use Nette\Forms\Controls\TextArea;
+use Nette\Utils\Html;
 
 /**
  * Reimplementation of nette TextArea more suitable for material-css framework.
@@ -20,9 +21,9 @@ class MyTextArea extends TextArea
 
     /**
      * Get ready-to-render html structure for the textarea control part.
-     * @return \Nette\Utils\Html
+     * @return Html
      */
-    public function getControl()
+    public function getControl(): Html
     {
         $control = parent::getControl();
         $control->addAttributes(array('class' => 'materialize-textarea'));

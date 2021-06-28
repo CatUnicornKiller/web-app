@@ -7,6 +7,12 @@ use App\Model\Entity\EventCoorganizer;
 
 /**
  * Repository of operations performed on EventCoorganizer entities.
+ *
+ * @method EventCoorganizer|null get($id)
+ * @method EventCoorganizer[] findAll()
+ * @method EventCoorganizer[] findBy($params, $orderBy = [])
+ * @method EventCoorganizer|null findOneBy($params)
+ * @method EventCoorganizer findOrThrow($id)
  */
 class EventCoorganizers extends BaseRepository
 {

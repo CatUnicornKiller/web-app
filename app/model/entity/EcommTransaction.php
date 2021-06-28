@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 use DateTime;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class EcommTransaction
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -184,9 +187,19 @@ class EcommTransaction
         return $this->result;
     }
 
+    public function setResult(string $result): void
+    {
+        $this->result = $result;
+    }
+
     public function getResultCode(): string
     {
         return $this->resultCode;
+    }
+
+    public function setResultCode(string $resultCode): void
+    {
+        $this->resultCode = $resultCode;
     }
 
     public function getResult3dsecure(): string
@@ -194,9 +207,19 @@ class EcommTransaction
         return $this->result3dsecure;
     }
 
+    public function setResult3dsecure(string $result3dsecure): void
+    {
+        $this->result3dsecure = $result3dsecure;
+    }
+
     public function getCardNumber(): string
     {
         return $this->cardNumber;
+    }
+
+    public function setCardNumber(string $cardNumber): void
+    {
+        $this->cardNumber = $cardNumber;
     }
 
     public function getTDate(): DateTime
@@ -209,14 +232,29 @@ class EcommTransaction
         return $this->transEndDate;
     }
 
+    public function setTransEndDate(?DateTime $transEndDate): void
+    {
+        $this->transEndDate = $transEndDate;
+    }
+
     public function getResponse(): string
     {
         return $this->response;
     }
 
-    public function getReversalAmount(): string
+    public function setResponse(string $response): void
+    {
+        $this->response = $response;
+    }
+
+    public function getReversalAmount(): ?int
     {
         return $this->reversalAmount;
+    }
+
+    public function setReversalAmount(?int $reversalAmount): void
+    {
+        $this->reversalAmount = $reversalAmount;
     }
 
     public function getMakedmsAmount(): string
@@ -248,7 +286,7 @@ class EcommTransaction
         try {
             $this->eventParticipant->getDeleted();
             return $this->eventParticipant; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }

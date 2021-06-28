@@ -21,7 +21,7 @@ class TasksFormsFactory
 {
     use Nette\SmartObject;
 
-    /** @var User */
+    /** @var User|null */
     private $user;
     /** @var CpTasks */
     private $cpTasks;
@@ -54,7 +54,7 @@ class TasksFormsFactory
      * Create change state of the user tasks form.
      * @param int $id user identification
      * @param array $tasks
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createChangeTasksStatesForm($id, $tasks)
     {
@@ -72,14 +72,14 @@ class TasksFormsFactory
 
     /**
      * Success callback for the change tasks state form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function changeTasksStatesFormSucceeded(MyForm $form, $values)
     {
         foreach ($values->cpTasks as $key => $val) {
             $task = $this->cpTasks->findOrThrow($key);
-            $task->completed = $val;
+            $task->setCompleted($val);
             $task->modified($this->user);
             $this->cpTasks->flush();
         }
@@ -87,23 +87,23 @@ class TasksFormsFactory
 
     /**
      * Create base form for the task editation.
-     * @param \App\Forms\MyForm $form
+     * @param MyForm $form
      */
     private function createBasicTaskForm(MyForm $form)
     {
         $form->addText('cpTasksDescription', 'Task Description')
                 ->setRequired('Task Description is mandatory')
                 ->addRule(Form::MAX_LENGTH, 'Task Description is too long', 1000)
-                ->setAttribute('length', 1000);
+                ->setHtmlAttribute('length', 1000);
         $form->addTextArea('cpTasksNote', 'Task Note')
                 ->setRequired('Task Note is required')
                 ->addRule(Form::MAX_LENGTH, 'Task Note is too long', 1000)
-                ->setAttribute('length', 1000);
+                ->setHtmlAttribute('length', 1000);
     }
 
     /**
      * Create add default task form.
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createAddDefaultTaskForm()
     {
@@ -116,8 +116,8 @@ class TasksFormsFactory
 
     /**
      * Success callback for the add default task form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function addDefaultTaskFormSucceeded(MyForm $form, $values)
     {
@@ -128,7 +128,7 @@ class TasksFormsFactory
     /**
      * Create edit default task form.
      * @param CpTask $task
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createEditDefaultTaskForm($task)
     {
@@ -145,14 +145,14 @@ class TasksFormsFactory
 
     /**
      * Success callback for the edit default task form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function editDefaultTaskFormSucceeded(MyForm $form, $values)
     {
         $task = $this->defaultCpTasks->findOrThrow($values->id);
-        $task->cpTasksDescription = $values->cpTasksDescription;
-        $task->cpTasksNote = $values->cpTasksNote;
+        $task->setCpTasksDescription($values->cpTasksDescription);
+        $task->setCpTasksNote($values->cpTasksNote);
         $this->defaultCpTasks->flush();
     }
 
@@ -160,7 +160,7 @@ class TasksFormsFactory
      * Create edit user tasks form.
      * @param int $id user identification
      * @param array $tasks
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createEditTasksForm($id, $tasks)
     {
@@ -176,16 +176,16 @@ class TasksFormsFactory
                     ->setRequired('Task Description is required')
                     ->setDefaultValue($task->cpTasksDescription)
                     ->addRule(Form::MAX_LENGTH, 'Task Description is too long', 1000)
-                    ->setAttribute('length', 1000);
+                    ->setHtmlAttribute('length', 1000);
             $notes->addTextArea($task->id, 'Task Note')
                     ->setRequired('Task Note is required')
                     ->setDefaultValue($task->cpTasksNote)
                     ->addRule(Form::MAX_LENGTH, 'Task Note is too long', 1000)
-                    ->setAttribute('length', 1000);
+                    ->setHtmlAttribute('length', 1000);
             $sort_order->addText($task->id, 'Sort Order')
-                    ->setType('number')
+                    ->setHtmlType('number')
                     ->setDefaultValue($task->sortOrder)
-                    ->setAttribute('class', 'event_points');
+                    ->setHtmlAttribute('class', 'event_points');
         }
 
         $form->addSubmit('send', 'Edit Tasks');
@@ -195,8 +195,8 @@ class TasksFormsFactory
 
     /**
      * Success callback for the edit user tasks form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function editTasksFormSucceeded(MyForm $form, $values)
     {
@@ -205,9 +205,9 @@ class TasksFormsFactory
             $sortOrder = $values->sortOrder[$key];
 
             $task = $this->cpTasks->findOrThrow($key);
-            $task->cpTasksDescription = $desc;
-            $task->cpTasksNote = $note;
-            $task->sortOrder = $sortOrder;
+            $task->setCpTasksDescription($desc);
+            $task->setCpTasksNote($note);
+            $task->setSortOrder($sortOrder);
             $task->modified($this->user);
             $this->cpTasks->flush();
         }
@@ -217,7 +217,7 @@ class TasksFormsFactory
      * Create add user tasks form.
      * @param int $id user identification
      * @param array $defaultTasks
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createAddTasksForm($id, $defaultTasks)
     {
@@ -232,11 +232,11 @@ class TasksFormsFactory
             $cpTasks->addTextArea('cpTasksDescription', 'Task Description')
                     ->setRequired('Task Description is required')
                     ->addRule(Form::MAX_LENGTH, 'Task Description is too long', 1000)
-                    ->setAttribute('length', 1000);
+                    ->setHtmlAttribute('length', 1000);
             $cpTasks->addTextArea('cpTasksNote', 'Task Note')
                     ->setRequired('Task Note is required')
                     ->addRule(Form::MAX_LENGTH, 'Task Note is too long', 1000)
-                    ->setAttribute('length', 1000);
+                    ->setHtmlAttribute('length', 1000);
         });
         $cpTasks->containerClass = 'App\Forms\MyContainer';
 
@@ -261,21 +261,21 @@ class TasksFormsFactory
 
     /**
      * Success callback for the add user tasks form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function addTasksFormSucceeded(MyForm $form, $values)
     {
         $assigned = $this->cpAssignedAfs->findOrThrow($values->id);
 
         foreach ($values->cpTasks as $task) {
-            if ($task->cpTasksSelection == false) {
+            if (!$task->cpTasksSelection) {
                 continue;
             }
 
             $task = new CpTask(
                 $assigned,
-                $assigned->afNumber,
+                $assigned->getAfNumber(),
                 $task->cpTasksDescription,
                 $task->cpTasksNote
             );

@@ -3,6 +3,8 @@
 namespace App\Helpers;
 
 use App;
+use DateInterval;
+use DateTime;
 use DOMDocument;
 use Exception;
 use GuzzleHttp;
@@ -95,7 +97,7 @@ class PersonListInfo
 
         if (intval($month) >= 1 && intval($month) <= 12) { // there is particular month given
             $dayTop = cal_days_in_month(CAL_GREGORIAN, $month, $year) - 7;
-            $topLimit = new \DateTime($year . "-" . $month . "-" . $dayTop);
+            $topLimit = new DateTime($year . "-" . $month . "-" . $dayTop);
 
             if ($month == 1) {
                 $tempYear = $year - 1;
@@ -106,11 +108,11 @@ class PersonListInfo
             }
 
             $dayBottom = cal_days_in_month(CAL_GREGORIAN, $tempMonth, $tempYear) - 7;
-            $bottomLimit = new \DateTime($tempYear . "-" . $tempMonth . "-" . $dayBottom);
+            $bottomLimit = new DateTime($tempYear . "-" . $tempMonth . "-" . $dayBottom);
         } else { // Option All in months was selected, or bad month given
             $month = '0';
-            $topLimit = new \DateTime($year . "-12-24");
-            $bottomLimit = new \DateTime(($year - 1) . "-12-24");
+            $topLimit = new DateTime($year . "-12-24");
+            $bottomLimit = new DateTime(($year - 1) . "-12-24");
         }
 
         $this->year = $year;
@@ -165,7 +167,7 @@ class IfmsaConnectionHelper
         $this->guzzleMySessionCookieJar = $guzzleFactory->createMySessionCookieJar();
 
         $this->user = $userManager->getCurrentUser();
-        $this->userProfile = $this->user->officersProfile;
+        $this->userProfile = $this->user->getOfficersProfile();
         $this->myAuthorizator = $myAuthorizator;
 
         if (!$this->myAuthorizator->isScope()) {
@@ -265,8 +267,8 @@ class IfmsaConnectionHelper
                 $this->basePage . '/exchange/login_check',
                 [
                     'form_params' => [
-                        '_username' => $this->userProfile->ifmsaUsername,
-                        '_password' => $this->userProfile->ifmsaPassword,
+                        '_username' => $this->userProfile->getIfmsaUsername(),
+                        '_password' => $this->userProfile->getIfmsaPassword(),
                         '_csrf_token' => $csrf_token,
                         '_submit' => 'Login',
                     ],
@@ -326,16 +328,16 @@ class IfmsaConnectionHelper
                     $this->basePage . '/exchange/' . $this->targetPage . '/explore/contact_persons/add',
                     [
                         'form_params' => [
-                            'ez_explorebundle_contactperson[firstname]' => $user->firstname,
-                            'ez_explorebundle_contactperson[lastname]' => $user->surname,
-                            'ez_explorebundle_contactperson[address]' => $profile->address,
-                            'ez_explorebundle_contactperson[city]' => $profile->city,
-                            'ez_explorebundle_contactperson[postalCode]' => $profile->postCode,
-                            'country' => $user->country->countryName,
-                            'ez_explorebundle_contactperson[phone]' => $profile->phone,
-                            'ez_explorebundle_contactperson[cellular]' => $profile->phone,
-                            'ez_explorebundle_contactperson[email]' => $user->email,
-                            'lc' => $user->faculty->ifmsaLcNumber,
+                            'ez_explorebundle_contactperson[firstname]' => $user->getFirstname(),
+                            'ez_explorebundle_contactperson[lastname]' => $user->getSurname(),
+                            'ez_explorebundle_contactperson[address]' => $profile->getAddress(),
+                            'ez_explorebundle_contactperson[city]' => $profile->getCity(),
+                            'ez_explorebundle_contactperson[postalCode]' => $profile->getPostCode(),
+                            'country' => $user->getCountry()->getCountryName(),
+                            'ez_explorebundle_contactperson[phone]' => $profile->getPhone(),
+                            'ez_explorebundle_contactperson[cellular]' => $profile->getPhone(),
+                            'ez_explorebundle_contactperson[email]' => $user->getEmail(),
+                            'lc' => $user->getFaculty()->getIfmsaLcNumber(),
                             'ez_explorebundle_contactperson[_token]' => $csrf_token
                         ],
                         'cookies' => $this->guzzleMySessionCookieJar
@@ -462,7 +464,7 @@ class IfmsaConnectionHelper
 
             if ($found) {
                 break;
-            } elseif (!$found && $i == 1) {
+            } elseif ($i == 1) {
                 throw new IfmsaConnectionException("Page cannot be found or user logged in");
             } else {
                 $this->login();
@@ -569,9 +571,9 @@ class IfmsaConnectionHelper
                 $personEntryList[] = $entry;
             }
 
-            if ($found == true) {
+            if ($found) {
                 break;
-            } elseif ($found == false && $i == 1) {
+            } elseif ($i == 1) {
                 throw new IfmsaConnectionException("Page cannot be found or user logged in");
             } else {
                 $this->login();
@@ -594,7 +596,7 @@ class IfmsaConnectionHelper
         $personInfo["unilateral"] = "";
         $personInfo["dateOfBirth"] = "";
         $personInfo["dateOfBirth_"] = date_create();
-        $personInfo["age_"] = new \DateInterval("PT0S");
+        $personInfo["age_"] = new DateInterval("PT0S");
         $personInfo["nationality"] = "";
         $personInfo["languages"] = "";
         $personInfo["languages_"] = array();
@@ -656,7 +658,7 @@ class IfmsaConnectionHelper
                     }
                     if ($node->nodeValue == "Date of birth (dd/mm/yyyy)") {
                         $personInfo["dateOfBirth_"] = date_create_from_format("d/m/Y", $node->nextSibling->nextSibling->nodeValue);
-                        $date_now = new \DateTime();
+                        $date_now = new DateTime();
                         $personInfo["age_"] = $date_now->diff($personInfo["dateOfBirth_"]);
                         $personInfo["dateOfBirth"] = $node->nextSibling->nextSibling->nodeValue;
                         $found = true;

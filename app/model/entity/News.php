@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +15,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class News
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -77,7 +80,7 @@ class News
         return $this->deleted;
     }
 
-    public function getModifications(): ArrayCollection
+    public function getModifications(): Collection
     {
         return $this->modifications;
     }

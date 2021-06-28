@@ -7,6 +7,12 @@ use App\Model\Entity\EventParticipant;
 
 /**
  * Repository of operations performed on EventParticipant entities.
+ *
+ * @method EventParticipant|null get($id)
+ * @method EventParticipant[] findAll()
+ * @method EventParticipant[] findBy($params, $orderBy = [])
+ * @method EventParticipant|null findOneBy($params)
+ * @method EventParticipant findOrThrow($id)
  */
 class EventParticipants extends BaseRepository
 {

@@ -97,10 +97,10 @@ class IncomingsPresenter extends BasePresenter
         }
 
         if (!$facultyId) {
-            $facultyId = $this->currentUser->faculty->id;
+            $facultyId = $this->currentUser->getFaculty()->getId();
         }
 
-        $this->template->pageDefault = $page = $this->pages->getPage('incomings_fac_info', 'default', $facultyId);
+        $this->template->pageDefault = $this->pages->getPage('incomings_fac_info', 'default', $facultyId);
         $this->template->canEdit = $this->user->isAllowed('IncomingsFacultyInformation', 'edit') &&
                 $this->myAuthorizator->isAllowedIncomingsFacultyInformation('edit', $facultyId);
     }
@@ -112,9 +112,9 @@ class IncomingsPresenter extends BasePresenter
             $this->error("Access Denied");
         }
 
-        $page = $this->pages->getPage('incomings_fac_info', 'default', $this->currentUser->faculty->id);
+        $page = $this->pages->getPage('incomings_fac_info', 'default', $this->currentUser->getFaculty()->getId());
 
-        $form = $this->pagesFormsFactory->createPagesForm($page, $this->currentUser->faculty->id);
+        $form = $this->pagesFormsFactory->createPagesForm($page, $this->currentUser->getFaculty()->getId());
         $form->onSuccess[] = function ($form) {
             $this->flashMessage('Content successfully changed.');
             $form->getPresenter()->redirect('Incomings:facultyInformation');
@@ -170,16 +170,16 @@ class IncomingsPresenter extends BasePresenter
         $profile = $this->users->findIncomingOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Incomings", "view") ||
-                !$this->myAuthorizator->isAllowedIncomings('view', $profile->id, $profile->faculty->id)) {
+                !$this->myAuthorizator->isAllowedIncomings('view', $profile->getId(), $profile->getFaculty()->getId())) {
             $this->error('Access Denied');
         }
 
         $this->template->profile = $profile;
-        $this->template->signedUpEvents = $profile->participatedEvents;
+        $this->template->signedUpEvents = $profile->getParticipatedEvents();
         $this->template->canDelete = $this->user->isAllowed('Incomings', 'delete') &&
-                $this->myAuthorizator->isAllowedIncomings('delete', $profile->id, $profile->faculty->id);
+                $this->myAuthorizator->isAllowedIncomings('delete', $profile->getId(), $profile->getFaculty()->getId());
         $this->template->canChangeRole = $this->user->isAllowed('Incomings', 'changeRole') &&
-                $this->myAuthorizator->isAllowedIncomings('changeRole', $profile->id, $profile->faculty->id);
+                $this->myAuthorizator->isAllowedIncomings('changeRole', $profile->getId(), $profile->getFaculty()->getId());
     }
 
     public function actionDeleteIncoming($id)
@@ -187,7 +187,7 @@ class IncomingsPresenter extends BasePresenter
         $usr = $this->users->findIncomingOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Incomings", "delete") ||
-                !$this->myAuthorizator->isAllowedIncomings('delete', $usr->id, $usr->faculty->id)) {
+                !$this->myAuthorizator->isAllowedIncomings('delete', $usr->getId(), $usr->getFaculty()->getId())) {
             $this->error("Access Denied");
         }
 
@@ -220,7 +220,7 @@ class IncomingsPresenter extends BasePresenter
         $usr = $this->users->findIncomingOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Incomings", "changeRole") ||
-                !$this->myAuthorizator->isAllowedIncomings('changeRole', $usr->id, $usr->faculty->id)) {
+                !$this->myAuthorizator->isAllowedIncomings('changeRole', $usr->getId(), $usr->getFaculty()->getId())) {
             $this->error("Access Denied");
         }
 

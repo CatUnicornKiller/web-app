@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Composer\CaBundle\CaBundle;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\SessionCookieJar;
 use GuzzleHttp;
@@ -52,17 +53,16 @@ class GuzzleFactory
      */
     public function createGuzzleClient()
     {
-        $guzzleClient = new Client([
+        return new Client([
             'defaults' => [
-                "verify" => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
+                "verify" => CaBundle::getSystemCaRootBundlePath(),
             ]
         ]);
-        return $guzzleClient;
     }
 
     /**
      * Create special permament cookie jar.
-     * @return \App\Helpers\MySessionCookieJar
+     * @return MySessionCookieJar
      */
     public function createMySessionCookieJar()
     {

@@ -2,6 +2,8 @@
 
 namespace App\Model\Entity;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -12,6 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class CpTask
 {
+    use MagicGetters;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -90,14 +94,29 @@ class CpTask
         return $this->sortOrder;
     }
 
+    public function setSortOrder(string $sortOrder): void
+    {
+        $this->sortOrder = $sortOrder;
+    }
+
     public function getCpTasksDescription(): string
     {
         return $this->cpTasksDescription;
     }
 
+    public function setCpTasksDescription(string $cpTasksDescription): void
+    {
+        $this->cpTasksDescription = $cpTasksDescription;
+    }
+
     public function getCpTasksNote(): string
     {
         return $this->cpTasksNote;
+    }
+
+    public function setCpTasksNote(string $cpTasksNote): void
+    {
+        $this->cpTasksNote = $cpTasksNote;
     }
 
     public function getDeleted(): bool
@@ -110,7 +129,12 @@ class CpTask
         return $this->completed;
     }
 
-    public function getModifications(): ArrayCollection
+    public function setCompleted(string $completed): void
+    {
+        $this->completed = $completed;
+    }
+
+    public function getModifications(): Collection
     {
         return $this->modifications;
     }
@@ -136,7 +160,7 @@ class CpTask
         try {
             $this->cpAssignedAf->getDeleted();
             return $this->cpAssignedAf; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }

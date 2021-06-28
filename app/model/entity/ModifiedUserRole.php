@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ModifiedUserRole
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id

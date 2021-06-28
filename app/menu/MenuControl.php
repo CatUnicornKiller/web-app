@@ -121,7 +121,7 @@ class MenuControl extends Nette\Application\UI\Control
                 $menuItems[] = new MenuItem($active, $key, "", $newSubMenu);
             } else {
                 $menuItems[] = new MenuItem(($this->presenter->getName() . ':' .
-                        $this->presenter->getView()) == $item ? true : false, $key, $item);
+                        $this->presenter->getView()) == $item, $key, $item);
             }
         }
 

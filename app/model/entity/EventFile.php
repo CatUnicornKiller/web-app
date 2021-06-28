@@ -2,6 +2,8 @@
 
 namespace App\Model\Entity;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -12,6 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class EventFile
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -81,7 +85,7 @@ class EventFile
         return $this->deleted;
     }
 
-    public function getModifications(): ArrayCollection
+    public function getModifications(): Collection
     {
         return $this->modifications;
     }
@@ -102,7 +106,7 @@ class EventFile
         try {
             $this->user->getDeleted();
             return $this->user; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }
@@ -112,7 +116,7 @@ class EventFile
         try {
             $this->event->getDeleted();
             return $this->event; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }

@@ -4,6 +4,7 @@ namespace App\Forms;
 
 use Nette;
 use Nette\Application\UI\Form;
+use Nette\Security\IUserStorage;
 use Nette\Security\User;
 
 /**
@@ -36,7 +37,7 @@ class LoginFormFactory
         $form = new MyForm;
         $form->addText('username', 'Username')
                 ->setRequired('Please enter your username.')
-                ->setAttribute('autofocus');
+                ->setHtmlAttribute('autofocus');
 
         $form->addPassword('password', 'Password')
             ->setRequired('Please enter your password.');
@@ -51,15 +52,15 @@ class LoginFormFactory
 
     /**
      * Success callback for the user login form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function formSucceeded(MyForm $form, $values)
     {
         if ($values->remember) {
-            $this->user->setExpiration('30 days', false);
+            $this->user->setExpiration('30 days', IUserStorage::CLEAR_IDENTITY);
         } else {
-            $this->user->setExpiration('60 minutes', true);
+            $this->user->setExpiration('60 minutes', IUserStorage::CLEAR_IDENTITY);
         }
 
         try {

@@ -2,6 +2,7 @@
 
 namespace App\Forms;
 
+use Exception;
 use Nette;
 use Nette\Application\UI\Form;
 use App;
@@ -20,7 +21,7 @@ class FeedbackFormsFactory
 {
     use Nette\SmartObject;
 
-    /** @var User */
+    /** @var User|null */
     private $user;
     /** @var Faculties */
     private $faculties;
@@ -85,7 +86,7 @@ class FeedbackFormsFactory
     /**
      * Create add feedback form.
      * @param int $id country identification
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createAddFeedbackForm($id)
     {
@@ -94,9 +95,10 @@ class FeedbackFormsFactory
         $form->addText('name', $this->feedbackHelpers->getItemDescription('name'))
                 ->setRequired('Name of person is required')
                 ->addRule(Form::MAX_LENGTH, 'Name is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addText('grade', $this->feedbackHelpers->getItemDescription('grade'))
-                ->setType('number')->setDefaultValue(1)
+                ->setHtmlType('number')
+                ->setDefaultValue(1)
                 ->setRequired('Year of Study is required')
                 ->addRule(Form::INTEGER, 'Year of Study is in bad format');
         $form->addSelect('hostCountry', $this->feedbackHelpers->getItemDescription('hostCountry'), $this->getCountriesSelect())
@@ -104,23 +106,23 @@ class FeedbackFormsFactory
         $form->addText('hostCity', $this->feedbackHelpers->getItemDescription('hostCity'))
                 ->setRequired('Host City is required')
                 ->addRule(Form::MAX_LENGTH, 'Host City is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addText('hostFaculty', $this->feedbackHelpers->getItemDescription('hostFaculty'))
                 ->setRequired('Host Faculty is required')
                 ->addRule(Form::MAX_LENGTH, 'Host Faculty is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addText('hostDepartment', $this->feedbackHelpers->getItemDescription('hostDepartment'))
                 ->setRequired('Host Department is required')
                 ->addRule(Form::MAX_LENGTH, 'Host Department is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addText('startDate', $this->feedbackHelpers->getItemDescription('startDate'))
                 ->setRequired('Start Date is required')
-                ->setAttribute('class', 'datepicker')
-                ->setValue(date('j. n. Y'));
+                ->setHtmlAttribute('class', 'datepicker')
+                ->setDefaultValue(date('j. n. Y'));
         $form->addText('endDate', $this->feedbackHelpers->getItemDescription('endDate'))
                 ->setRequired('End Date is required')
-                ->setAttribute('class', 'datepicker')
-                ->setValue(date('j. n. Y'));
+                ->setHtmlAttribute('class', 'datepicker')
+                ->setDefaultValue(date('j. n. Y'));
         $form->addSelect(
             'exchangeType',
             $this->feedbackHelpers->getItemDescription('exchangeType'),
@@ -142,47 +144,47 @@ class FeedbackFormsFactory
         $form->addTextArea('preparationComplications', $this->feedbackHelpers->getItemDescription('preparationComplications'))
                 ->setRequired('Preparation complications answer is required')
                 ->addRule(Form::MAX_LENGTH, 'Preparation complications is too long', 10000)
-                ->setAttribute('length', 10000);
+                ->setHtmlAttribute('length', 10000);
         $form->addTextArea('preparationMoney', $this->feedbackHelpers->getItemDescription('preparationMoney'))
                 ->setRequired('Preparation money answer is required')
                 ->addRule(Form::MAX_LENGTH, 'Preparation money is too long', 10000)
-                ->setAttribute('length', 10000);
+                ->setHtmlAttribute('length', 10000);
         $form->addTextArea('accommodation', $this->feedbackHelpers->getItemDescription('accommodation'))
                 ->setRequired('Accommodation answer is required')
                 ->addRule(Form::MAX_LENGTH, 'Accommodation is too long', 10000)
-                ->setAttribute('length', 10000);
+                ->setHtmlAttribute('length', 10000);
         $form->addTextArea('cpHelp', $this->feedbackHelpers->getItemDescription('cpHelp'))
                 ->setRequired('CP Help answer is required')
                 ->addRule(Form::MAX_LENGTH, 'CP Help is too long', 10000)
-                ->setAttribute('length', 10000);
+                ->setHtmlAttribute('length', 10000);
         $form->addTextArea('exchangeCommunication', $this->feedbackHelpers->getItemDescription('exchangeCommunication'))
                 ->setRequired('Exchange communication answer is required')
                 ->addRule(Form::MAX_LENGTH, 'Exchange communication is too long', 10000)
-                ->setAttribute('length', 10000);
+                ->setHtmlAttribute('length', 10000);
         $form->addTextArea('socialTravelling', $this->feedbackHelpers->getItemDescription('socialTravelling'))
                 ->setRequired('Travelling answer is required')
                 ->addRule(Form::MAX_LENGTH, 'Social travelling is too long', 10000)
-                ->setAttribute('length', 10000);
+                ->setHtmlAttribute('length', 10000);
         $form->addTextArea('socialProgram', $this->feedbackHelpers->getItemDescription('socialProgram'))
                 ->setRequired('Social program answer is required')
                 ->addRule(Form::MAX_LENGTH, 'Social program is too long', 10000)
-                ->setAttribute('length', 10000);
+                ->setHtmlAttribute('length', 10000);
         $form->addTextArea('furtherTips', $this->feedbackHelpers->getItemDescription('furtherTips'))
                 ->setRequired('Further tips answer is required')
                 ->addRule(Form::MAX_LENGTH, 'Further tips is too long', 10000)
-                ->setAttribute('length', 10000);
+                ->setHtmlAttribute('length', 10000);
         $form->addTextArea('overallReview', $this->feedbackHelpers->getItemDescription('overallReview'))
                 ->setRequired('Overall Review is required')
                 ->addRule(Form::MAX_LENGTH, 'Overall Review is too long', 10000)
-                ->setAttribute('length', 10000);
+                ->setHtmlAttribute('length', 10000);
 
         try {
             $defs = array('hostCountry' => $id);
             if ($this->user) {
-                $defs['name'] = $this->user->firstname . ' ' . $this->user->surname;
+                $defs['name'] = $this->user->getFirstname() . ' ' . $this->user->getSurname();
             }
             $form->setDefaults($defs);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         $this->humanDetector->addToForm($form);
@@ -194,7 +196,7 @@ class FeedbackFormsFactory
     /**
      * Check add feedback form for the errors.
      * @param MyForm $form
-     * @param array $values
+     * @param object $values
      * @return boolean true if form is without errors
      */
     private function checkAddFeedbackForm($form, $values)
@@ -216,8 +218,8 @@ class FeedbackFormsFactory
 
     /**
      * Success callback for the add feedback form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function addFeedbackFormSucceeded(MyForm $form, $values)
     {
@@ -263,7 +265,7 @@ class FeedbackFormsFactory
         $this->feedbackRepository->persist($feedback);
 
         $form->presenter->flashMessage('Feedback was successfully added');
-        $form->presenter->redirect('Feedback:feedbackDetail', $feedback->id);
+        $form->presenter->redirect('Feedback:feedbackDetail', $feedback->getId());
     }
 
     /**
@@ -291,7 +293,7 @@ class FeedbackFormsFactory
 
     /**
      * Create feedback countries management form.
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createCountriesManagementForm()
     {
@@ -306,16 +308,16 @@ class FeedbackFormsFactory
 
         $countries = $this->countries->findAll();
         foreach ($countries as $country) {
-            $isIfmsa->addSelect($country->id, 'Choose Country', $this->getYesNo())
-                    ->setDefaultValue($country->isIfmsa);
-            $clinicalContracts->addText($country->id, '')
-                    ->setType('number')
-                    ->setDefaultValue($country->ifmsaClinicalContracts)
+            $isIfmsa->addSelect($country->getId(), 'Choose Country', $this->getYesNo())
+                    ->setDefaultValue($country->getIsIfmsa());
+            $clinicalContracts->addText($country->getId(), '')
+                    ->setHtmlType('number')
+                    ->setDefaultValue($country->getIfmsaClinicalContracts())
                     ->addRule(Form::INTEGER, 'Clinical contracts has to be integer')
                     ->setRequired('Clinical contracts are required');
-            $researchContracts->addText($country->id, '')
-                    ->setType('number')
-                    ->setDefaultValue($country->ifmsaResearchContracts)
+            $researchContracts->addText($country->getId(), '')
+                    ->setHtmlType('number')
+                    ->setDefaultValue($country->getIfmsaResearchContracts())
                     ->addRule(Form::INTEGER, 'Research contracts has to be integer')
                     ->setRequired('Research contracts are required');
         }
@@ -327,8 +329,8 @@ class FeedbackFormsFactory
 
     /**
      * Success callback for the countries management form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function countriesManagementFormSucceeded(MyForm $form, $values)
     {
@@ -343,10 +345,10 @@ class FeedbackFormsFactory
             $researchContracts = $values->researchContracts[$id];
 
             $country = $this->countries->findOrThrow($id);
-            $country->isIfmsa = $isIfmsa;
-            $country->ifmsaClinicalContracts = $clinicalContracts;
-            $country->ifmsaResearchContracts = $researchContracts;
-            $country->ifmsaContractsYear = $year;
+            $country->setIsIfmsa($isIfmsa);
+            $country->setIfmsaClinicalContracts($clinicalContracts);
+            $country->setIfmsaResearchContracts($researchContracts);
+            $country->setIfmsaContractsYear($year);
             $this->countries->flush();
         }
     }
@@ -358,7 +360,7 @@ class FeedbackFormsFactory
      * @param string $endDate
      * @param string $hostCity
      * @param string $hostFaculty
-     * @return \App\Forms\MySimpleForm
+     * @return MySimpleForm
      */
     public function createFilterFeedbackForm(
         $exchangeType,
@@ -392,7 +394,7 @@ class FeedbackFormsFactory
                 'hostFaculty' => $hostFaculty,
                 'startDate' => $startDate,
                 'endDate' => $endDate));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         return $form;
@@ -403,7 +405,7 @@ class FeedbackFormsFactory
      * @param int $country
      * @param string $startDate
      * @param string $endDate
-     * @return \App\Forms\MySimpleForm
+     * @return MySimpleForm
      */
     public function createFilterFeedbackListForm($country, $startDate, $endDate)
     {
@@ -424,7 +426,7 @@ class FeedbackFormsFactory
                 'endDate' => $endDate,
                 'country' => $country
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         return $form;

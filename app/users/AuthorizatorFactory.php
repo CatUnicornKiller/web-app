@@ -2,6 +2,7 @@
 
 namespace App\Users;
 
+use Nette\Security\Authorizator;
 use Nette\Security\Permission;
 
 /**
@@ -12,9 +13,9 @@ class AuthorizatorFactory
     /**
      * Creates and returns authorizator for the application. Roles, resources
      * and permissions are defined here and not in the database!
-     * @return \Nette\Security\IAuthorizator
+     * @return Authorizator
      */
-    public function create()
+    public function create(): Authorizator
     {
         $permission = new Permission();
 

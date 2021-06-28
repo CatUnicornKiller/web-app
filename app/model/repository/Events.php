@@ -6,9 +6,16 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Entity\Event;
 use App\Model\Entity\Faculty;
+use Doctrine\ORM\Query;
 
 /**
  * Repository of operations performed on Event entities.
+ *
+ * @method Event|null get($id)
+ * @method Event[] findAll()
+ * @method Event[] findBy($params, $orderBy = [])
+ * @method Event|null findOneBy($params)
+ * @method Event findOrThrow($id)
  */
 class Events extends BaseRepository
 {
@@ -32,7 +39,7 @@ class Events extends BaseRepository
             $qb = $this->repository->createQueryBuilder("e");
             $qb->select("count(e.id)");
             $qb->leftJoin("e.visibleToFaculties", "f");
-            $qb->andWhere($qb->expr()->in('f.id', $faculty->id));
+            $qb->andWhere($qb->expr()->in('f.id', $faculty->getId()));
             return $qb->getQuery()->getSingleScalarResult();
         }
 
@@ -48,7 +55,7 @@ class Events extends BaseRepository
      * @param bool $socialProgram
      * @param bool $academicQuality
      * @param ?Faculty $organizerFaculty
-     * @return \Doctrine\ORM\Query
+     * @return Query
      */
     public function getEventsListQuery(
         Faculty $faculty,
@@ -82,7 +89,7 @@ class Events extends BaseRepository
 
         // find events visible to given faculty
         $qb->leftJoin("e.visibleToFaculties", "vf");
-        $qb->andWhere($qb->expr()->in('vf.id', $faculty->id));
+        $qb->andWhere($qb->expr()->in('vf.id', $faculty->getId()));
 
         return $qb->getQuery();
     }
@@ -95,7 +102,7 @@ class Events extends BaseRepository
      * @param ?Faculty $faculty
      * @param DateTime $startDate
      * @param DateTime $endDate
-     * @return \Doctrine\ORM\Query
+     * @return Query
      */
     public function getAllEventsListQuery(
         $orderby,

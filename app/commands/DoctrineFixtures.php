@@ -16,6 +16,7 @@ use Zenify\DoctrineFixtures\Contract\Alice\AliceLoaderInterface;
  */
 class DoctrineFixtures extends Command
 {
+    protected static $defaultName = 'db:fill';
 
     /** @var AliceLoaderInterface */
     private $aliceLoader;

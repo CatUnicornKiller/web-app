@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IfmsaPerson
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -108,9 +110,19 @@ class IfmsaPerson
         return $this->confirmationNumber;
     }
 
+    public function setConfirmationNumber($confirmationNumber): void
+    {
+        $this->confirmationNumber = $confirmationNumber;
+    }
+
     public function getFirstname(): string
     {
         return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): void
+    {
+        $this->firstname = $firstname;
     }
 
     public function getSurname(): string
@@ -118,9 +130,19 @@ class IfmsaPerson
         return $this->surname;
     }
 
+    public function setSurname(string $surname): void
+    {
+        $this->surname = $surname;
+    }
+
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
     }
 
     public function getPhoto(): string
@@ -128,9 +150,19 @@ class IfmsaPerson
         return $this->photo;
     }
 
+    public function setPhoto(string $photo): void
+    {
+        $this->photo = $photo;
+    }
+
     public function getAfArrival(): ?DateTime
     {
         return $this->afArrival;
+    }
+
+    public function setAfArrival(?DateTime $afArrival): void
+    {
+        $this->afArrival = $afArrival;
     }
 
     public function getAccommodation(): string
@@ -138,8 +170,18 @@ class IfmsaPerson
         return $this->accommodation;
     }
 
+    public function setAccommodation(string $accommodation): void
+    {
+        $this->accommodation = $accommodation;
+    }
+
     public function getDepartment(): string
     {
         return $this->department;
+    }
+
+    public function setDepartment(string $department): void
+    {
+        $this->department = $department;
     }
 }

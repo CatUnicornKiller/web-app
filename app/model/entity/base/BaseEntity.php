@@ -4,14 +4,16 @@ namespace App\Model\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\PersistentCollection;
+use ReflectionClass;
+use ReflectionProperty;
 
 abstract class BaseEntity
 {
     public function toArray()
     {
-        $reflection = new \ReflectionClass($this);
+        $reflection = new ReflectionClass($this);
         $details = array();
-        foreach ($reflection->getProperties(\ReflectionProperty::IS_PROTECTED) as $property) {
+        foreach ($reflection->getProperties(ReflectionProperty::IS_PROTECTED) as $property) {
             if (!$property->isStatic()) {
                 $value = $this->{$property->getName()};
 

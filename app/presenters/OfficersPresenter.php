@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use DateTime;
 use Nette;
 use App;
 use App\Model\Entity\User;
@@ -127,24 +128,24 @@ class OfficersPresenter extends BasePresenter
                 !$this->user->isAllowed("Users", "view") ||
                 !$this->myAuthorizator->isAllowedUsers(
                     'view',
-                    $profile->id,
-                    $profile->faculty->id,
-                    $profile->role
+                    $profile->getId(),
+                    $profile->getFaculty()->getId(),
+                    $profile->getRole()
                 )) {
             $this->error('Access Denied');
         }
 
         $this->template->profile = $profile;
-        $this->template->officerProfile = $profile->officersProfile;
+        $this->template->officerProfile = $profile->getOfficersProfile();
         $this->template->canRequest =
-                $this->userHelpers->canRequestAdditionalInfo($profile->infoRequests->count(), $profile->officersProfile);
-        $this->template->canUpload = $this->userHelpers->isAdditionalInfoFilled($profile->officersProfile);
+                $this->userHelpers->canRequestAdditionalInfo($profile->getInfoRequests()->count(), $profile->getOfficersProfile());
+        $this->template->canUpload = $this->userHelpers->isAdditionalInfoFilled($profile->getOfficersProfile());
         $this->template->canDelete = $this->user->isAllowed('Users', 'delete') &&
-                $this->myAuthorizator->isAllowedUsers('delete', $profile->id, $profile->faculty->id, $profile->role);
+                $this->myAuthorizator->isAllowedUsers('delete', $profile->getId(), $profile->getFaculty()->getId(), $profile->getRole());
         $this->template->canChangeIfmsa = $this->user->isAllowed('Users', 'changeIfmsa') &&
-                $this->myAuthorizator->isAllowedUsers('changeIfmsa', $profile->id, $profile->faculty->id, $profile->role);
+                $this->myAuthorizator->isAllowedUsers('changeIfmsa', $profile->getId(), $profile->getFaculty()->getId(), $profile->getRole());
         $this->template->canChangeRole =
-                $this->myAuthorizator->isAllowedUsers('changeRole', $profile->id, $profile->faculty->id, $profile->role);
+                $this->myAuthorizator->isAllowedUsers('changeRole', $profile->getId(), $profile->getFaculty()->getId(), $profile->getRole());
 
         $this['modifyEventsPoints'] = $this->createModifyEventsPointsForm($id);
         $this['modifyCoorgEventsPoints'] = $this->createModifyCoorgEventsPointsForm($id);
@@ -155,13 +156,13 @@ class OfficersPresenter extends BasePresenter
         $usr = $this->users->findOfficerOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Users", "changeRole") ||
-                !$this->myAuthorizator->isAllowedUsers('changeRole', $usr->id, $usr->faculty->id, $usr->role)) {
+                !$this->myAuthorizator->isAllowedUsers('changeRole', $usr->getId(), $usr->getFaculty()->getId(), $usr->getRole())) {
             $this->error("Access Denied");
         }
 
         $this['changeRoleForm'] = $this->createComponentChangeRoleForm($id);
         try {
-            $this['changeRoleForm']->setDefaults(array('role' => $usr->role));
+            $this['changeRoleForm']->setDefaults(array('role' => $usr->getRole()));
         } catch (Nette\InvalidArgumentException $e) {
         }
     }
@@ -171,7 +172,7 @@ class OfficersPresenter extends BasePresenter
         $usr = $this->users->findOfficerOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Users", "delete") ||
-                !$this->myAuthorizator->isAllowedUsers('delete', $usr->id, $usr->faculty->id, $usr->role)) {
+                !$this->myAuthorizator->isAllowedUsers('delete', $usr->getId(), $usr->getFaculty()->getId(), $usr->getRole())) {
             $this->error("Access Denied");
         }
 
@@ -198,7 +199,7 @@ class OfficersPresenter extends BasePresenter
         $usr = $this->users->findOfficerOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Users", "changeIfmsa") ||
-                !$this->myAuthorizator->isAllowedUsers('changeIfmsa', $usr->id, $usr->faculty->id, $usr->role)) {
+                !$this->myAuthorizator->isAllowedUsers('changeIfmsa', $usr->getId(), $usr->getFaculty()->getId(), $usr->getRole())) {
             $this->error("Access Denied");
         }
 
@@ -211,7 +212,7 @@ class OfficersPresenter extends BasePresenter
         $usr = $this->users->findOfficerOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Users", "view") ||
-                !$this->myAuthorizator->isAllowedUsers('view', $usr->id, $usr->faculty->id, $usr->role)) {
+                !$this->myAuthorizator->isAllowedUsers('view', $usr->getId(), $usr->getFaculty()->getId(), $usr->getRole())) {
             $this->error('Access Denied');
         }
 
@@ -230,21 +231,21 @@ class OfficersPresenter extends BasePresenter
     public function actionDeleteAdditionalInfoRequest($id)
     {
         $request = $this->userInfoRequests->findOrThrow($id);
-        $usr = $this->users->findOrThrow($request->requestedUser);
+        $usr = $this->users->findOrThrow($request->getRequestedUser());
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Users", "view") ||
-                !$this->myAuthorizator->isAllowedUsers('view', $usr->id, $usr->faculty->id, $usr->role)) {
+                !$this->myAuthorizator->isAllowedUsers('view', $usr->getId(), $usr->getFaculty()->getId(), $usr->getRole())) {
             $this->error('Access Denied');
         }
 
         $request->delete();
-        $request->deletedByUser = $this->currentUser;
-        $request->completed = false;
-        $request->deletedTime = new \DateTime;
+        $request->setDeletedByUser($this->currentUser);
+        $request->setCompleted(false);
+        $request->setDeletedTime(new DateTime);
         $this->userInfoRequests->flush();
 
         $this->flashMessage('Additional Info request was successfully deleted.');
-        $this->redirect('Officers:profile', $usr->id);
+        $this->redirect('Officers:profile', $usr->getId());
     }
 
     public function actionAddExtraPoints($id)
@@ -252,7 +253,7 @@ class OfficersPresenter extends BasePresenter
         $user = $this->users->findOfficerOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Users", "view") ||
-                !$this->myAuthorizator->isAllowedUsers('view', $user->id, $user->faculty->id, $user->role)) {
+                !$this->myAuthorizator->isAllowedUsers('view', $user->getId(), $user->getFaculty()->getId(), $user->getRole())) {
             $this->error('Access Denied');
         }
 
@@ -262,10 +263,10 @@ class OfficersPresenter extends BasePresenter
     public function actionDeleteExtraPoints($id)
     {
         $points = $this->extraPointsRepository->findOrThrow($id);
-        $user = $this->users->findOfficerOrThrow($points->user);
+        $user = $this->users->findOfficerOrThrow($points->getUser()->getId());
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Users", "view") ||
-                !$this->myAuthorizator->isAllowedUsers('view', $user->id, $user->faculty->id, $user->role)) {
+                !$this->myAuthorizator->isAllowedUsers('view', $user->getId(), $user->getFaculty()->getId(), $user->getRole())) {
             $this->error('Access Denied');
         }
 
@@ -274,6 +275,6 @@ class OfficersPresenter extends BasePresenter
         $this->extraPointsRepository->flush();
 
         $this->flashMessage('Extra Points were successfully deleted.');
-        $this->redirect('Officers:profile', $user->id);
+        $this->redirect('Officers:profile', $user->getId());
     }
 }

@@ -3,8 +3,10 @@
 namespace App\Forms;
 
 use App;
+use Exception;
 use Nette;
 use App\Model\Repository\IfmsaPersons;
+use Traversable;
 
 /**
  * Class containing factory methods for forms mainly concerning ifmsa.
@@ -42,7 +44,7 @@ class IfmsaFormsFactory
      * Create filtering form for the outgoings or incomings lists.
      * @param int $year
      * @param int $month
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createYearMonthForm($year, $month)
     {
@@ -75,7 +77,7 @@ class IfmsaFormsFactory
                 'year' => $year,
                 'month' => $month
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         return $form;
@@ -86,7 +88,7 @@ class IfmsaFormsFactory
      * @param array $personInfo person information obtained from ifmsa.org
      * @param array $cardOfDocuments list of person documents obtained from
      * ifmsa.org
-     * @return \App\Forms\MySimpleForm
+     * @return MySimpleForm
      */
     public function createPdfSelectionForm(array $personInfo, array $cardOfDocuments)
     {
@@ -119,7 +121,7 @@ class IfmsaFormsFactory
      * @param array $personInfo person information obtained from ifmsa.org
      * @param array $cardOfDocuments list of person documents obtainer from
      * ifmsa.org
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createPdfForm($pdfType, array $personInfo, array $cardOfDocuments)
     {
@@ -145,16 +147,16 @@ class IfmsaFormsFactory
 
             // load saved department from database and try to save it as default
             try {
-                $depRad->setDefaultValue($ifmsaPerson->department);
-            } catch (\Exception $e) {
+                $depRad->setDefaultValue($ifmsaPerson->getDepartment());
+            } catch (Exception $e) {
                 $depRad->setDefaultValue('other');
-                $depOther->setDefaultValue($ifmsaPerson->department);
+                $depOther->setDefaultValue($ifmsaPerson->getDepartment());
             }
 
             if ($pdfType == 'contactPerson') {
                 $form->addHidden('pdfType', 'contactPerson');
                 $form->addTextArea('accommodation', 'Accommodation')
-                    ->setDefaultValue($ifmsaPerson->accommodation);
+                    ->setDefaultValue($ifmsaPerson->getAccommodation());
             } else {
                 $form->addHidden('pdfType', 'department');
             }
@@ -180,16 +182,16 @@ class IfmsaFormsFactory
 
     /**
      * Success callback for the PDF initialization form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function pdfFormSucceeded(MyForm $form, $values)
     {
         if ($values->pdfType != 'contactPerson' &&
                 $values->pdfType != 'department') {
             $form->addError('Bad request');
-        } elseif ((!is_array($values->personInfo) && !$values->personInfo instanceof \Traversable) ||
-                (!is_array($values->cardOfDocuments) && !$values->cardOfDocuments instanceof \Traversable)) {
+        } elseif ((!is_array($values->personInfo) && !$values->personInfo instanceof Traversable) ||
+                (!is_array($values->cardOfDocuments) && !$values->cardOfDocuments instanceof Traversable)) {
             $form->addError('Data in bad format');
         }
     }

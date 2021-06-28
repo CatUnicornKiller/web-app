@@ -2,6 +2,7 @@
 
 namespace App\Forms;
 
+use Exception;
 use Nette;
 use Nette\Application\UI\Form;
 use App;
@@ -10,6 +11,7 @@ use App\Model\Entity\User;
 use App\Model\Repository\ShowroomRepository;
 use App\Model\Repository\Faculties;
 use App\Users\UserManager;
+use function copy;
 
 /**
  * Class containing factory methods for forms mainly concerning showroom.
@@ -19,7 +21,7 @@ class ShowroomFormsFactory
 {
     use Nette\SmartObject;
 
-    /** @var User */
+    /** @var User|null */
     private $user;
     /** @var ShowroomRepository */
     private $showroomRepository;
@@ -61,7 +63,7 @@ class ShowroomFormsFactory
     {
         $res = array();
         foreach ($this->faculties->findAll() as $fac) {
-            $res[$fac->id] = $fac->facultyName;
+            $res[$fac->getId()] = $fac->getFacultyName();
         }
         return $res;
     }
@@ -81,8 +83,8 @@ class ShowroomFormsFactory
 
     /**
      * Create basic showroom form representing officer.
-     * @param User $officer
-     * @return \App\Forms\MyForm
+     * @param User|null $officer
+     * @return MyForm
      */
     private function createOfficerForm($officer)
     {
@@ -91,11 +93,11 @@ class ShowroomFormsFactory
         $form->addText('firstname', 'Firstname')
                 ->setRequired('Firstname is required')
                 ->addRule(Form::MAX_LENGTH, 'Firstname is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addText('surname', 'Surname')
                 ->setRequired('Surname is required')
                 ->addRule(Form::MAX_LENGTH, 'Surname is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addSelect('role', 'Role', $this->rolesManager->getShowroomRoles())
                 ->setRequired('Role is required');
         $form->addSelect('faculty', 'Faculty', $this->getFacultiesSelect())
@@ -111,18 +113,18 @@ class ShowroomFormsFactory
         $form->addTextArea('information', 'Information')
                 ->setRequired('Information is required')
                 ->addRule(Form::MAX_LENGTH, 'Information is too long', 1000)
-                ->setAttribute('length', 1000);
+                ->setHtmlAttribute('length', 1000);
 
         if ($officer) {
             try {
                 $form->setDefaults(array(
-                    'firstname' => $officer->firstname,
-                    'surname' => $officer->surname,
-                    'role' => $officer->role,
-                    'faculty' => $officer->faculty->id,
-                    'profileImg' => $officer->profileImg
+                    'firstname' => $officer->getFirstname(),
+                    'surname' => $officer->getSurname(),
+                    'role' => $officer->getRole(),
+                    'faculty' => $officer->getFaculty()->getId(),
+                    'profileImg' => $officer->getProfileImg()
                         ));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
 
@@ -145,8 +147,8 @@ class ShowroomFormsFactory
 
     /**
      * Check add officer form for the errors.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      * @return boolean true if form is valid
      */
     private function checkAddOfficer(MyForm $form, $values)
@@ -163,8 +165,8 @@ class ShowroomFormsFactory
 
     /**
      * Success callback for the add officer to the showroom form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function addOfficerFormSucceeded(MyForm $form, $values)
     {
@@ -186,21 +188,19 @@ class ShowroomFormsFactory
         $this->showroomRepository->persist($showroom);
 
         if ($values->uploadImg->isOk()) {
-            $image = $showroom->id . '.' . pathinfo($values->uploadImg->sanitizedName, PATHINFO_EXTENSION);
+            $image = $showroom->getId() . '.' . pathinfo($values->uploadImg->sanitizedName, PATHINFO_EXTENSION);
             $values->uploadImg->move(getcwd() . $this->configParams->showroomImgDir . $image);
 
-            $this->showroomRepository->updateShowroomEntryImage(
-                $showroom->id,
-                $image
-            );
+            $showroom->setProfileImg($image);
+            $this->showroomRepository->flush();
         } elseif ($values->useProfileImg && !empty($values->profileImg)) {
-            $image = $showroom->id . '.' . pathinfo($values->profileImg, PATHINFO_EXTENSION);
-            \copy(
+            $image = $showroom->getId() . '.' . pathinfo($values->profileImg, PATHINFO_EXTENSION);
+            copy(
                 getcwd() . $this->configParams->profileImgDir . $values->profileImg,
                 getcwd() . $this->configParams->showroomImgDir . $image
             );
 
-            $showroom->profileImg = $image;
+            $showroom->setProfileImg($image);
             $this->showroomRepository->flush();
         }
     }
@@ -213,7 +213,7 @@ class ShowroomFormsFactory
     public function createEditOfficerForm($officer)
     {
         $form = $this->createOfficerForm($officer);
-        $form->addHidden('id', $officer->id);
+        $form->addHidden('id', $officer->getId());
 
         try {
             $form->setDefaults(array(
@@ -221,7 +221,7 @@ class ShowroomFormsFactory
                 'endYear' => $officer->endYear,
                 'information' => $officer->information,
                     ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         $form->addSubmit('send', 'Edit Showroom Officer');
@@ -231,8 +231,8 @@ class ShowroomFormsFactory
 
     /**
      * Success callback for the showroom entry editation form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function editOfficerFormSucceeded(MyForm $form, $values)
     {
@@ -247,18 +247,18 @@ class ShowroomFormsFactory
             $image = $values->id . '.' . pathinfo($values->uploadImg->sanitizedName, PATHINFO_EXTENSION);
             $values->uploadImg->move(getcwd() . $this->configParams->showroomImgDir . $image);
 
-            $showroom->profileImg = $image;
+            $showroom->setProfileImg($image);
         } elseif (!$values->useProfileImg) {
-            $showroom->profileImg = "";
+            $showroom->setProfileImg("");
         }
 
-        $showroom->firstname = $values->firstname;
-        $showroom->surname = $values->surname;
-        $showroom->role = $values->role;
-        $showroom->faculty = $faculty;
-        $showroom->startYear = $values->startYear;
-        $showroom->endYear = $values->endYear;
-        $showroom->information = $values->information;
+        $showroom->setFirstname($values->firstname);
+        $showroom->setSurname($values->surname);
+        $showroom->setRole($values->role);
+        $showroom->setFaculty($faculty);
+        $showroom->setStartYear($values->startYear);
+        $showroom->setEndYear($values->endYear);
+        $showroom->setInformation($values->information);
         $this->showroomRepository->flush();
     }
 }

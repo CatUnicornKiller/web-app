@@ -7,6 +7,12 @@ use App\Model\Entity\CpAssignedAf;
 
 /**
  * Repository of operations performed on CpAssignedAf entities.
+ *
+ * @method CpAssignedAf|null get($id)
+ * @method CpAssignedAf[] findAll()
+ * @method CpAssignedAf[] findBy($params, $orderBy = [])
+ * @method CpAssignedAf|null findOneBy($params)
+ * @method CpAssignedAf findOrThrow($id)
  */
 class CpAssignedAfs extends BaseRepository
 {

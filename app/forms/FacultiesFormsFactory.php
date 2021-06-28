@@ -29,7 +29,7 @@ class FacultiesFormsFactory
 
     /**
      * Create base faculty form for the further usage.
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     private function createFacultyForm()
     {
@@ -37,24 +37,25 @@ class FacultiesFormsFactory
         $form->addText('facultyName', 'Faculty Name')
                 ->setRequired('Faculty Name was not filled')
                 ->addRule(Form::MAX_LENGTH, 'Faculty Name is too long', 500)
-                ->setAttribute('length', 500);
+                ->setHtmlAttribute('length', 500);
         $form->addText('facultyAddress', 'Faculty Address')
                 ->setRequired('Faculty Address was not filled')
                 ->addRule(Form::MAX_LENGTH, 'Faculty Address is too long', 1000)
-                ->setAttribute('length', 1000);
+                ->setHtmlAttribute('length', 1000);
         $form->addText('facultyShortcut', 'Faculty Shortcut')
                 ->setRequired('Faculty Shortcut was not filled')
                 ->addRule(Form::MAX_LENGTH, 'Faculty Shortcut is too long', 20)
-                ->setAttribute('length', 20);
+                ->setHtmlAttribute('length', 20);
         $form->addText('ifmsaLcNumber', 'Local Committee number (as stated in www.ifmsa.org)')
-                ->setType('number')->setRequired('Local Committee number is requeired')
+                ->setHtmlType('number')
+                ->setRequired('Local Committee number is required')
                 ->addRule(Form::INTEGER, 'Local Committee has to be number');
         return $form;
     }
 
     /**
      * Create add faculty form.
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createAddFacultyForm()
     {
@@ -66,8 +67,8 @@ class FacultiesFormsFactory
 
     /**
      * Success callback for the add faculty form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function addFacultyFormSucceeded(MyForm $form, $values)
     {
@@ -87,7 +88,7 @@ class FacultiesFormsFactory
 
     /**
      * Create edit faculty form.
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createEditFacultyForm()
     {
@@ -100,23 +101,23 @@ class FacultiesFormsFactory
 
     /**
      * Success callback for the edit faculty form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function editFacultyFormSucceeded(MyForm $form, $values)
     {
         $faculties = $this->faculties->findByName($values->facultyName);
         if (count($faculties) > 0 && (count($faculties) > 1 ||
-                current($faculties)->id != $values->id)) {
+                current($faculties)->getId() != $values->id)) {
             $form->addError('Faculty with this name already exists');
             return;
         }
 
         $faculty = $this->faculties->findOrThrow($values->id);
-        $faculty->facultyName = $values->facultyName;
-        $faculty->facultyAddress = $values->facultyAddress;
-        $faculty->facultyShortcut = $values->facultyShortcut;
-        $faculty->ifmsaLcNumber = $values->ifmsaLcNumber;
+        $faculty->setFacultyName($values->facultyName);
+        $faculty->setFacultyAddress($values->facultyAddress);
+        $faculty->setFacultyShortcut($values->facultyShortcut);
+        $faculty->setIfmsaLcNumber($values->ifmsaLcNumber);
         $this->faculties->flush();
     }
 }

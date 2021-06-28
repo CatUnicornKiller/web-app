@@ -3,6 +3,10 @@
 namespace App\Helpers\Table;
 
 use App\Model\Repository\Events;
+use PHPExcel;
+use PHPExcel_IOFactory;
+use PHPExcel_Style_Fill;
+use function max;
 
 /**
  * Factory class for generation of tables which are connected to the events.
@@ -42,13 +46,13 @@ class EventsTableFactory
 
         $this->paidExcelStyle = array(
             'fill' => array(
-                'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
                 'color' => array('rgb' => '00FF00')
             ));
 
         $this->notPaidExcelStyle = array(
             'fill' => array(
-                'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
                 'color' => array('rgb' => 'FF0000')
             ));
     }
@@ -61,10 +65,10 @@ class EventsTableFactory
      */
     public function createParticipantsTable($id)
     {
-        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel = new PHPExcel();
         $objPHPExcel->getProperties()->setCreator("CUK System")
                 ->setTitle("Participants Table");
-        $objPHPExcel->setActiveSheetIndex(0);
+        $objPHPExcel->setActiveSheetIndex();
 
         $row = 1;
         $coord = "A" . $row;
@@ -76,7 +80,7 @@ class EventsTableFactory
         $row++;
 
         $event = $this->events->findOrThrow($id);
-        foreach ($event->participants as $inc) {
+        foreach ($event->getParticipants() as $inc) {
             $coord = "A" . $row;
             $coordRange = $coord . ":E" . $row;
             $arr = array($inc->user->firstname . ' ' . $inc->user->surname,
@@ -89,7 +93,7 @@ class EventsTableFactory
             $row++;
         }
 
-        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save('php://output');
     }
 
@@ -101,22 +105,22 @@ class EventsTableFactory
      */
     public function createEventsTable(array $events)
     {
-        $excel = new \PHPExcel();
+        $excel = new PHPExcel();
         $excel->getProperties()->setCreator("CUK System")
                 ->setTitle("Events Table");
-        $excel->setActiveSheetIndex(0);
+        $excel->setActiveSheetIndex();
 
         $row = 1;
         foreach ($events as $id) {
             $event = $this->events->findOrThrow($id);
-            $coorganizers = $event->coorganizers;
-            $participants = $event->participants;
+            $coorganizers = $event->getCoorganizers();
+            $participants = $event->getParticipants();
             if (!$event) {
                 continue;
             }
 
             $coord = "A" . $row;
-            $arr = array( $event->eventName );
+            $arr = array( $event->getEventName() );
             $excel->getActiveSheet()->fromArray($arr, null, $coord);
             $excel->getActiveSheet()->getStyle($coord)->applyFromArray($this->eventNameExcelStyle);
 
@@ -134,13 +138,13 @@ class EventsTableFactory
                 $orgRow++;
 
                 $coord = "C" . $orgRow;
-                $arr = array( $event->user->username . " (" . $event->user->email . ")",
-                    "", $event->signupDeadline->format("d.m.Y H:i") );
+                $arr = array( $event->getUser()->getUsername() . " (" . $event->getUser()->getEmail() . ")",
+                    "", $event->getSignupDeadline()->format("d.m.Y H:i") );
                 $excel->getActiveSheet()->fromArray($arr, null, $coord);
 
             foreach ($coorganizers as $coorg) {
                 $coord = "D" . $orgRow;
-                $arr = array( $coorg->user->username . " (" . $coorg->user->email . ")" );
+                $arr = array( $coorg->getUser()->getUsername() . " (" . $coorg->getUser()->getEmail() . ")" );
                 $excel->getActiveSheet()->fromArray($arr, null, $coord);
 
                 $orgRow++;
@@ -162,7 +166,7 @@ class EventsTableFactory
             foreach ($participants as $part) {
                 $coord = "A" . $partRow;
                 $coordRange = $coord . ":B" . $partRow;
-                $arr = array( $part->user->firstname . " " . $part->user->surname,
+                $arr = array( $part->getUser()->getFirstname() . " " . $part->getUser()->getSurname(),
                     $part->paid==1?"Yes":"No" );
                 $excel->getActiveSheet()->fromArray($arr, null, $coord);
                 $excel->getActiveSheet()->getStyle($coordRange)
@@ -172,10 +176,10 @@ class EventsTableFactory
             }
             }
 
-            $row = \max(array( $orgRow, $partRow )) + 1;
+            $row = max(array( $orgRow, $partRow )) + 1;
         }
 
-        $objWriter = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $objWriter->save('php://output');
     }
 }

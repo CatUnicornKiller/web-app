@@ -2,6 +2,7 @@
 
 namespace App\Forms;
 
+use Exception;
 use Nette;
 
 /**
@@ -18,7 +19,7 @@ class TransactionsFormsFactory
      * @param int $year
      * @param int $month
      * @param bool $paid
-     * @return \App\Forms\MySimpleForm
+     * @return MySimpleForm
      */
     public function createFilterTransactionsListForm($year, $month, $paid)
     {
@@ -55,7 +56,7 @@ class TransactionsFormsFactory
                 'month' => $month,
                 'paid' => $paid
             ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         return $form;

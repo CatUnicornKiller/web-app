@@ -7,6 +7,12 @@ use App\Model\Entity\Showroom;
 
 /**
  * Repository of operations performed on Showroom entities.
+ *
+ * @method Showroom|null get($id)
+ * @method Showroom[] findAll()
+ * @method Showroom[] findBy($params, $orderBy = [])
+ * @method Showroom|null findOneBy($params)
+ * @method Showroom findOrThrow($id)
  */
 class ShowroomRepository extends BaseRepository
 {

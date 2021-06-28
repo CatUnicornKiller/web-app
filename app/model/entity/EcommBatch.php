@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class EcommBatch
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id

@@ -29,7 +29,7 @@ class ExternalTransactionsHelper
      * @param EcommTransactionsHelper $ecommTransactionsHelper
      * @param EcommTransactions $ecommTransactions
      * @param ExternalServices $externalServices
-     * @param \App\Payment\PaymentParams $paymentParams
+     * @param PaymentParams $paymentParams
      */
     public function __construct(
         EcommTransactionsHelper $ecommTransactionsHelper,

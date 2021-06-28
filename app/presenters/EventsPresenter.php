@@ -10,6 +10,7 @@ use App\Model\Repository\EventFiles;
 use App\Model\Repository\EventParticipants;
 use App\Model\Repository\EventCoorganizers;
 use Nette;
+use function implode;
 
 /**
  * Events presenter.
@@ -83,7 +84,7 @@ class EventsPresenter extends BasePresenter
                 $httpResponse = $this->getHttpResponse();
                 $httpResponse->setCode(Nette\Http\Response::S500_INTERNAL_SERVER_ERROR);
                 $this->sendResponse(new Nette\Application\Responses\TextResponse(
-                    \implode(", ", $form->getErrors())
+                    implode(", ", $form->getErrors())
                 ));
             }
         };
@@ -128,7 +129,7 @@ class EventsPresenter extends BasePresenter
         $endDateHolder = $this->dateHelper->createFromDateOrLastDayOfMonth($endDate);
 
         $events = $this->events->getEventsListQuery(
-            $this->currentUser->faculty,
+            $this->currentUser->getFaculty(),
             $startDateHolder->typed,
             $endDateHolder->typed,
             $socialProgram,
@@ -177,11 +178,11 @@ class EventsPresenter extends BasePresenter
         $this->template->canDelete = $this->user->isAllowed('Event', 'delete') &&
                 $this->myAuthorizator->isAllowedEvent('delete', $event);
         $this->template->canDeleteCoorg = $this->myAuthorizator->isAllowedEvent('delCoorg', $event);
-        $this->template->canAddCoorg = $event->coorganizers->count() < 2 &&
+        $this->template->canAddCoorg = $event->getCoorganizers()->count() < 2 &&
                 $this->myAuthorizator->isAllowedEvent('addCoorg', $event);
         $this->template->canDeleteImg = $this->user->isAllowed('Event', 'edit') &&
                 $this->myAuthorizator->isAllowedEvent('edit', $event);
-        $this->template->canGenerateParticipants = $event->participants->count() > 0 &&
+        $this->template->canGenerateParticipants = $event->getParticipants()->count() > 0 &&
                 $this->myAuthorizator->isAllowedEvent('generateParticipants', $event);
     }
 
@@ -217,7 +218,7 @@ class EventsPresenter extends BasePresenter
         $file = $this->eventFiles->findOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Event", "edit") ||
-                !$this->myAuthorizator->isAllowedEvent('edit', $file->event)) {
+                !$this->myAuthorizator->isAllowedEvent('edit', $file->getEvent())) {
             $this->error('Access Denied');
         }
 
@@ -226,7 +227,7 @@ class EventsPresenter extends BasePresenter
         $this->eventFiles->flush();
 
         $this->flashMessage('File successfully deleted.');
-        $this->redirect('Events:detail', $file->event->id);
+        $this->redirect('Events:detail', $file->getEvent()->getId());
     }
 
     public function actionModifyEvent($id)
@@ -245,17 +246,17 @@ class EventsPresenter extends BasePresenter
     {
         $event = $this->events->findOrThrow($id);
         if (!$this->isLoggedIn() ||
-                !$this->user->isAllowed("Event", "sign") || !$event ||
+                !$this->user->isAllowed("Event", "sign") ||
                 !$this->myAuthorizator->isAllowedEvent('signUp', $event)) {
             $this->error('Access Denied');
         }
 
-        if (date_create() > $event->signupDeadline) {
+        if (date_create() > $event->getSignupDeadline()) {
             $this->error('Signup deadline exceeded');
         }
 
-        $freeCapacity = $event->capacity - $event->participants->count();
-        if ($freeCapacity > 0 || $event->capacity == 0) {
+        $freeCapacity = $event->getCapacity() - $event->getParticipants()->count();
+        if ($freeCapacity > 0 || $event->getCapacity() == 0) {
             $this->disableDoctrineFilters();
             $eventParticipant = $this->currentUser->getParticipatedEvent($event);
             $this->enableDoctrineFilters();
@@ -280,13 +281,13 @@ class EventsPresenter extends BasePresenter
     public function actionUnSign($id)
     {
         $signed = $this->eventParticipants->findOrThrow($id);
-        if ($signed->user !== $this->currentUser) {
+        if ($signed->getUser() !== $this->currentUser) {
             $this->error("Unsigning wrong event and person");
         }
 
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Event", "sign") ||
-                !$this->myAuthorizator->isAllowedEvent('unSign', $signed->event)) {
+                !$this->myAuthorizator->isAllowedEvent('unSign', $signed->getEvent())) {
             $this->error('Access Denied');
         }
 
@@ -295,7 +296,7 @@ class EventsPresenter extends BasePresenter
         $this->eventParticipants->flush();
 
         $this->flashMessage('You were succesfully unsigned from event!');
-        $this->redirect('Events:detail', $signed->event->id);
+        $this->redirect('Events:detail', $signed->getEvent()->getId());
     }
 
     public function actionAddCoorganizer($id)
@@ -308,7 +309,7 @@ class EventsPresenter extends BasePresenter
         }
 
         $form = $this->eventsFormsFactory->createAddCoorganizerForm($event);
-        $form->onSuccess[] = function (App\Forms\Myform $form, $values) {
+        $form->onSuccess[] = function (App\Forms\MyForm $form, $values) {
             $form->presenter->flashMessage('Coorganizer was successfully added.');
             $form->presenter->redirect('Events:detail', $values->id);
         };
@@ -320,7 +321,7 @@ class EventsPresenter extends BasePresenter
         $coorg = $this->eventCoorganizers->findOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Event", "edit") ||
-                !$this->myAuthorizator->isAllowedEvent('delCoorg', $coorg->event)) {
+                !$this->myAuthorizator->isAllowedEvent('delCoorg', $coorg->getEvent())) {
             $this->error('Access Denied');
         }
 
@@ -329,14 +330,14 @@ class EventsPresenter extends BasePresenter
         $this->eventCoorganizers->flush();
 
         $this->flashMessage('Coorganizer was successfully deleted.');
-        $this->redirect('Events:detail', $coorg->event->id);
+        $this->redirect('Events:detail', $coorg->getEvent()->getId());
     }
 
     public function renderGenerateParticipantsTable($id)
     {
         $event = $this->events->findOrThrow($id);
         if (!$this->isLoggedIn() ||
-                !$this->user->isAllowed("Event", "edit") || !$event ||
+                !$this->user->isAllowed("Event", "edit") ||
                 !$this->myAuthorizator->isAllowedEvent('generateParticipants', $event)) {
             $this->error("Access Denied");
         }
