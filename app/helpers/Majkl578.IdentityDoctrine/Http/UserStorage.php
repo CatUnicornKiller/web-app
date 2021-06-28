@@ -2,7 +2,7 @@
 
 namespace Majkl578\NetteAddons\Doctrine2Identity\Http;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Majkl578\NetteAddons\Doctrine2Identity\Security\FakeIdentity;
 use Nette\Http\Session;
 use Nette\Http\UserStorage as NetteUserStorage;
@@ -13,10 +13,10 @@ use Nette\Security\IIdentity;
  */
 class UserStorage extends NetteUserStorage
 {
-	/** @var EntityManager */
+	/** @var EntityManagerInterface */
 	private $entityManager;
 
-	public function  __construct(Session $sessionHandler, EntityManager $entityManager)
+	public function  __construct(Session $sessionHandler, EntityManagerInterface $entityManager)
 	{
 		parent::__construct($sessionHandler);
 
@@ -50,7 +50,7 @@ class UserStorage extends NetteUserStorage
 	 * Returns current user identity, if any.
 	 * @return IIdentity|NULL
 	 */
-	public function getIdentity()
+	public function getIdentity(): ?IIdentity
 	{
 		$identity = parent::getIdentity();
 

@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Nette;
 use Tracy\ILogger;
 use App;
@@ -9,7 +10,6 @@ use App\Model\Entity\User;
 use App\Model\Repository\Users;
 use App\Users\UserManager;
 use App\Helpers\Date\DateHelper;
-use Kdyby\Doctrine\EntityManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
@@ -50,7 +50,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     public $configParams;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      * @inject
      */
     public $em;
