@@ -56,14 +56,14 @@ class RegistrationFormsFactory
         $faculties = $this->faculties->findAll();
         $facArr = array();
         foreach ($faculties as $fac) {
-            $facArr[$fac->id] = $fac->facultyName;
+            $facArr[$fac->getId()] = $fac->getFacultyName();
         }
         return $facArr;
     }
 
     /**
      * Creates basic registration form with all general fields.
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     private function constructBasicForm()
     {
@@ -72,8 +72,8 @@ class RegistrationFormsFactory
         $form->addText('username', '*Username')
                 ->setRequired('Please enter your username.')
                 ->addRule(Form::MAX_LENGTH, 'Username is too long', 255)
-                ->setAttribute('length', 255)
-                ->setAttribute('autofocus');
+                ->setHtmlAttribute('length', 255)
+                ->setHtmlAttribute('autofocus');
 
         $form->addPassword('password', '*Password')
                 ->setRequired('Please enter your password.');
@@ -84,27 +84,27 @@ class RegistrationFormsFactory
         $form->addText('firstname', '*Firstname')
                 ->setRequired('Please enter your firstname.')
                 ->addRule(Form::MAX_LENGTH, 'Firstname is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
         $form->addText('surname', '*Surname')
                 ->setRequired('Please enter your surname.')
                 ->addRule(Form::MAX_LENGTH, 'Surname is too long', 255)
-                ->setAttribute('length', 255);
+                ->setHtmlAttribute('length', 255);
 
         $form->addText('email', '*Email')
-                ->setType('email')
+                ->setHtmlType('email')
                 ->setRequired('Please enter your email.')
                 ->addRule(Form::MAX_LENGTH, 'Email is too long', 255)
-                ->setAttribute('length', 255)
+                ->setHtmlAttribute('length', 255)
                 ->addRule(Form::EMAIL, 'Email is in bad format');
 
         $countries = $this->countries->findAll();
         $countArr = array();
         foreach ($countries as $country) {
-            $countArr[$country->id] = $country->countryName;
+            $countArr[$country->getId()] = $country->getCountryName();
         }
         $form->addSelect('country', '*Country', $countArr)
                 ->setRequired('Please select country.')
-                ->setValue(60);
+                ->setDefaultValue(60);
 
         $this->humanDetector->addToForm($form);
         $form->addSubmit('send', 'Register now');
@@ -147,8 +147,8 @@ class RegistrationFormsFactory
 
     /**
      * Success callback for the officer registration form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function officersFormSucceeded(MyForm $form, $values)
     {
@@ -196,8 +196,8 @@ class RegistrationFormsFactory
 
     /**
      * Success callback for the incomings registration form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function incomingsFormSucceeded(MyForm $form, $values)
     {

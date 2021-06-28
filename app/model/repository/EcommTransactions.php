@@ -4,9 +4,16 @@ namespace App\Model\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Entity\EcommTransaction;
+use Doctrine\ORM\Query;
 
 /**
  * Repository of operations performed on EcommTransaction entities.
+ *
+ * @method EcommTransaction|null get($id)
+ * @method EcommTransaction[] findAll()
+ * @method EcommTransaction[] findBy($params, $orderBy = [])
+ * @method EcommTransaction|null findOneBy($params)
+ * @method EcommTransaction findOrThrow($id)
  */
 class EcommTransactions extends BaseRepository
 {
@@ -22,7 +29,7 @@ class EcommTransactions extends BaseRepository
     /**
      * Find one transaction by given identification.
      * @param string $transId
-     * @return EcommTransaction
+     * @return EcommTransaction|null
      */
     public function findOneByTransactionId($transId)
     {
@@ -35,7 +42,7 @@ class EcommTransactions extends BaseRepository
      * @param int $year
      * @param int $month
      * @param bool $paid
-     * @return \Doctrine\ORM\Query
+     * @return Query
      */
     public function getTransactionListQuery($year, $month, $paid)
     {

@@ -19,11 +19,11 @@ class UserHelper
      */
     public function isAdditionalInfoFilled($officerProfile)
     {
-        if (strlen(trim($officerProfile->address)) > 0 &&
-                strlen(trim($officerProfile->city)) > 0 &&
-                strlen(trim($officerProfile->postCode)) > 0 &&
-                strlen(trim($officerProfile->region)) > 0 &&
-                strlen(trim($officerProfile->phone)) > 0) {
+        if (strlen(trim($officerProfile->getAddress())) > 0 &&
+                strlen(trim($officerProfile->getCity())) > 0 &&
+                strlen(trim($officerProfile->getPostCode())) > 0 &&
+                strlen(trim($officerProfile->getRegion())) > 0 &&
+                strlen(trim($officerProfile->getPhone())) > 0) {
             return true;
         }
         return false;

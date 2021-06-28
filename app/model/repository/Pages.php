@@ -8,6 +8,12 @@ use App\Model\Entity\Page;
 
 /**
  * Repository of operations performed on Page entities.
+ *
+ * @method Page|null get($id)
+ * @method Page[] findAll()
+ * @method Page[] findBy($params, $orderBy = [])
+ * @method Page|null findOneBy($params)
+ * @method Page findOrThrow($id)
  */
 class Pages extends BaseRepository
 {
@@ -37,17 +43,17 @@ class Pages extends BaseRepository
      * Get one page by given page name, subname and faculty.
      * @param string $pageName
      * @param string $pageSubname
-     * @param Faculty $faculty
+     * @param int|null $facultyId
      * @return Page|NULL
      */
-    public function getPage($pageName, $pageSubname, $faculty = null)
+    public function getPage($pageName, $pageSubname, $facultyId = null)
     {
         $page = $this->findOneBy(array(
             "pageName" => $pageName,
             "pageSubname" => $pageSubname,
-            "faculty" => $faculty));
+            "faculty" => $facultyId));
 
-        if (!$page && $faculty != null) {
+        if (!$page && $facultyId != null) {
             $page = $this->findOneBy(array(
                 "pageName" => $pageName,
                 "pageSubname" => $pageSubname,

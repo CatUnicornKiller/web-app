@@ -2,9 +2,10 @@
 
 namespace App\Model\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Mapping as ORM;
 use Nette\Security\IIdentity;
 use Nette\Security\Passwords;
 
@@ -15,6 +16,22 @@ use Nette\Security\Passwords;
  */
 class User implements IIdentity
 {
+    use MagicGetters;
+
+    const HASHING_OPTIONS = [
+        "cost" => 11
+    ];
+
+    /**
+     * TODO: This has to be done better! Move it somewhere else!
+     */
+    private static function createPasswordUtils(): Passwords
+    {
+        return new Passwords(PASSWORD_DEFAULT, self::HASHING_OPTIONS);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -146,24 +163,25 @@ class User implements IIdentity
         Country $country,
         $ifmsaPasswd,
         $ifmsaUsername
-    ) {
+    )
+    {
 
         $profile = new OfficersProfile;
-        $profile->ifmsaPassword = $ifmsaPasswd;
-        $profile->ifmsaUsername = $ifmsaUsername;
+        $profile->setIfmsaPassword($ifmsaPasswd);
+        $profile->setIfmsaUsername($ifmsaUsername);
 
         $user = new User;
         $user->username = $username;
         $user->firstname = $firstname;
         $user->surname = $surname;
         $user->email = $email;
-        $user->password = $passwd;
+        $user->hashPassword($passwd);
         $user->role = $role;
         $user->userType = 'officer';
         $user->faculty = $faculty;
         $user->country = $country;
 
-        $profile->user = $user;
+        $profile->setUser($user);
         $user->officersProfile = $profile;
 
         return $user;
@@ -178,14 +196,15 @@ class User implements IIdentity
         $role,
         Faculty $faculty,
         Country $country
-    ) {
+    )
+    {
 
         $user = new User;
         $user->username = $username;
         $user->firstname = $firstname;
         $user->surname = $surname;
         $user->email = $email;
-        $user->password = $passwd;
+        $user->hashPassword($passwd);
         $user->role = $role;
         $user->userType = 'incoming';
         $user->faculty = $faculty;
@@ -206,9 +225,35 @@ class User implements IIdentity
         return array($this->role);
     }
 
-    public function setPassword($password)
+    public function getData(): array
     {
-        $this->passwordHash = Passwords::hash($password);
+        return [
+            "id" => $this->getId(),
+            "roles" => $this->getRoles()
+        ];
+    }
+
+    public function hashPassword($password)
+    {
+        $this->passwordHash = self::createPasswordUtils()->hash($password);
+    }
+
+    public function matchPasswords($password): bool
+    {
+        if ($password === null) {
+            return false;
+        }
+
+        $passwordUtils = self::createPasswordUtils();
+        if ($passwordUtils->verify($password, $this->passwordHash)) {
+            if ($passwordUtils->needsRehash($this->passwordHash)) {
+                $this->hashPassword($password);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     public function getPassword()
@@ -235,12 +280,12 @@ class User implements IIdentity
 
     public function isOfficer()
     {
-        return $this->userType == 'officer' ? true : false;
+        return $this->userType == 'officer';
     }
 
     public function isIncoming()
     {
-        return $this->userType == 'incoming' ? true : false;
+        return $this->userType == 'incoming';
     }
 
     public function countPoints()
@@ -261,7 +306,7 @@ class User implements IIdentity
     public function getCoorganizedEvents()
     {
         return $this->coorganizedEvents->filter(function (EventCoorganizer $coorganizer) {
-            if ($coorganizer->event) {
+            if ($coorganizer->getEvent()) {
                 return true;
             }
             return false;
@@ -271,7 +316,7 @@ class User implements IIdentity
     public function getParticipatedEvents()
     {
         return $this->participatedEvents->filter(function (EventParticipant $participant) {
-            if ($participant->event) {
+            if ($participant->getEvent()) {
                 return true;
             }
             return false;
@@ -299,7 +344,7 @@ class User implements IIdentity
     public function getAdditionalInfoRequests()
     {
         return $this->infoRequests->filter(function (UserInfoRequest $request) {
-            if ($request->requestDesc == "additional_information") {
+            if ($request->getRequestDesc() == "additional_information") {
                 return true;
             }
             return false;
@@ -316,9 +361,19 @@ class User implements IIdentity
         return $this->firstname;
     }
 
+    public function setFirstname(string $firstname): void
+    {
+        $this->firstname = $firstname;
+    }
+
     public function getSurname(): string
     {
         return $this->surname;
+    }
+
+    public function setSurname(string $surname): void
+    {
+        $this->surname = $surname;
     }
 
     public function getEmail(): string
@@ -326,9 +381,19 @@ class User implements IIdentity
         return $this->email;
     }
 
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
     public function getRole(): string
     {
         return $this->role;
+    }
+
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
     }
 
     public function getUserType(): string
@@ -339,6 +404,11 @@ class User implements IIdentity
     public function getProfileImg(): string
     {
         return $this->profileImg;
+    }
+
+    public function setProfileImg(string $profileImg): void
+    {
+        $this->profileImg = $profileImg;
     }
 
     public function getDeleted(): bool
@@ -361,32 +431,32 @@ class User implements IIdentity
         return $this->officersProfile;
     }
 
-    public function getInfoRequests(): ArrayCollection
+    public function getInfoRequests(): Collection
     {
         return $this->infoRequests;
     }
 
-    public function getOrganizedEvents(): ArrayCollection
+    public function getOrganizedEvents(): Collection
     {
         return $this->organizedEvents;
     }
 
-    public function getAssignedIncomings(): ArrayCollection
+    public function getAssignedIncomings(): Collection
     {
         return $this->assignedIncomings;
     }
 
-    public function getExtraPointsList(): ArrayCollection
+    public function getExtraPointsList(): Collection
     {
         return $this->extraPointsList;
     }
 
-    public function getModifications(): ArrayCollection
+    public function getModifications(): Collection
     {
         return $this->modifications;
     }
 
-    public function getRoleModifications(): ArrayCollection
+    public function getRoleModifications(): Collection
     {
         return $this->roleModifications;
     }

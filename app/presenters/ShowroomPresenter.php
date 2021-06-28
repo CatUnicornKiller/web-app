@@ -114,8 +114,8 @@ class ShowroomPresenter extends BasePresenter
         $this['officerShowroomForm'] = $this->createAddOfficerForm($officer);
 
         $this->template->officerImg = "";
-        if (!empty($officer->profileImg)) {
-            $this->template->officerImg = $this->configParams->profileImgDir . $officer->profileImg;
+        if (!empty($officer->getProfileImg())) {
+            $this->template->officerImg = $this->configParams->profileImgDir . $officer->getProfileImg();
         }
 
         // set private layout
@@ -133,8 +133,8 @@ class ShowroomPresenter extends BasePresenter
         $this['officerShowroomForm'] = $this->createEditOfficerForm($officer);
 
         $this->template->officerImg = "";
-        if (!empty($officer->profileImg)) {
-            $this->template->officerImg = $this->configParams->showroomImgDir . $officer->profileImg;
+        if (!empty($officer->getProfileImg())) {
+            $this->template->officerImg = $this->configParams->showroomImgDir . $officer->getProfileImg();
         }
 
         // set private layout

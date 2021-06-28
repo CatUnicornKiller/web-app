@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Showroom
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -91,9 +93,19 @@ class Showroom
         return $this->firstname;
     }
 
+    public function setFirstname(string $firstname): void
+    {
+        $this->firstname = $firstname;
+    }
+
     public function getSurname(): string
     {
         return $this->surname;
+    }
+
+    public function setSurname(string $surname): void
+    {
+        $this->surname = $surname;
     }
 
     public function getRole(): string
@@ -101,9 +113,19 @@ class Showroom
         return $this->role;
     }
 
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
+    }
+
     public function getStartYear(): int
     {
         return $this->startYear;
+    }
+
+    public function setStartYear(int $startYear): void
+    {
+        $this->startYear = $startYear;
     }
 
     public function getEndYear(): int
@@ -111,18 +133,38 @@ class Showroom
         return $this->endYear;
     }
 
-    public function getProfileImg(): string
+    public function setEndYear(int $endYear): void
+    {
+        $this->endYear = $endYear;
+    }
+
+    public function getProfileImg(): ?string
     {
         return $this->profileImg;
     }
 
-    public function getInformation(): string
+    public function setProfileImg(?string $profileImg): void
+    {
+        $this->profileImg = $profileImg;
+    }
+
+    public function getInformation(): ?string
     {
         return $this->information;
+    }
+
+    public function setInformation(?string $information): void
+    {
+        $this->information = $information;
     }
 
     public function getFaculty(): string
     {
         return $this->faculty;
+    }
+
+    public function setFaculty(string $faculty): void
+    {
+        $this->faculty = $faculty;
     }
 }

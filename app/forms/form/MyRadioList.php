@@ -4,6 +4,7 @@ namespace App\Forms;
 
 use Nette;
 use Nette\Forms\Controls\RadioList;
+use Nette\Utils\Html;
 
 /**
  * Reimplementation of nette RadioList more suitable for material-css framework.
@@ -21,22 +22,22 @@ class MyRadioList extends RadioList
     }
 
     /**
-     * Label is ommited.
+     * Label is omitted.
      * @param string $caption
-     * @return \Nette\Utils\Html
+     * @return Html
      */
-    public function getLabel($caption = null)
+    public function getLabel($caption = null): Html
     {
-        return null;
+        return parent::getLabel($caption);
     }
 
     /**
      * Get ready-to-render html structure for the radio list control part.
-     * @return \Nette\Utils\Html
+     * @return Html
      */
-    public function getControl()
+    public function getControl(): Html
     {
-        $out = new Nette\Utils\Html();
+        $out = new Html();
 
         $items = $this->getItems();
         foreach ($items as $key => $value) {

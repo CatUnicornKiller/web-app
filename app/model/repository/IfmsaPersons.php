@@ -7,6 +7,12 @@ use App\Model\Entity\IfmsaPerson;
 
 /**
  * Repository of operations performed on IfmsaPerson entities.
+ *
+ * @method IfmsaPerson|null get($id)
+ * @method IfmsaPerson[] findAll()
+ * @method IfmsaPerson[] findBy($params, $orderBy = [])
+ * @method IfmsaPerson|null findOneBy($params)
+ * @method IfmsaPerson findOrThrow($id)
  */
 class IfmsaPersons extends BaseRepository
 {
@@ -21,7 +27,7 @@ class IfmsaPersons extends BaseRepository
 
     /**
      * Find ifmsa person entity by given af number.
-     * @param string $afNumber
+     * @param int $afNumber
      * @return IfmsaPerson|NULL
      */
     public function findByAfNumber($afNumber)

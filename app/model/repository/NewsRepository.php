@@ -2,11 +2,18 @@
 
 namespace App\Model\Repository;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Entity\News;
 
 /**
  * Repository of operations performed on News entities.
+ *
+ * @method News|null get($id)
+ * @method News[] findAll()
+ * @method News[] findBy($params, $orderBy = [])
+ * @method News|null findOneBy($params)
+ * @method News findOrThrow($id)
  */
 class NewsRepository extends BaseRepository
 {
@@ -25,8 +32,8 @@ class NewsRepository extends BaseRepository
      */
     public function getCurrentNews()
     {
-        $now = new \DateTime;
-        $thirtyDaysAgo = new \DateTime("-30 days");
+        $now = new DateTime;
+        $thirtyDaysAgo = new DateTime("-30 days");
 
         $qb = $this->em->createQueryBuilder();
         $qb->select("n")

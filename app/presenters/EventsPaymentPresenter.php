@@ -94,12 +94,12 @@ class EventsPaymentPresenter extends BasePresenter
         }
 
         // price has to be at least 1 CZK
-        if ($event->price < 1) {
+        if ($event->getPrice() < 1) {
             $this->error("Price of event is 0 CZK");
         }
 
         // check for deadline
-        if (date_create() > $event->signupDeadline) {
+        if (date_create() > $event->getSignupDeadline()) {
             $this->error("Signup deadline exceeded");
         }
 
@@ -123,7 +123,7 @@ class EventsPaymentPresenter extends BasePresenter
             $this->error("Access Denied");
         }
 
-        $this->template->participant = $participant = $transaction->eventParticipant;
+        $this->template->participant = $participant = $transaction->getEventParticipant();
         if (!$participant) {
             $this->error("Non existing participation");
         }
@@ -151,17 +151,17 @@ class EventsPaymentPresenter extends BasePresenter
 
         if ($transaction->isExternal()) {
             // if transaction is external, we need to redirect to appropriate service
-            $externalService = $this->externalTransactionsHelper->findService($transaction->externalService);
+            $externalService = $this->externalTransactionsHelper->findService($transaction->getExternalService());
             $this->ecommTransactionsHelper->processTransactionOk($transaction);
-            $this->redirectUrl($externalService->getOkRedirectionUrl($transaction->transId));
+            $this->redirectUrl($externalService->getOkRedirectionUrl($transaction->getTransId()));
         } else {
             if (!$this->isLoggedIn()) {
                 $this->error('Access Denied');
             }
 
             // events transaction
-            $this->template->participate = $participant = $transaction->eventParticipant;
-            if ($participant->paid) {
+            $this->template->participate = $participant = $transaction->getEventParticipant();
+            if ($participant->getPaid()) {
                 $this->error("Already paid");
             }
 
@@ -170,7 +170,7 @@ class EventsPaymentPresenter extends BasePresenter
                 // redirect to incorrect transaction
                 $this->forward(
                     'EventsPayment:transactionIncorrect',
-                    $transaction->id
+                    $transaction->getId()
                 );
             }
         }
@@ -184,8 +184,8 @@ class EventsPaymentPresenter extends BasePresenter
 
         $transaction = $this->ecommTransactions->findOrThrow($id);
 
-        $this->template->result = $transaction->result;
-        $this->template->participate = $transaction->eventParticipant;
+        $this->template->result = $transaction->getResult();
+        $this->template->participate = $transaction->getEventParticipant();
     }
 
     public function actionTransactionFail()
@@ -201,15 +201,15 @@ class EventsPaymentPresenter extends BasePresenter
         $transaction = $this->ecommTransactions->findOneByTransactionId($transId);
         if ($transaction->isExternal()) {
             // if transaction is external, we need to redirect to appropriate service
-            $externalService = $this->externalTransactionsHelper->findService($transaction->externalService);
+            $externalService = $this->externalTransactionsHelper->findService($transaction->getExternalService());
             $this->ecommTransactionsHelper->processTransactionFail($transaction, $errorMsg);
-            $this->redirectUrl($externalService->getFailRedirectionUrl($transaction->transId, $errorMsg));
+            $this->redirectUrl($externalService->getFailRedirectionUrl($transaction->getTransId(), $errorMsg));
         } else {
             if (!$this->isLoggedIn()) {
                 $this->error('Access Denied');
             }
 
-            $this->template->participate = $transaction->eventParticipant;
+            $this->template->participate = $transaction->getEventParticipant();
             $this->ecommTransactionsHelper->processTransactionFail($transaction, $errorMsg);
         }
     }
@@ -234,7 +234,7 @@ class EventsPaymentPresenter extends BasePresenter
             $this->error("Access Denied");
         }
 
-        $paidBool = $paid == "on" ? true : false;
+        $paidBool = $paid == "on";
 
         $this["filterTransactionsListForm"] =
                 $this->createFilterTransactionsListAjaxForm($year, $month, $paidBool);
@@ -262,7 +262,7 @@ class EventsPaymentPresenter extends BasePresenter
         }
 
         $this->template->transaction = $transaction;
-        $this->template->participation = $transaction->eventParticipant;
+        $this->template->participation = $transaction->getEventParticipant();
     }
 
     public function actionGenerateTransactionsTable(array $transactionsList)
@@ -332,20 +332,20 @@ class EventsPaymentPresenter extends BasePresenter
         $transactionId = $this->request->getPost("transactionId");
 
         $transaction = $this->ecommTransactions->findOneByTransactionId($transactionId);
-        $serviceConfig = $this->externalTransactionsHelper->findService($service);
+        $this->externalTransactionsHelper->findService($service); // just checks if service exists
 
-        if (!$transaction || !$serviceConfig) {
+        if (!$transaction) {
             $this->sendJson(array(
                 "error" => "Bad Params"
             ));
         }
 
         $this->sendJson(array(
-            "transactionId" => $transaction->transId,
-            "result" => $transaction->result,
-            "resultCode" => $transaction->resultCode,
-            "result3dsecure" => $transaction->result3dsecure,
-            "cardNumber" => $transaction->cardNumber
+            "transactionId" => $transaction->getTransId(),
+            "result" => $transaction->getResult(),
+            "resultCode" => $transaction->getResultCode(),
+            "result3dsecure" => $transaction->getResult3dsecure(),
+            "cardNumber" => $transaction->getCardNumber()
         ));
     }
 }

@@ -7,6 +7,12 @@ use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Repository of operations performed on Country entities.
+ *
+ * @method Country|null get($id)
+ * @method Country[] findAll()
+ * @method Country[] findBy($params, $orderBy = [])
+ * @method Country|null findOneBy($params)
+ * @method Country findOrThrow($id)
  */
 class Countries extends BaseRepository
 {

@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Nette;
+use Nette\Http\IResponse;
 
 /**
  * Helper class for frequent work with nette responses.
@@ -25,11 +26,11 @@ class ResponseHelper
 
     /**
      * Set response to CSV file with given filename.
-     * @param Nette\Http\IResponse $response
+     * @param IResponse $response
      * @param string $filename
-     * @return \Nette\Http\IResponse
+     * @return IResponse
      */
-    public function setCsvFileResponse(Nette\Http\IResponse $response, $filename)
+    public function setCsvFileResponse(IResponse $response, $filename)
     {
         $response->setContentType('text/plain', 'UTF-8');
         $response->setHeader('Content-Disposition', 'attachment;filename="' . $filename . '"');
@@ -39,11 +40,11 @@ class ResponseHelper
 
     /**
      * Set response to XLSX file with given filename.
-     * @param Nette\Http\IResponse $response
+     * @param IResponse $response
      * @param string $filename
-     * @return \Nette\Http\IResponse
+     * @return IResponse
      */
-    public function setXlsxFileResponse(Nette\Http\IResponse $response, $filename)
+    public function setXlsxFileResponse(IResponse $response, $filename)
     {
         $response->setContentType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         $response->setHeader('Content-Disposition', 'attachment;filename="' . $filename . '"');

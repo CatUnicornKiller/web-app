@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use App;
+use App\Exceptions\IfmsaConnectionException;
 use App\Model\Repository\Pages;
 use App\Model\Repository\CpAssignedAfs;
 use App\Model\Repository\IfmsaPersons;
@@ -137,8 +138,8 @@ class ContactPersonsPresenter extends BasePresenter
         $personInfo = array();
         try {
             $this->ifmsaConnectionHelper->fetchPersonAf($afNumber, $personInfo);
-            $this->ifmsaConnectionHelper->fetchPersonCC($person->confirmationNumber, $personInfo);
-        } catch (\App\Exceptions\IfmsaConnectionException $e) {
+            $this->ifmsaConnectionHelper->fetchPersonCC($person->getConfirmationNumber(), $personInfo);
+        } catch (IfmsaConnectionException $e) {
             $msg = 'Ifmsa.org connection error: ' . $e->getMessage();
             $this->redirect("Ifmsa:connectionError", $msg);
         }
@@ -166,8 +167,8 @@ class ContactPersonsPresenter extends BasePresenter
         $person = $this->ifmsaPersons->findByAfNumber($afNumber);
         try {
             $this->ifmsaConnectionHelper->fetchPersonAf($afNumber, $personInfo);
-            $this->ifmsaConnectionHelper->fetchPersonCC($person->confirmationNumber, $personInfo);
-        } catch (\App\Exceptions\IfmsaConnectionException $e) {
+            $this->ifmsaConnectionHelper->fetchPersonCC($person->getConfirmationNumber(), $personInfo);
+        } catch (IfmsaConnectionException $e) {
             $msg = 'Ifmsa.org connection error: ' . $e->getMessage();
             $this->redirect("Ifmsa:connectionError", $msg);
         }
@@ -190,7 +191,7 @@ class ContactPersonsPresenter extends BasePresenter
         }
 
         $assign = $user->getAssignedIncoming($afNumber);
-        if ($assign && $this->myAuthorizator->isAllowedAssignAf('delete', $user->faculty->id)) {
+        if ($assign && $this->myAuthorizator->isAllowedAssignAf('delete', $user->getFaculty()->getId())) {
             $assign->modified($this->currentUser);
             $assign->delete();
             $this->cpAssignedAfs->flush();

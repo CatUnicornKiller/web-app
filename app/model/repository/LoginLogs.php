@@ -7,6 +7,12 @@ use App\Model\Entity\LoginLog;
 
 /**
  * Repository of operations performed on LoginLog entities.
+ *
+ * @method LoginLog|null get($id)
+ * @method LoginLog[] findAll()
+ * @method LoginLog[] findBy($params, $orderBy = [])
+ * @method LoginLog|null findOneBy($params)
+ * @method LoginLog findOrThrow($id)
  */
 class LoginLogs extends BaseRepository
 {

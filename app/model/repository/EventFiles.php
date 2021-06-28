@@ -4,9 +4,16 @@ namespace App\Model\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Entity\EventFile;
+use function rand;
 
 /**
  * Repository of operations performed on EventFile entities.
+ *
+ * @method EventFile|null get($id)
+ * @method EventFile[] findAll()
+ * @method EventFile[] findBy($params, $orderBy = [])
+ * @method EventFile|null findOneBy($params)
+ * @method EventFile findOrThrow($id)
  */
 class EventFiles extends BaseRepository
 {
@@ -38,7 +45,7 @@ class EventFiles extends BaseRepository
 
         $files = array();
         while ($n > 0) {
-            $file = $this->get(\rand(1, $highest_id));
+            $file = $this->get(rand(1, $highest_id));
             if ($file && $file->event) {
                 $n--;
                 $files[] = $file;

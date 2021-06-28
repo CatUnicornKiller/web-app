@@ -34,9 +34,9 @@ class MyAuthorizator
     ) {
         $this->user = $user = $userManager->getCurrentUser();
         if ($user) {
-            $this->facultyId = $user->faculty->id;
-            $this->role = $user->role;
-            $this->userType = $user->userType;
+            $this->facultyId = $user->getFaculty()->getId();
+            $this->role = $user->getRole();
+            $this->userType = $user->getUserType();
         }
         $this->rolesManager = $rolesManager;
         $this->roleInt = $rolesManager->roleToInt($this->role);
@@ -72,22 +72,22 @@ class MyAuthorizator
         }
 
         if ($privilege == 'view') {
-            if ($event->isVisibleToFaculty($this->user->faculty) ||
+            if ($event->isVisibleToFaculty($this->user->getFaculty()) ||
                     $this->roleInt >= 110) {
                 return true;
             }
         } elseif ($privilege == 'signUp' || $privilege == 'unSign') {
-            if ($event->isVisibleToFaculty($this->user->faculty)) {
+            if ($event->isVisibleToFaculty($this->user->getFaculty())) {
                 return true;
             }
         } elseif ($privilege == 'addCoorg' || $privilege == 'delCoorg') {
-            if ($this->user->id == $event->user->id || $this->roleInt >= 110) {
+            if ($this->user->getId() == $event->getUser()->getId() || $this->roleInt >= 110) {
                 return true;
             }
         } elseif ($privilege == 'edit' || $privilege == 'delete' ||
                 $privilege == 'generateParticipants') {
-            if (($this->user->id == $event->user->id) || ($this->roleInt >= 110) ||
-                    ($this->roleInt >= 100 && $this->facultyId == $event->user->faculty->id)) {
+            if (($this->user->getId() == $event->getUser()->getId()) || ($this->roleInt >= 110) ||
+                    ($this->roleInt >= 100 && $this->facultyId == $event->getUser()->getFaculty()->getId())) {
                 return true;
             }
         }
@@ -109,7 +109,7 @@ class MyAuthorizator
                 return true;
             }
         } elseif ($privilege == 'view') {
-            if (($this->userType == 'incoming' && $userId == $this->user->id) ||
+            if (($this->userType == 'incoming' && $userId == $this->user->getId()) ||
                     ($this->userType == 'officer' &&
                         ($this->facultyId == $facultyId || $this->roleInt >= 110))) {
                 return true;
@@ -134,7 +134,7 @@ class MyAuthorizator
                 return true;
             }
         } elseif ($privilege == 'changeRole' || $privilege == 'changeIfmsa') {
-            if ($this->user->id == $userId ||
+            if ($this->user->getId() == $userId ||
                     ($this->roleInt >= 110 && $this->roleInt > $this->rolesManager->roleToInt($role)) ||
                     ($this->roleInt < 110 && $this->facultyId == $facultyId &&
                         $this->roleInt > $this->rolesManager->roleToInt($role))) {

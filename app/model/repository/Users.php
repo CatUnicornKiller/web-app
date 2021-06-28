@@ -2,13 +2,20 @@
 
 namespace App\Model\Repository;
 
-use Doctrine\ORM\EntityManagerInterface;
 use App\Exceptions\NotFoundException;
-use App\Model\Entity\User;
 use App\Model\Entity\Faculty;
+use App\Model\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 
 /**
  * Repository of operations performed on User entities.
+ *
+ * @method User|null get($id)
+ * @method User[] findAll()
+ * @method User[] findBy($params, $orderBy = [])
+ * @method User|null findOneBy($params)
+ * @method User findOrThrow($id)
  */
 class Users extends BaseRepository
 {
@@ -28,7 +35,7 @@ class Users extends BaseRepository
      */
     public function findByUsername(string $username)
     {
-        return $this->findOneBy([ "username" => $username ]);
+        return $this->findOneBy(["username" => $username]);
     }
 
     /**
@@ -92,14 +99,14 @@ class Users extends BaseRepository
     private function countUsers($type, $faculty, $privileges)
     {
         $criteria = array("userType" => $type);
-        if ($faculty && !empty($faculty)) {
+        if ($faculty) {
             $criteria["faculty"] = $faculty;
         }
-        if ($privileges && !empty($privileges)) {
+        if ($privileges) {
             $criteria["role"] = $privileges;
         }
 
-        return $this->repository->countBy($criteria);
+        return $this->repository->count($criteria);
     }
 
     /**
@@ -150,14 +157,15 @@ class Users extends BaseRepository
      * @param string $order
      * @param Faculty $faculty
      * @param string $privileges
-     * @return \Doctrine\ORM\Query
+     * @return Query
      */
     public function getOfficersListQuery(
         $orderby,
         $order,
         $faculty = null,
         $privileges = ""
-    ) {
+    )
+    {
         $ord = "id";
         $ad = "ASC";
 
@@ -176,16 +184,16 @@ class Users extends BaseRepository
         $qb = $this->em->createQueryBuilder();
         $qb->select("u")->from(User::class, "u");
         $qb->andWhere("u.userType = :userType")
-                ->setParameter("userType", "officer");
+            ->setParameter("userType", "officer");
 
         if ($faculty) {
             $qb->andWhere("u.faculty = :faculty")
-                    ->setParameter("faculty", $faculty);
+                ->setParameter("faculty", $faculty);
         }
 
-        if ($privileges && !empty($privileges)) {
+        if ($privileges) {
             $qb->andWhere("u.role = :role")
-                    ->setParameter("role", $privileges);
+                ->setParameter("role", $privileges);
         }
 
         $qb->orderBy("u." . $ord, $ad);
@@ -199,14 +207,15 @@ class Users extends BaseRepository
      * @param string $order
      * @param Faculty $faculty
      * @param string $privileges
-     * @return \Doctrine\ORM\Query
+     * @return Query
      */
     public function getIncomingsListQuery(
         $orderby,
         $order,
         $faculty = null,
         $privileges = ""
-    ) {
+    )
+    {
 
         $ord = "id";
         $ad = "ASC";
@@ -226,16 +235,16 @@ class Users extends BaseRepository
         $qb = $this->em->createQueryBuilder();
         $qb->select("u")->from(User::class, "u");
         $qb->andWhere("u.userType = :userType")
-                ->setParameter("userType", "incoming");
+            ->setParameter("userType", "incoming");
 
         if ($faculty) {
             $qb->andWhere("u.faculty = :faculty")
-                    ->setParameter("faculty", $faculty);
+                ->setParameter("faculty", $faculty);
         }
 
-        if ($privileges && !empty($privileges)) {
+        if ($privileges) {
             $qb->andWhere("u.role = :role")
-                    ->setParameter("role", $privileges);
+                ->setParameter("role", $privileges);
         }
 
         $qb->orderBy("u." . $ord, $ad);

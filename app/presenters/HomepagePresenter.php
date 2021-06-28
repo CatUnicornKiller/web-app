@@ -160,7 +160,7 @@ class HomepagePresenter extends BasePresenter
             $this->template->news = $this->newsRepository->getCurrentNews();
         }
 
-        $infoRequests = $this->currentUser->infoRequests;
+        $infoRequests = $this->currentUser->getInfoRequests();
         $requestedInfoArr = array();
         $infoRequestBy = "";
         foreach ($infoRequests as $req) {
@@ -178,7 +178,7 @@ class HomepagePresenter extends BasePresenter
             $this->template->incomingsCount = $this->users->countIncomings();
             $this->template->loginsCount = $this->loginLogs->countAll();
             $this->template->eventsCount = $this->events->countAll();
-            $this->template->facultyEventsCount = $this->events->countEvents($this->currentUser->faculty);
+            $this->template->facultyEventsCount = $this->events->countEvents($this->currentUser->getFaculty());
             $this->template->transactionsCount = $this->ecommTransactions->countAll();
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Forms;
 
 use App;
+use Exception;
 use Nette;
 use App\Model\Entity\User;
 use App\Model\Entity\ExtraPoints;
@@ -69,7 +70,7 @@ class UsersFormsFactory
      * Create form which manages change of the officers role.
      * @param int $id officer identification
      * @param array $rolesDesc list of roles description
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createChangeRoleForm($id, array $rolesDesc)
     {
@@ -83,21 +84,21 @@ class UsersFormsFactory
 
     /**
      * Success callback for the change officer role form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values form values
+     * @param MyForm $form
+     * @param object $values form values
      */
     public function changeRoleFormSucceeded(MyForm $form, $values)
     {
         $usr = $this->users->findOfficerOrThrow($values->id);
-        $usr->roleModified($this->user, $usr->role, $values->role);
-        $usr->role = $values->role;
+        $usr->roleModified($this->user, $usr->getRole(), $values->role);
+        $usr->setRole($values->role);
         $this->users->flush();
     }
 
     /**
      * Create form for the modification of officers ifmsa credentials.
      * @param int $id identification of the officer
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createModifyIfmsaCredentialsForm($id)
     {
@@ -112,14 +113,14 @@ class UsersFormsFactory
 
     /**
      * Success callback for the modify ifmsa credentials form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values form values
+     * @param MyForm $form
+     * @param object $values form values
      */
     public function modifyIfmsaCredentialsFormSucceeded(MyForm $form, $values)
     {
         $usr = $this->users->findOfficerOrThrow($values->id);
-        $usr->officersProfile->ifmsaUsername = $values->ifmsaUsername;
-        $usr->officersProfile->ifmsaPassword = $values->ifmsaPassword;
+        $usr->getOfficersProfile()->setIfmsaUsername($values->ifmsaUsername);
+        $usr->getOfficersProfile()->setIfmsaPassword($values->ifmsaPassword);
 
         $usr->modified($this->user);
         $this->users->flush();
@@ -128,7 +129,7 @@ class UsersFormsFactory
     /**
      * Create modify officers events points form.
      * @param int $id officer identification
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createModifyEventsPointsForm($id)
     {
@@ -139,8 +140,9 @@ class UsersFormsFactory
         $events = $user->organizedEvents;
         foreach ($events as $event) {
             $points->addText($event->id, 'Event Points')
-                    ->setType('number')->setValue($event->points)
-                    ->setAttribute('class', 'event_points')
+                    ->setHtmlType('number')
+                    ->setDefaultValue($event->points)
+                    ->setHtmlAttribute('class', 'event_points')
                     ->setRequired('Points have to be filled');
         }
 
@@ -152,7 +154,7 @@ class UsersFormsFactory
 
     /**
      * Success callback for the modify events points form.
-     * @param \App\Forms\MyForm $form
+     * @param MyForm $form
      * @param array $values form values
      */
     public function modifyEventsPointsFormSucceeded(MyForm $form, $values)
@@ -167,7 +169,7 @@ class UsersFormsFactory
     /**
      * Create modify coorganizer events points form.
      * @param int $id officer identification
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createModifyCoorgEventsPointsForm($id)
     {
@@ -178,8 +180,9 @@ class UsersFormsFactory
         $events = $user->coorganizedEvents;
         foreach ($events as $eventCoorg) {
             $points->addText($eventCoorg->id, 'Event Points')
-                    ->setType('number')->setValue($eventCoorg->points)
-                    ->setAttribute('class', 'event_points')
+                    ->setHtmlType('number')
+                    ->setDefaultValue($eventCoorg->points)
+                    ->setHtmlAttribute('class', 'event_points')
                     ->setRequired('Points have to be filled');
         }
 
@@ -191,7 +194,7 @@ class UsersFormsFactory
 
     /**
      * Success callback for the modify coorganizer events points form.
-     * @param \App\Forms\MyForm $form
+     * @param MyForm $form
      * @param array $values form values
      */
     public function modifyCoorgEventsPointsFormSucceeded(MyForm $form, $values)
@@ -208,7 +211,7 @@ class UsersFormsFactory
      * GET method set.
      * @param int $fac faculty identification
      * @param string $priv privileges identification
-     * @return \App\Forms\MySimpleForm
+     * @return MySimpleForm
      */
     public function createFilterOfficersForm($fac, $priv)
     {
@@ -229,7 +232,7 @@ class UsersFormsFactory
 
         try {
             $form->setDefaults(array( 'faculty' => $fac, 'privileges' => $priv ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         return $form;
@@ -238,7 +241,7 @@ class UsersFormsFactory
     /**
      * Create add extra points to the officer form.
      * @param User $user
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createAddExtraPointsForm(User $user)
     {
@@ -246,11 +249,12 @@ class UsersFormsFactory
         $form->addTextArea('description', 'Description')
                 ->setRequired("Description is required")
                 ->setMaxLength(1000)
-                ->setAttribute('length', 1000);
-        $form->addText('points', 'Points')->setType("number")
+                ->setHtmlAttribute('length', 1000);
+        $form->addText('points', 'Points')
+                ->setHtmlType("number")
                 ->setDefaultValue(0)
                 ->setRequired("Points are required");
-        $form->addHidden('id', $user->id);
+        $form->addHidden('id', $user->getId());
         $form->addSubmit('send', 'Add Extra Points');
         $form->onSuccess[] = array($this, 'addExtraPointsFormSucceeded');
         return $form;
@@ -258,8 +262,8 @@ class UsersFormsFactory
 
     /**
      * Success callback for the add extra points form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values form values
+     * @param MyForm $form
+     * @param object $values form values
      */
     public function addExtraPointsFormSucceeded(MyForm $form, $values)
     {

@@ -2,11 +2,18 @@
 
 namespace App\Model\Repository;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Entity\ForgottenPassword;
 
 /**
  * Repository of operations performed on ForgottenPassword entities.
+ *
+ * @method ForgottenPassword|null get($id)
+ * @method ForgottenPassword[] findAll()
+ * @method ForgottenPassword[] findBy($params, $orderBy = [])
+ * @method ForgottenPassword|null findOneBy($params)
+ * @method ForgottenPassword findOrThrow($id)
  */
 class ForgottenPasswords extends BaseRepository
 {
@@ -26,8 +33,8 @@ class ForgottenPasswords extends BaseRepository
      */
     public function findOneActiveByToken($token)
     {
-        $now = new \DateTime;
-        $tenMinutesAgo = new \DateTime("-10 minutes");
+        $now = new DateTime;
+        $tenMinutesAgo = new DateTime("-10 minutes");
 
         $qb = $this->em->createQueryBuilder();
         $qb->select("f")

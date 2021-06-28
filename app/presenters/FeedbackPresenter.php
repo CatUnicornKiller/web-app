@@ -40,8 +40,7 @@ class FeedbackPresenter extends BasePresenter
 
     protected function createAddFeedbackForm($countryId)
     {
-        $form = $this->feedbackFormsFactory->createAddFeedbackForm($countryId);
-        return $form;
+        return $this->feedbackFormsFactory->createAddFeedbackForm($countryId);
     }
 
     protected function createComponentCountriesManagementForm()
@@ -165,7 +164,7 @@ class FeedbackPresenter extends BasePresenter
         $feedback = $this->feedbackRepository->findOrThrow($id);
 
         $this->template->feed = $feedback;
-        $this->template->country = $feedback->country;
+        $this->template->country = $feedback->getCountry();
         $this->template->feedbackHelpers = $this->feedbackHelpers;
     }
 

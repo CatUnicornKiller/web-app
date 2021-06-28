@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Feedback
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id

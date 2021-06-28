@@ -7,6 +7,12 @@ use App\Model\Entity\Faculty;
 
 /**
  * Repository of operations performed on Faculty entities.
+ *
+ * @method Faculty|null get($id)
+ * @method Faculty[] findAll()
+ * @method Faculty[] findBy($params, $orderBy = [])
+ * @method Faculty|null findOneBy($params)
+ * @method Faculty findOrThrow($id)
  */
 class Faculties extends BaseRepository
 {

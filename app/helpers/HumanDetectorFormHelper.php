@@ -21,7 +21,7 @@ class HumanDetectorFormHelper
     {
         $form->addTextArea('checkAnswer', 'How do you call decrease in the amount of red blood cells (RBCs) or hemoglobin in the blood? (hint: one word answer)')
                 ->setRequired('Please answer check question.')
-                ->setAttribute('class', 'materialize-textarea');
+                ->setHtmlAttribute('class', 'materialize-textarea');
     }
 
     /**

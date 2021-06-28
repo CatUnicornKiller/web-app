@@ -35,7 +35,7 @@ final class NeonParser implements ChainableParserInterface
     /**
      * @inheritDoc
      */
-    public function parse($file): array
+    public function parse(string $file): array
     {
         if (!is_file($file)) {
             throw InvalidArgumentExceptionFactory::createForFileCouldNotBeFound($file);

@@ -23,7 +23,7 @@ class MyCheckbox extends Checkbox
      * Get ready-to-render html structure for the checkbox control part.
      * @return Html
      */
-    public function getControl()
+    public function getControl(): Html
     {
         $c = new Html();
         $c->addHtml($this->getControlPart());

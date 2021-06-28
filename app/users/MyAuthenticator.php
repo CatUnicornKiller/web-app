@@ -6,13 +6,14 @@ use App\Model\Entity\LoginLog;
 use App\Model\Repository\Users;
 use App\Model\Repository\LoginLogs;
 use Nette;
-use Nette\Security\Passwords;
+use Nette\Security\Authenticator;
+use Nette\Security\IIdentity;
 
 /**
  * Simple doctrine authenticator through users repository, every user login is
  * also logged into login log.
  */
-class MyAuthenticator implements Nette\Security\IAuthenticator
+class MyAuthenticator implements Authenticator
 {
     use Nette\SmartObject;
 
@@ -41,21 +42,17 @@ class MyAuthenticator implements Nette\Security\IAuthenticator
 
     /**
      * Performs an authentication.
-     * @return Nette\Security\IIdentity
+     * @return IIdentity
      * @throws Nette\Security\AuthenticationException
      */
-    public function authenticate(array $credentials)
+    public function authenticate(string $username, string $password): IIdentity
     {
-        list($username, $password) = $credentials;
         $user = $this->users->findByUsername($username);
 
         if (!$user) {
             throw new Nette\Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
-        } elseif (!Passwords::verify($password, $user->password)) {
+        } elseif (!$user->matchPasswords($password)) {
             throw new Nette\Security\AuthenticationException('The password is incorrect.', self::INVALID_CREDENTIAL);
-        } elseif (Passwords::needsRehash($user->password)) {
-            $user->password = $password;
-            $this->users->flush();
         }
 
         // everything went fine, just stalk users a bit
@@ -63,6 +60,7 @@ class MyAuthenticator implements Nette\Security\IAuthenticator
         $this->loginLogs->persist($loginLog);
 
         // ... and return new identity of user
+        $this->users->flush();
         return $user;
     }
 }

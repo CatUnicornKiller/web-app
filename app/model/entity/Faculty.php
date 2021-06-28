@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Faculty extends BaseEntity
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -59,9 +61,19 @@ class Faculty extends BaseEntity
         return $this->facultyName;
     }
 
+    public function setFacultyName($facultyName): void
+    {
+        $this->facultyName = $facultyName;
+    }
+
     public function getFacultyAddress(): string
     {
         return $this->facultyAddress;
+    }
+
+    public function setFacultyAddress(string $facultyAddress): void
+    {
+        $this->facultyAddress = $facultyAddress;
     }
 
     public function getFacultyShortcut(): string
@@ -69,8 +81,18 @@ class Faculty extends BaseEntity
         return $this->facultyShortcut;
     }
 
+    public function setFacultyShortcut(string $facultyShortcut): void
+    {
+        $this->facultyShortcut = $facultyShortcut;
+    }
+
     public function getIfmsaLcNumber(): int
     {
         return $this->ifmsaLcNumber;
+    }
+
+    public function setIfmsaLcNumber(int $ifmsaLcNumber): void
+    {
+        $this->ifmsaLcNumber = $ifmsaLcNumber;
     }
 }

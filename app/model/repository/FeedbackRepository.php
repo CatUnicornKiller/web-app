@@ -6,9 +6,16 @@ use App\Model\Entity\Country;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Entity\Feedback;
+use Doctrine\ORM\Query;
 
 /**
  * Repository of operations performed on Feedback entities.
+ *
+ * @method Feedback|null get($id)
+ * @method Feedback[] findAll()
+ * @method Feedback[] findBy($params, $orderBy = [])
+ * @method Feedback|null findOneBy($params)
+ * @method Feedback findOrThrow($id)
  */
 class FeedbackRepository extends BaseRepository
 {
@@ -27,12 +34,12 @@ class FeedbackRepository extends BaseRepository
      * @param string $orderby
      * @param string $order
      * @param ?Country $country
-     * @param ?DateTime $startDate
-     * @param ?DateTime $endDate
+     * @param ?string $startDate
+     * @param ?string $endDate
      * @param string $exchangeType
      * @param string $hostCity
      * @param string $hostFaculty
-     * @return \Doctrine\ORM\Query
+     * @return Query
      */
     public function getCountryFeedbackListQuery(
         $orderby,

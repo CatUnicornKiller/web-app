@@ -3,6 +3,8 @@
 namespace App\Model\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -13,6 +15,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class CpAssignedAf
 {
+    use MagicGetters;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -88,17 +92,22 @@ class CpAssignedAf
         return $this->afArrival;
     }
 
+    public function setAfArrival(DateTime $afArrival): void
+    {
+        $this->afArrival = $afArrival;
+    }
+
     public function getDeleted(): bool
     {
         return $this->deleted;
     }
 
-    public function getTasks(): ArrayCollection
+    public function getTasks(): Collection
     {
         return $this->tasks;
     }
 
-    public function getModifications(): ArrayCollection
+    public function getModifications(): Collection
     {
         return $this->modifications;
     }
@@ -119,7 +128,7 @@ class CpAssignedAf
         try {
             $this->user->getDeleted();
             return $this->user; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }
@@ -127,7 +136,7 @@ class CpAssignedAf
     public function getCompletedTasks()
     {
         return $this->tasks->filter(function (CpTask $task) {
-            return $task->isCompleted() == true ? true : false;
+            return $task->isCompleted();
         });
     }
 }

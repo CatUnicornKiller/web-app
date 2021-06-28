@@ -3,6 +3,8 @@
 namespace App\Presenters;
 
 use Doctrine\ORM\EntityManagerInterface;
+use HTMLPurifier;
+use HTMLPurifier_Config;
 use Nette;
 use Tracy\ILogger;
 use App;
@@ -137,13 +139,13 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
     public function sanitizeTinyMCEOutput($in)
     {
-        $config = \HTMLPurifier_Config::createDefault();
+        $config = HTMLPurifier_Config::createDefault();
         $config->set('HTML.SafeIframe', true);
         $config->set(
             'URI.SafeIframeRegexp',
             '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%'
         ); //allow YouTube and Vimeo
-        $purifier = new \HTMLPurifier($config);
+        $purifier = new HTMLPurifier($config);
         return $purifier->purify($in);
     }
 

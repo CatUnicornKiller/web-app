@@ -3,30 +3,20 @@
 namespace App;
 
 use Nette;
-use Nette\Application\Routers\RouteList;
 use Nette\Application\Routers\Route;
+use Nette\Application\Routers\RouteList;
 
 /**
  * Factory of the default router.
  */
 class RouterFactory
 {
-    /** @var Nette\DI\Container */
-    private $container;
-
-    /**
-     * DI Constructor.
-     * @param Nette\DI\Container $container
-     */
-    public function __construct(Nette\DI\Container $container)
-    {
-        $this->container = $container;
-    }
+    use Nette\StaticClass;
 
     /**
      * Create default router, all routes are automatically discovered from
      * presenters.
-     * @return Nette\Application\IRouter
+     * @return Nette\Routing\Router
      */
     public function create()
     {

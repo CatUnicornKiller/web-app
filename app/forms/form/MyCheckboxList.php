@@ -4,6 +4,7 @@ namespace App\Forms;
 
 use Nette;
 use Nette\Forms\Controls\CheckboxList;
+use Nette\Utils\Html;
 
 /**
  * Reimplementation of nette CheckboxList more suitable for material-css
@@ -23,11 +24,11 @@ class MyCheckboxList extends CheckboxList
 
     /**
      * Get ready-to-render html structure for the checkbox list control part.
-     * @return \Nette\Utils\Html
+     * @return Html
      */
-    public function getControl()
+    public function getControl(): Html
     {
-        $out = new Nette\Utils\Html();
+        $out = new Html();
 
         $items = $this->getItems();
         foreach ($items as $key => $value) {

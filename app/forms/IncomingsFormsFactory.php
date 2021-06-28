@@ -3,6 +3,7 @@
 namespace App\Forms;
 
 use App;
+use Exception;
 use Nette;
 use App\Model\Entity\User;
 use App\Model\Repository\Users;
@@ -50,7 +51,7 @@ class IncomingsFormsFactory
      * Create change incoming role form.
      * @param int $id incoming identification
      * @param array $rolesDesc possible roles of incomings
-     * @return \App\Forms\MyForm
+     * @return MyForm
      */
     public function createChangeRoleForm($id, array $rolesDesc)
     {
@@ -64,14 +65,14 @@ class IncomingsFormsFactory
 
     /**
      * Success callback for the change incomings role form.
-     * @param \App\Forms\MyForm $form
-     * @param array $values
+     * @param MyForm $form
+     * @param object $values
      */
     public function changeRoleFormSucceeded(MyForm $form, $values)
     {
         $usr = $this->users->findIncomingOrThrow($values->id);
-        $usr->roleModified($this->user, $usr->role, $values->role);
-        $usr->role = $values->role;
+        $usr->roleModified($this->user, $usr->getRole(), $values->role);
+        $usr->setRole($values->role);
         $this->users->flush();
     }
 
@@ -80,13 +81,13 @@ class IncomingsFormsFactory
      * GET method set.
      * @param int $facultyId faculty identification
      * @param string $priv privileges identification
-     * @return \App\Forms\MySimpleForm
+     * @return MySimpleForm
      */
     public function createFilterIncomingsForm($facultyId, $priv)
     {
         $faculties = array();
         foreach ($this->faculties->findAll() as $faculty) {
-            $faculties[$faculty->id] = $faculty->facultyName;
+            $faculties[$faculty->getId()] = $faculty->getFacultyName();
         }
 
         $form = new MySimpleForm;
@@ -101,7 +102,7 @@ class IncomingsFormsFactory
 
         try {
             $form->setDefaults(array( 'faculty' => $facultyId, 'privileges' => $priv ));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         return $form;

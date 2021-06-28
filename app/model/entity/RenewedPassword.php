@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RenewedPassword
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id

@@ -2,6 +2,7 @@
 
 namespace App\Helpers\Date;
 
+use DateTime;
 use Nette;
 
 /**
@@ -18,7 +19,7 @@ class DateTimeHolder
     public $textual;
     /**
      * Typed date and time.
-     * @var \DateTime
+     * @var DateTime
      */
     public $typed;
 }

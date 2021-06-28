@@ -59,7 +59,7 @@ class UserPresenter extends BasePresenter
         }
 
         // delete image
-        $this->currentUser->profileImg = "";
+        $this->currentUser->setProfileImg("");
         $this->currentUser->modified($this->currentUser);
         $this->users->flush();
 

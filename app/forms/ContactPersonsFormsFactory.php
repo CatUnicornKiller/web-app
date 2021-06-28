@@ -2,6 +2,10 @@
 
 namespace App\Forms;
 
+use App\Helpers\StringHelper;
+use App\Users\MyAuthorizator;
+use DateTime;
+use Exception;
 use Nette;
 use App;
 use App\Model\Entity\User;
@@ -12,6 +16,7 @@ use App\Model\Repository\Users;
 use App\Model\Repository\CpAssignedAfs;
 use App\Model\Repository\IfmsaPersons;
 use App\Helpers\Date\DateHelper;
+use Nette\Http\Request;
 
 /**
  * Class containing factory methods for forms mainly concerning contact persons
@@ -33,11 +38,11 @@ class ContactPersonsFormsFactory
     private $ifmsaConnectionHelper;
     /** @var IfmsaPersons */
     private $ifmsaPersons;
-    /** @var \App\Helpers\StringHelper */
+    /** @var StringHelper */
     private $stringHelpers;
-    /** @var Nette\Http\Request */
+    /** @var Request */
     private $httpRequest;
-    /** @var App\Users\MyAuthorizator */
+    /** @var MyAuthorizator */
     private $myAuthorizator;
     /** @var DateHelper */
     private $dateHelper;
@@ -46,25 +51,25 @@ class ContactPersonsFormsFactory
      * DI Constructor.
      * @param UserManager $userManager
      * @param Users $users
-     * @param App\Helpers\StringHelper $stringHelpers
+     * @param StringHelper $stringHelpers
      * @param CpAssignedAfs $assignedAfs
      * @param App\Helpers\Pdf\IfmsaRemotePdfFactory $ifmsaPdfModel
      * @param App\Helpers\IfmsaConnectionHelper $ifmsaConnectionHelper
      * @param IfmsaPersons $ifmsaPersons
-     * @param Nette\Http\Request $httpRequest
-     * @param App\Users\MyAuthorizator $myAuthorizator
+     * @param Request $httpRequest
+     * @param MyAuthorizator $myAuthorizator
      * @param DateHelper $dateHelper
      */
     public function __construct(
         UserManager $userManager,
         Users $users,
-        App\Helpers\StringHelper $stringHelpers,
+        StringHelper $stringHelpers,
         CpAssignedAfs $assignedAfs,
         App\Helpers\Pdf\IfmsaRemotePdfFactory $ifmsaPdfModel,
         App\Helpers\IfmsaConnectionHelper $ifmsaConnectionHelper,
         IfmsaPersons $ifmsaPersons,
-        Nette\Http\Request $httpRequest,
-        App\Users\MyAuthorizator $myAuthorizator,
+        Request $httpRequest,
+        MyAuthorizator $myAuthorizator,
         DateHelper $dateHelper
     ) {
 
@@ -84,10 +89,10 @@ class ContactPersonsFormsFactory
     {
         $form = new MySimpleForm();
 
-        $officers = $this->users->getFacultyOfficers($this->user->faculty);
+        $officers = $this->users->getFacultyOfficers($this->user->getFaculty());
         $cps = array();
         foreach ($officers as $officer) {
-            $cps[$officer->id] = $officer->firstname . ' ' . $officer->surname . ' (' . $officer->email . ')';
+            $cps[$officer->getId()] = $officer->getFirstname() . ' ' . $officer->getSurname() . ' (' . $officer->getEmail() . ')';
         }
 
         $form->addRadioList('userId', 'Choose Officer', $cps)
@@ -159,13 +164,13 @@ class ContactPersonsFormsFactory
         $form['department']->setItems($deps);
 
         // try to match saved department (in database) against given ones
-        $defaultDep = $this->getDefaultDepartment($person->department, $personInfo);
+        $defaultDep = $this->getDefaultDepartment($person->getDepartment(), $personInfo);
         $form['department']->setDefaultValue($defaultDep);
         if ($defaultDep == 'other') {
-            $form['otherDepartment']->setDefaultValue($person->department);
+            $form['otherDepartment']->setDefaultValue($person->getDepartment());
         }
 
-        $form['accommodation']->setDefaultValue($person->accommodation);
+        $form['accommodation']->setDefaultValue($person->getAccommodation());
 
         $defs = array();
         foreach ($personInfo as $key => $value) {
@@ -217,7 +222,7 @@ class ContactPersonsFormsFactory
                 $personInfo,
                 $cardOfDocuments
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         $personInfo['accommodation'] = $accm;
@@ -225,11 +230,11 @@ class ContactPersonsFormsFactory
         // check values in database and update them
         $person = $this->ifmsaPersons->findByAfNumber($afNumber);
         if ($person) {
-            $person->firstname = $personInfo['name'];
-            $person->surname = $personInfo['surname'];
-            $person->email = $personInfo['email'];
-            $person->photo = $personInfo['jpgPath'];
-            $person->afArrival = $this->dateHelper->createDateOrDefault($personInfo['arrivalDate'])->typed;
+            $person->setFirstname($personInfo['name']);
+            $person->setSurname($personInfo['surname']);
+            $person->setEmail($personInfo['email']);
+            $person->setPhoto($personInfo['jpgPath']);
+            $person->setAfArrival($this->dateHelper->createDateOrDefault($personInfo['arrivalDate'])->typed);
             $this->ifmsaPersons->flush();
         } else {
             $person = new IfmsaPerson(
@@ -254,11 +259,7 @@ class ContactPersonsFormsFactory
         }
 
         $afArrival = date_create_from_format("d/m/Y", $values->personInfo["arrivalDate"]);
-        if (!$afArrival) {
-            $afArrival = "0000-00-00";
-        } else {
-            $afArrival->format("Y-m-d");
-        }
+        $afArrival = !$afArrival ? "0000-00-00" : $afArrival->format("Y-m-d");
 
         $cardOfDocuments = array();
         $this->getCardAndUpdate(
@@ -271,8 +272,8 @@ class ContactPersonsFormsFactory
 
         // update ifmsa person information in database
         $person = $this->ifmsaPersons->findByAfNumber($values->afNumber);
-        $person->accommodation = $values->accommodation;
-        $person->department = $values->personInfo['departmentChosen'];
+        $person->setAccommodation($values->accommodation);
+        $person->setDepartment($values->personInfo['departmentChosen']);
         $this->ifmsaPersons->flush();
 
         // store assigned incoming
@@ -304,7 +305,7 @@ class ContactPersonsFormsFactory
 
         $afArrival = date_create_from_format("d/m/Y", $values->personInfo["arrivalDate"]);
         if (!$afArrival) {
-            $afArrival = new \DateTime("0000-00-00");
+            $afArrival = new DateTime("0000-00-00");
         }
 
         $cardOfDocuments = array();
@@ -318,12 +319,12 @@ class ContactPersonsFormsFactory
 
         // update ifmsa person information in database
         $person = $this->ifmsaPersons->findByAfNumber($values->afNumber);
-        $person->accommodation = $values->accommodation;
-        $person->department = $values->personInfo['departmentChosen'];
+        $person->setAccommodation($values->accommodation);
+        $person->setDepartment($values->personInfo['departmentChosen']);
         $this->ifmsaPersons->flush();
 
         // update assigned incoming
-        $assigned->afArrival = $afArrival;
+        $assigned->setAfArrival($afArrival);
         $assigned->modified($this->user);
         $this->assignedAfs->flush();
 

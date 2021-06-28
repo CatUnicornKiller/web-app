@@ -9,6 +9,7 @@ use App\Model\Repository\EcommBatchs;
 use App\Model\Repository\EcommErrors;
 use App\Model\Repository\EcommTransactions;
 use App\Exceptions\PaymentException;
+use DateTime;
 use EcommMerchant\Merchant;
 
 /**
@@ -120,20 +121,20 @@ class EcommTransactionsHelper
     public function processTransactionOk(EcommTransaction $transaction)
     {
         $response = $this->merchant->getTransResult(
-            urlencode($transaction->transId),
-            $transaction->clientIpAddr
+            urlencode($transaction->getTransId()),
+            $transaction->getClientIpAddr()
         );
 
         if (strstr($response, 'RESULT:')) {
             $transInfo = $this->getInfoFromOkResponse($response);
 
             // write information about transaction into db
-            $transaction->transEndDate = new \DateTime;
-            $transaction->result = $transInfo["result"];
-            $transaction->resultCode = $transInfo['resultCode'];
-            $transaction->result3dsecure = $transInfo['result3dsecure'];
-            $transaction->cardNumber = $transInfo['cardNumber'];
-            $transaction->response = $response;
+            $transaction->setTransEndDate(new DateTime);
+            $transaction->setResult($transInfo["result"]);
+            $transaction->setResultCode($transInfo['resultCode']);
+            $transaction->setResult3dsecure($transInfo['result3dsecure']);
+            $transaction->setCardNumber($transInfo['cardNumber']);
+            $transaction->setResponse($response);
             $this->ecommTransactions->flush();
 
             return $this->isSuccessfullTransactionCorrect($transInfo);
@@ -157,8 +158,8 @@ class EcommTransactionsHelper
     {
         // get information from merchant and store them in database
         $response = $this->merchant->getTransResult(
-            urlencode($transaction->transId),
-            $transaction->clientIpAddr
+            urlencode($transaction->getTransId()),
+            $transaction->getClientIpAddr()
         );
         $response = $errorMsg . ' + ' . $response;
 
@@ -175,16 +176,16 @@ class EcommTransactionsHelper
     public function reverseTransaction(EcommTransaction $transaction)
     {
         // get merchant and reverse transaction
-        $amount = $transaction->amount;
-        $response = $this->merchant->reverse(urlencode($transaction->transId), $amount);
+        $amount = $transaction->getAmount();
+        $response = $this->merchant->reverse(urlencode($transaction->getTransId()), $amount);
 
-        if (substr($response, 8, 2) == "OK" or substr($response, 8, 8) == "REVERSED") {
+        if (substr($response, 8, 2) == "OK" || substr($response, 8, 8) == "REVERSED") {
             $reverseInfo = $this->getInfoFromReverseResponse($response);
 
-            $transaction->reversalAmount = $amount;
-            $transaction->resultCode = $reverseInfo["resultCode"];
-            $transaction->result = $reverseInfo["result"];
-            $transaction->response = $response;
+            $transaction->setReversalAmount($amount);
+            $transaction->setResultCode($reverseInfo["resultCode"]);
+            $transaction->setResult($reverseInfo["result"]);
+            $transaction->setResponse($response);
             $this->ecommTransactions->flush();
         } else {
             $error = new EcommError('reverse', $response);

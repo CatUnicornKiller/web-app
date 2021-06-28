@@ -5,6 +5,7 @@ namespace App\Helpers\Table;
 use App;
 use App\Model\Repository\CpAssignedAfs;
 use App\Model\Repository\IfmsaPersons;
+use XLSXWriter;
 
 /**
  * Factory class responsible for generation of tables concerning IfmsaRemote
@@ -62,14 +63,14 @@ class IfmsaRemoteTableFactory
             $cpName = '';
             $cpEmail = '';
             if ($cp) {
-                $cpName = $cp->user->firstname . ' ' . $cp->user->surname;
-                $cpEmail = $cp->user->email;
+                $cpName = $cp->getUser()->getFirstname() . ' ' . $cp->getUser()->getSurname();
+                $cpEmail = $cp->getUser()->getEmail();
             }
 
             $personInfo = array();
 
             $this->ifmsaConnectionHelper->fetchPersonAf($afNumber, $personInfo);
-            $this->ifmsaConnectionHelper->fetchPersonCC($person->confirmationNumber, $personInfo);
+            $this->ifmsaConnectionHelper->fetchPersonCC($person->getConfirmationNumber(), $personInfo);
 
             $data[] = array($afNumber, $personInfo["originNmo"],
                 $personInfo["sex"], $personInfo["name"], $personInfo["surname"],
@@ -81,11 +82,11 @@ class IfmsaRemoteTableFactory
                 $personInfo["desiredCity3"],
                 $personInfo["exchStartDate"], $personInfo["exchEndDate"],
                 $personInfo["arrivalDate"], $personInfo["departureDate"],
-                $personInfo["flightBusTrainNumber"], $person->accommodation,
+                $personInfo["flightBusTrainNumber"], $person->getAccommodation(),
                 $cpName, $cpEmail, $personInfo["studentRemarks"]);
         }
 
-        $writer = new \XLSXWriter();
+        $writer = new XLSXWriter();
         $writer->writeSheet($data);
         return $writer->writeToString();
     }

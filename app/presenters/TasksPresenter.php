@@ -96,7 +96,7 @@ class TasksPresenter extends BasePresenter
             $this->error('Access Denied');
         }
 
-        $assigned = $this->currentUser->assignedIncomings;
+        $assigned = $this->currentUser->getAssignedIncomings();
         $personTasks = array();
         foreach ($assigned as $assign) {
             $ifmsaPerson = $this->ifmsaPersons->findByAfNumber($assign->afNumber);
@@ -108,32 +108,32 @@ class TasksPresenter extends BasePresenter
     public function actionDetail($id)
     {
         $assignedAf = $this->cpAssignedAfs->findOrThrow($id);
-        $userDetail = $assignedAf->user;
-        if (!$this->isLoggedIn() || !$userDetail->isOfficer() || !$assignedAf ||
+        $userDetail = $assignedAf->getUser();
+        if (!$this->isLoggedIn() || !$userDetail->isOfficer() ||
                 !$this->user->isAllowed("Tasks", "view") ||
-                !$this->myAuthorizator->isAllowedTasks('view', $userDetail->faculty->id)) {
+                !$this->myAuthorizator->isAllowedTasks('view', $userDetail->getFaculty()->getId())) {
             $this->error('Access Denied');
         }
 
-        $tasks = $assignedAf->tasks;
-        $ifmsaPerson = $this->ifmsaPersons->findByAfNumber($assignedAf->afNumber);
+        $tasks = $assignedAf->getTasks();
+        $ifmsaPerson = $this->ifmsaPersons->findByAfNumber($assignedAf->getAfNumber());
 
         $this['changeTasksStatesForm'] = $this->createChangeTasksStatesForm($id, $tasks);
 
         $this->template->assignedAf = $assignedAf;
-        $this->template->afNumber = $assignedAf->afNumber;
+        $this->template->afNumber = $assignedAf->getAfNumber();
         $this->template->userDetail = $userDetail;
         $this->template->tasks = $tasks;
         $this->template->ifmsaPerson = $ifmsaPerson;
-        $this->template->canEdit = $this->myAuthorizator->isAllowedTasks('edit', $userDetail->faculty->id);
-        $this->template->canAdd = $this->myAuthorizator->isAllowedTasks('add', $userDetail->faculty->id);
+        $this->template->canEdit = $this->myAuthorizator->isAllowedTasks('edit', $userDetail->getFaculty()->getId());
+        $this->template->canAdd = $this->myAuthorizator->isAllowedTasks('add', $userDetail->getFaculty()->getId());
     }
 
     public function actionDeleteTask($id)
     {
         $task = $this->cpTasks->findOrThrow($id);
         if (!$this->isLoggedIn() || !$this->user->isAllowed("Tasks", "edit") ||
-                !$this->myAuthorizator->isAllowedTasks('delete', $task->cpAssignedAf->user->faculty->id)) {
+                !$this->myAuthorizator->isAllowedTasks('delete', $task->getCpAssignedAf()->getUser()->getFaculty()->getId())) {
             $this->error('Access denied');
         }
 
@@ -142,7 +142,7 @@ class TasksPresenter extends BasePresenter
         $this->cpTasks->flush();
 
         $this->flashMessage('Task successfully deleted');
-        $this->redirect('Tasks:detail', $task->cpAssignedAf->id);
+        $this->redirect('Tasks:detail', $task->getCpAssignedAf()->getId());
     }
 
     public function actionEditTasks($id)
@@ -150,11 +150,11 @@ class TasksPresenter extends BasePresenter
         $assignedAf = $this->cpAssignedAfs->findOrThrow($id);
         if (!$this->isLoggedIn() ||
                 !$this->user->isAllowed("Tasks", "edit") ||
-                !$this->myAuthorizator->isAllowedTasks('edit', $assignedAf->user->faculty->id)) {
+                !$this->myAuthorizator->isAllowedTasks('edit', $assignedAf->getUser()->getFaculty()->getId())) {
             $this->error('Access Denied');
         }
 
-        $tasks = $assignedAf->tasks;
+        $tasks = $assignedAf->getTasks();
         $this['editTasksForm'] = $this->createEditTasksForm($id, $tasks);
 
         $this->template->tasks = $tasks;
@@ -163,10 +163,10 @@ class TasksPresenter extends BasePresenter
     public function actionAddTasks($id)
     {
         $assignedAf = $this->cpAssignedAfs->findOrThrow($id);
-        $userDetail = $assignedAf->user;
+        $userDetail = $assignedAf->getUser();
         if (!$this->isLoggedIn() || !$userDetail ||
                 !$this->user->isAllowed("Tasks", "edit") ||
-                !$this->myAuthorizator->isAllowedTasks('add', $userDetail->faculty->id)) {
+                !$this->myAuthorizator->isAllowedTasks('add', $userDetail->getFaculty()->getId())) {
             $this->error('Access Denied');
         }
 

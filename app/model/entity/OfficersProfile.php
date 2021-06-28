@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OfficersProfile
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -70,9 +72,19 @@ class OfficersProfile
         return $this->ifmsaUsername;
     }
 
+    public function setIfmsaUsername(string $ifmsaUsername): void
+    {
+        $this->ifmsaUsername = $ifmsaUsername;
+    }
+
     public function getIfmsaPassword(): string
     {
         return $this->ifmsaPassword;
+    }
+
+    public function setIfmsaPassword(string $ifmsaPassword): void
+    {
+        $this->ifmsaPassword = $ifmsaPassword;
     }
 
     public function getAddress(): string
@@ -80,9 +92,19 @@ class OfficersProfile
         return $this->address;
     }
 
+    public function setAddress(string $address): void
+    {
+        $this->address = $address;
+    }
+
     public function getCity(): string
     {
         return $this->city;
+    }
+
+    public function setCity(string $city): void
+    {
+        $this->city = $city;
     }
 
     public function getPostCode(): string
@@ -90,9 +112,19 @@ class OfficersProfile
         return $this->postCode;
     }
 
+    public function setPostCode(string $postCode): void
+    {
+        $this->postCode = $postCode;
+    }
+
     public function getRegion(): string
     {
         return $this->region;
+    }
+
+    public function setRegion(string $region): void
+    {
+        $this->region = $region;
     }
 
     public function getPhone(): string
@@ -100,8 +132,18 @@ class OfficersProfile
         return $this->phone;
     }
 
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
     }
 }

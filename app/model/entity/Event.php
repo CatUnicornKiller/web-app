@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +15,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Event
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -170,9 +173,19 @@ class Event
         return $this->date;
     }
 
+    public function setDate(DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
     public function getEndDate(): DateTime
     {
         return $this->endDate;
+    }
+
+    public function setEndDate(DateTime $endDate): void
+    {
+        $this->endDate = $endDate;
     }
 
     public function getSignupDeadline(): ?DateTime
@@ -180,9 +193,19 @@ class Event
         return $this->signupDeadline;
     }
 
+    public function setSignupDeadline(?DateTime $signupDeadline): void
+    {
+        $this->signupDeadline = $signupDeadline;
+    }
+
     public function getEventName(): string
     {
         return $this->eventName;
+    }
+
+    public function setEventName(string $eventName): void
+    {
+        $this->eventName = $eventName;
     }
 
     public function getCapacity(): string
@@ -190,9 +213,19 @@ class Event
         return $this->capacity;
     }
 
-    public function getEventLogo(): string
+    public function setCapacity(string $capacity): void
+    {
+        $this->capacity = $capacity;
+    }
+
+    public function getEventLogo(): ?string
     {
         return $this->eventLogo;
+    }
+
+    public function setEventLogo(?string $eventLogo): void
+    {
+        $this->eventLogo = $eventLogo;
     }
 
     public function getEventDescription(): string
@@ -200,14 +233,29 @@ class Event
         return $this->eventDescription;
     }
 
+    public function setEventDescription(string $eventDescription): void
+    {
+        $this->eventDescription = $eventDescription;
+    }
+
     public function getPlace(): string
     {
         return $this->place;
     }
 
+    public function setPlace(string $place): void
+    {
+        $this->place = $place;
+    }
+
     public function getPrice(): int
     {
         return $this->price;
+    }
+
+    public function setPrice(int $price): void
+    {
+        $this->price = $price;
     }
 
     public function getPoints(): int
@@ -225,22 +273,32 @@ class Event
         return $this->socialProgram;
     }
 
+    public function setSocialProgram(bool $socialProgram): void
+    {
+        $this->socialProgram = $socialProgram;
+    }
+
     public function getAcademicQuality(): bool
     {
         return $this->academicQuality;
     }
 
-    public function getFiles(): ArrayCollection
+    public function setAcademicQuality(bool $academicQuality): void
+    {
+        $this->academicQuality = $academicQuality;
+    }
+
+    public function getFiles(): Collection
     {
         return $this->files;
     }
 
-    public function getModifications(): ArrayCollection
+    public function getModifications(): Collection
     {
         return $this->modifications;
     }
 
-    public function getVisibleToFaculties(): ArrayCollection
+    public function getVisibleToFaculties(): Collection
     {
         return $this->visibleToFaculties;
     }
@@ -289,7 +347,7 @@ class Event
     public function getCoorganizers()
     {
         return $this->coorganizers->filter(function (EventCoorganizer $coorganizer) {
-            if ($coorganizer->user) {
+            if ($coorganizer->getUser()) {
                 return true;
             }
             return false;
@@ -299,7 +357,7 @@ class Event
     public function getParticipants()
     {
         return $this->participants->filter(function (EventParticipant $participant) {
-            if ($participant->user) {
+            if ($participant->getUser()) {
                 return true;
             }
             return false;

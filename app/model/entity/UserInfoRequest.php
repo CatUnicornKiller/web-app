@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 use DateTime;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class UserInfoRequest
 {
+    use MagicGetters;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -100,9 +103,19 @@ class UserInfoRequest
         return $this->deletedTime;
     }
 
+    public function setDeletedTime(DateTime $deletedTime): void
+    {
+        $this->deletedTime = $deletedTime;
+    }
+
     public function getCompleted(): bool
     {
         return $this->completed;
+    }
+
+    public function setCompleted(bool $completed): void
+    {
+        $this->completed = $completed;
     }
 
     public function delete()
@@ -115,7 +128,7 @@ class UserInfoRequest
         try {
             $this->user->getDeleted();
             return $this->user; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }
@@ -125,18 +138,23 @@ class UserInfoRequest
         try {
             $this->requestedUser->getDeleted();
             return $this->requestedUser; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }
 
-    public function getDeletedByUser()
+    public function getDeletedByUser(): ?User
     {
         try {
             $this->deletedByUser->getDeleted();
             return $this->deletedByUser; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
+    }
+
+    public function setDeletedByUser(?User $deletedByUser): void
+    {
+        $this->deletedByUser = $deletedByUser;
     }
 }
