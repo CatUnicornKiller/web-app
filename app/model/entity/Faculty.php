@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * Faculty
@@ -12,8 +11,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class Faculty extends BaseEntity
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -48,5 +45,32 @@ class Faculty extends BaseEntity
         $this->facultyAddress = $address;
         $this->facultyShortcut = $shortcut;
         $this->ifmsaLcNumber = $lcNumber;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getFacultyName(): string
+    {
+        return $this->facultyName;
+    }
+
+    public function getFacultyAddress(): string
+    {
+        return $this->facultyAddress;
+    }
+
+    public function getFacultyShortcut(): string
+    {
+        return $this->facultyShortcut;
+    }
+
+    public function getIfmsaLcNumber(): int
+    {
+        return $this->ifmsaLcNumber;
     }
 }

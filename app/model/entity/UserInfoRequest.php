@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * UserInfoRequest
@@ -12,8 +12,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class UserInfoRequest
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -66,13 +64,45 @@ class UserInfoRequest
     {
         $this->user = $user;
         $this->requestedUser = $requestedUser;
-        $this->time = new \DateTime;
+        $this->time = new DateTime;
         $this->requestDesc = $requestDesc;
     }
 
     public static function requestAdditionalInfo(User $user, User $requestedUser)
     {
         return new self($user, $requestedUser, "additional_information");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getTime(): DateTime
+    {
+        return $this->time;
+    }
+
+    public function getRequestDesc(): string
+    {
+        return $this->requestDesc;
+    }
+
+    public function getDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    public function getDeletedTime(): DateTime
+    {
+        return $this->deletedTime;
+    }
+
+    public function getCompleted(): bool
+    {
+        return $this->completed;
     }
 
     public function delete()

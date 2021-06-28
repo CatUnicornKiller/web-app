@@ -2,8 +2,9 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -13,8 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class News
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -52,8 +51,35 @@ class News
     {
         $this->user = $user;
         $this->message = $message;
-        $this->date = new \DateTime;
+        $this->date = new DateTime;
         $this->modifications = new ArrayCollection;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    public function getDate(): DateTime
+    {
+        return $this->date;
+    }
+
+    public function getDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    public function getModifications(): ArrayCollection
+    {
+        return $this->modifications;
     }
 
     public function modified(User $user)
@@ -72,7 +98,7 @@ class News
         try {
             $this->user->getDeleted();
             return $this->user; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }

@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * ModifiedExtraPoints
@@ -13,8 +13,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class ModifiedExtraPoints
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -42,10 +40,22 @@ class ModifiedExtraPoints
     {
         $this->user = $user;
         $this->extraPoints = $extraPoints;
-        $this->modTime = new \DateTime;
+        $this->modTime = new DateTime;
     }
 
-    public function getUser()
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getModTime(): DateTime
+    {
+        return $this->modTime;
+    }
+
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();
@@ -55,7 +65,7 @@ class ModifiedExtraPoints
         }
     }
 
-    public function getExtraPoints()
+    public function getExtraPoints(): ?ExtraPoints
     {
         try {
             $this->extraPoints->getDeleted();

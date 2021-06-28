@@ -11,17 +11,21 @@ use Nette;
 
 /**
  * Base repository for all others. Contains predefined handy operations.
+ *
+ * @template T
  */
 class BaseRepository
 {
     use Nette\SmartObject;
 
     /**
+     * Doctrine entity manager.
      * @var EntityManagerInterface
      */
     protected $em;
     /**
-     * @var EntityRepository
+     * Specific repository per instance.
+     * @var EntityRepository<T>
      */
     protected $repository;
 
@@ -97,7 +101,7 @@ class BaseRepository
      */
     public function countAll()
     {
-        return $this->repository->count();
+        return $this->repository->count([]);
     }
 
     /**

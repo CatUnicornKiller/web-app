@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * OfficersProfile
@@ -12,8 +11,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class OfficersProfile
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -60,4 +57,51 @@ class OfficersProfile
      * @ORM\OneToOne(targetEntity="User", inversedBy="officersProfile")
      */
     protected $user;
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getIfmsaUsername(): string
+    {
+        return $this->ifmsaUsername;
+    }
+
+    public function getIfmsaPassword(): string
+    {
+        return $this->ifmsaPassword;
+    }
+
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    public function getCity(): string
+    {
+        return $this->city;
+    }
+
+    public function getPostCode(): string
+    {
+        return $this->postCode;
+    }
+
+    public function getRegion(): string
+    {
+        return $this->region;
+    }
+
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 }

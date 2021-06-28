@@ -2,8 +2,9 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * RenewedPassword
@@ -12,8 +13,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class RenewedPassword
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -41,15 +40,32 @@ class RenewedPassword
     {
         $this->user = $user;
         $this->ipAddress = $ipAddress;
-        $this->time = new \DateTime;
+        $this->time = new DateTime;
     }
 
-    public function getUser()
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getIpAddress(): string
+    {
+        return $this->ipAddress;
+    }
+
+    public function getTime(): DateTime
+    {
+        return $this->time;
+    }
+
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();
             return $this->user; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }

@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * EcommBatch
@@ -12,8 +12,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class EcommBatch
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -78,7 +76,54 @@ class EcommBatch
         $this->countTransaction = $countTransaction;
         $this->amountReversal = $amountReversal;
         $this->amountTransaction = $amountTransaction;
-        $this->closeDate = new \DateTime;
+        $this->closeDate = new DateTime;
         $this->response = $response;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getResult(): string
+    {
+        return $this->result;
+    }
+
+    public function getResultCode(): string
+    {
+        return $this->resultCode;
+    }
+
+    public function getCountReversal(): string
+    {
+        return $this->countReversal;
+    }
+
+    public function getCountTransaction(): string
+    {
+        return $this->countTransaction;
+    }
+
+    public function getAmountReversal(): string
+    {
+        return $this->amountReversal;
+    }
+
+    public function getAmountTransaction(): string
+    {
+        return $this->amountTransaction;
+    }
+
+    public function getCloseDate(): DateTime
+    {
+        return $this->closeDate;
+    }
+
+    public function getResponse(): string
+    {
+        return $this->response;
     }
 }

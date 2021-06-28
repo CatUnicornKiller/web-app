@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -13,8 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class CpTask
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -76,9 +73,51 @@ class CpTask
         $this->modifications = new ArrayCollection;
     }
 
-    public function isCompleted()
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
     {
-        return $this->completed == 1 ? true : false;
+        return $this->id;
+    }
+
+    public function getAfNumber(): int
+    {
+        return $this->afNumber;
+    }
+
+    public function getSortOrder(): string
+    {
+        return $this->sortOrder;
+    }
+
+    public function getCpTasksDescription(): string
+    {
+        return $this->cpTasksDescription;
+    }
+
+    public function getCpTasksNote(): string
+    {
+        return $this->cpTasksNote;
+    }
+
+    public function getDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    public function getCompleted(): string
+    {
+        return $this->completed;
+    }
+
+    public function getModifications(): ArrayCollection
+    {
+        return $this->modifications;
+    }
+
+    public function isCompleted(): bool
+    {
+        return $this->completed ? true : false;
     }
 
     public function modified(User $user)
@@ -92,7 +131,7 @@ class CpTask
         $this->deleted = true;
     }
 
-    public function getCpAssignedAf()
+    public function getCpAssignedAf(): ?CpAssignedAf
     {
         try {
             $this->cpAssignedAf->getDeleted();

@@ -2,8 +2,9 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -13,8 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Event
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -159,6 +158,93 @@ class Event
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getDate(): DateTime
+    {
+        return $this->date;
+    }
+
+    public function getEndDate(): DateTime
+    {
+        return $this->endDate;
+    }
+
+    public function getSignupDeadline(): ?DateTime
+    {
+        return $this->signupDeadline;
+    }
+
+    public function getEventName(): string
+    {
+        return $this->eventName;
+    }
+
+    public function getCapacity(): string
+    {
+        return $this->capacity;
+    }
+
+    public function getEventLogo(): string
+    {
+        return $this->eventLogo;
+    }
+
+    public function getEventDescription(): string
+    {
+        return $this->eventDescription;
+    }
+
+    public function getPlace(): string
+    {
+        return $this->place;
+    }
+
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
+
+    public function getPoints(): int
+    {
+        return $this->points;
+    }
+
+    public function getDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    public function getSocialProgram(): bool
+    {
+        return $this->socialProgram;
+    }
+
+    public function getAcademicQuality(): bool
+    {
+        return $this->academicQuality;
+    }
+
+    public function getFiles(): ArrayCollection
+    {
+        return $this->files;
+    }
+
+    public function getModifications(): ArrayCollection
+    {
+        return $this->modifications;
+    }
+
+    public function getVisibleToFaculties(): ArrayCollection
+    {
+        return $this->visibleToFaculties;
+    }
+
     public function modified(User $user)
     {
         $modified = new ModifiedEvent($user, $this);
@@ -170,7 +256,7 @@ class Event
         $this->deleted = true;
     }
 
-    public function isVisibleToFaculty(Faculty $faculty)
+    public function isVisibleToFaculty(Faculty $faculty): bool
     {
         return $this->visibleToFaculties->contains($faculty);
     }
@@ -190,12 +276,12 @@ class Event
         }
     }
 
-    public function getUser()
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();
             return $this->user; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }

@@ -2,26 +2,18 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * ModifiedUserRole
  *
  * @ORM\Table(name="modified__user_role")
  * @ORM\Entity
- *
- * @property integer $id
- * @property User $user
- * @property User $modifiedUser
- * @property string $roleOld
- * @property string $roleNew
- * @property datetime $modTime
  */
 class ModifiedUserRole
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -61,25 +53,47 @@ class ModifiedUserRole
         $this->modifiedUser = $modUser;
         $this->roleOld = $roleOld;
         $this->roleNew = $roleNew;
-        $this->modTime = new \DateTime;
+        $this->modTime = new DateTime;
     }
 
-    public function getUser()
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getRoleOld(): string
+    {
+        return $this->roleOld;
+    }
+
+    public function getRoleNew(): string
+    {
+        return $this->roleNew;
+    }
+
+    public function getModTime(): DateTime
+    {
+        return $this->modTime;
+    }
+
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();
             return $this->user; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }
 
-    public function getModifiedUser()
+    public function getModifiedUser(): ?User
     {
         try {
             $this->modifiedUser->getDeleted();
             return $this->modifiedUser; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }
