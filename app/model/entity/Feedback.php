@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * Feedback
@@ -12,8 +12,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class Feedback
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -156,7 +154,7 @@ class Feedback
     ) {
         $this->name = $name;
         $this->grade = $grade;
-        $this->saveDate = new \DateTime;
+        $this->saveDate = new DateTime;
         $this->startDate = $start_date;
         $this->endDate = $end_date;
         $this->country = $host_country;
@@ -175,6 +173,123 @@ class Feedback
         $this->socialProgram = $social_program;
         $this->furtherTips = $further_tips;
         $this->overallReview = $overall_review;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getDeleted(): string
+    {
+        return $this->deleted;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getGrade(): string
+    {
+        return $this->grade;
+    }
+
+    public function getSaveDate(): DateTime
+    {
+        return $this->saveDate;
+    }
+
+    public function getStartDate(): DateTime
+    {
+        return $this->startDate;
+    }
+
+    public function getEndDate(): DateTime
+    {
+        return $this->endDate;
+    }
+
+    public function getHostCity(): string
+    {
+        return $this->hostCity;
+    }
+
+    public function getHostFaculty(): string
+    {
+        return $this->hostFaculty;
+    }
+
+    public function getHostDepartment(): string
+    {
+        return $this->hostDepartment;
+    }
+
+    public function getExchangeType(): string
+    {
+        return $this->exchangeType;
+    }
+
+    public function getPreparationVisa(): bool
+    {
+        return $this->preparationVisa;
+    }
+
+    public function getPreparationVaccination(): bool
+    {
+        return $this->preparationVaccination;
+    }
+
+    public function getPreparationComplications(): bool
+    {
+        return $this->preparationComplications;
+    }
+
+    public function getPreparationMoney(): bool
+    {
+        return $this->preparationMoney;
+    }
+
+    public function getAccommodation(): string
+    {
+        return $this->accommodation;
+    }
+
+    public function getCpHelp(): string
+    {
+        return $this->cpHelp;
+    }
+
+    public function getExchangeCommunication(): string
+    {
+        return $this->exchangeCommunication;
+    }
+
+    public function getSocialTravelling(): string
+    {
+        return $this->socialTravelling;
+    }
+
+    public function getSocialProgram(): string
+    {
+        return $this->socialProgram;
+    }
+
+    public function getFurtherTips(): string
+    {
+        return $this->furtherTips;
+    }
+
+    public function getOverallReview(): string
+    {
+        return $this->overallReview;
+    }
+
+    public function getCountry(): Country
+    {
+        return $this->country;
     }
 
     public function delete()

@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -13,8 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class CpAssignedAf
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -63,9 +61,46 @@ class CpAssignedAf
         $this->user = $user;
         $this->afNumber = $afNumber;
         $this->afName = $afName;
-        $this->afArrival = new \DateTime($afArrival);
+        $this->afArrival = new DateTime($afArrival);
         $this->tasks = new ArrayCollection;
         $this->modifications = new ArrayCollection;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getAfNumber(): int
+    {
+        return $this->afNumber;
+    }
+
+    public function getAfName(): string
+    {
+        return $this->afName;
+    }
+
+    public function getAfArrival(): DateTime
+    {
+        return $this->afArrival;
+    }
+
+    public function getDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    public function getTasks(): ArrayCollection
+    {
+        return $this->tasks;
+    }
+
+    public function getModifications(): ArrayCollection
+    {
+        return $this->modifications;
     }
 
     public function modified(User $user)
@@ -79,7 +114,7 @@ class CpAssignedAf
         $this->deleted = true;
     }
 
-    public function getUser()
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();

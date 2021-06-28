@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * IfmsaPerson
@@ -12,8 +12,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class IfmsaPerson
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -74,12 +72,12 @@ class IfmsaPerson
         $surname = '',
         $email = '',
         $photo = '',
-        \DateTime $afArrival = null,
+        DateTime $afArrival = null,
         $accommodation = '',
         $department = ''
     ) {
         if (!$afArrival) {
-            $afArrival = new \DateTime("0000-00-00 00:00:00");
+            $afArrival = new DateTime("0000-00-00 00:00:00");
         }
 
         $this->afNumber = $afNumber;
@@ -91,5 +89,57 @@ class IfmsaPerson
         $this->accommodation = $accommodation;
         $this->department = $department;
         $this->afArrival = $afArrival;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getAfNumber(): int
+    {
+        return $this->afNumber;
+    }
+
+    public function getConfirmationNumber(): string
+    {
+        return $this->confirmationNumber;
+    }
+
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
+
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPhoto(): string
+    {
+        return $this->photo;
+    }
+
+    public function getAfArrival(): ?DateTime
+    {
+        return $this->afArrival;
+    }
+
+    public function getAccommodation(): string
+    {
+        return $this->accommodation;
+    }
+
+    public function getDepartment(): string
+    {
+        return $this->department;
     }
 }

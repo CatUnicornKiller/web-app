@@ -3,39 +3,18 @@
 namespace App\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Nette\Security\IIdentity;
+use Nette\Security\Passwords;
 
 /**
  * User
  *
  * @ORM\Entity
- *
- * @property integer $id
- * @property string $username
- * @property string $firstname
- * @property string $surname
- * @property string $email
- * @property string $password
- * @property string $role
- * @property string $userType
- * @property string $profileImg
- * @property boolean $deleted
- * @property Faculty $faculty
- * @property Country $country
- * @property OfficersProfile $officersProfile
- * @property ArrayCollection $infoRequests
- * @property ArrayCollection $organizedEvents
- * @property ArrayCollection $coorganizedEvents
- * @property ArrayCollection $assignedIncomings
- * @property ArrayCollection $participatedEvents
  */
 class User implements IIdentity
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -215,6 +194,8 @@ class User implements IIdentity
         return $user;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+
     public function getId()
     {
         return $this->id;
@@ -227,7 +208,7 @@ class User implements IIdentity
 
     public function setPassword($password)
     {
-        $this->passwordHash = \Nette\Security\Passwords::hash($password);
+        $this->passwordHash = Passwords::hash($password);
     }
 
     public function getPassword()
@@ -323,5 +304,90 @@ class User implements IIdentity
             }
             return false;
         });
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
+
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    public function getUserType(): string
+    {
+        return $this->userType;
+    }
+
+    public function getProfileImg(): string
+    {
+        return $this->profileImg;
+    }
+
+    public function getDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    public function getFaculty(): Faculty
+    {
+        return $this->faculty;
+    }
+
+    public function getCountry(): Country
+    {
+        return $this->country;
+    }
+
+    public function getOfficersProfile(): OfficersProfile
+    {
+        return $this->officersProfile;
+    }
+
+    public function getInfoRequests(): ArrayCollection
+    {
+        return $this->infoRequests;
+    }
+
+    public function getOrganizedEvents(): ArrayCollection
+    {
+        return $this->organizedEvents;
+    }
+
+    public function getAssignedIncomings(): ArrayCollection
+    {
+        return $this->assignedIncomings;
+    }
+
+    public function getExtraPointsList(): ArrayCollection
+    {
+        return $this->extraPointsList;
+    }
+
+    public function getModifications(): ArrayCollection
+    {
+        return $this->modifications;
+    }
+
+    public function getRoleModifications(): ArrayCollection
+    {
+        return $this->roleModifications;
     }
 }

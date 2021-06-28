@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * ForgottenPassword
@@ -12,8 +12,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class ForgottenPassword
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -47,10 +45,32 @@ class ForgottenPassword
         $this->user = $user;
         $this->ipAddress = $ipAddress;
         $this->token = $token;
-        $this->time = new \DateTime;
+        $this->time = new DateTime;
     }
 
-    public function getUser()
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getIpAddress(): string
+    {
+        return $this->ipAddress;
+    }
+
+    public function getTime(): DateTime
+    {
+        return $this->time;
+    }
+
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();

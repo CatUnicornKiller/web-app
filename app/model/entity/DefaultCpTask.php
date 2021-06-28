@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * CpTasksList
@@ -12,8 +11,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class DefaultCpTask extends BaseEntity
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -36,5 +33,22 @@ class DefaultCpTask extends BaseEntity
     {
         $this->cpTasksDescription = $description;
         $this->cpTasksNote = $note;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getCpTasksDescription(): string
+    {
+        return $this->cpTasksDescription;
+    }
+
+    public function getCpTasksNote(): string
+    {
+        return $this->cpTasksNote;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * EcommError
@@ -12,8 +12,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class EcommError
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -39,8 +37,30 @@ class EcommError
 
     public function __construct($action, $response)
     {
-        $this->errorTime = new \DateTime;
+        $this->errorTime = new DateTime;
         $this->action = $action;
         $this->response = $response;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getErrorTime(): DateTime
+    {
+        return $this->errorTime;
+    }
+
+    public function getAction(): string
+    {
+        return $this->action;
+    }
+
+    public function getResponse(): string
+    {
+        return $this->response;
     }
 }

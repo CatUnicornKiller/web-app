@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * EcommTransaction
@@ -12,8 +12,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class EcommTransaction
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -133,23 +131,115 @@ class EcommTransaction
         $this->resultCode = "???";
         $this->result3dsecure = "???";
         $this->cardNumber = "???";
-        $this->tDate = new \DateTime;
+        $this->tDate = new DateTime;
         $this->response = $response;
         $this->reversalAmount = "";
         $this->makedmsAmount = "";
     }
 
-    public function isOk()
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getTransId(): string
+    {
+        return $this->transId;
+    }
+
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
+
+    public function getCurrency(): int
+    {
+        return $this->currency;
+    }
+
+    public function getClientIpAddr(): string
+    {
+        return $this->clientIpAddr;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function getLanguage(): string
+    {
+        return $this->language;
+    }
+
+    public function getDmsOk(): string
+    {
+        return $this->dmsOk;
+    }
+
+    public function getResult(): string
+    {
+        return $this->result;
+    }
+
+    public function getResultCode(): string
+    {
+        return $this->resultCode;
+    }
+
+    public function getResult3dsecure(): string
+    {
+        return $this->result3dsecure;
+    }
+
+    public function getCardNumber(): string
+    {
+        return $this->cardNumber;
+    }
+
+    public function getTDate(): DateTime
+    {
+        return $this->tDate;
+    }
+
+    public function getTransEndDate(): ?DateTime
+    {
+        return $this->transEndDate;
+    }
+
+    public function getResponse(): string
+    {
+        return $this->response;
+    }
+
+    public function getReversalAmount(): string
+    {
+        return $this->reversalAmount;
+    }
+
+    public function getMakedmsAmount(): string
+    {
+        return $this->makedmsAmount;
+    }
+
+    public function getExternalService(): string
+    {
+        return $this->externalService;
+    }
+
+    public function isOk(): bool
     {
         return $this->result == "OK";
     }
 
-    public function isExternal()
+    public function isExternal(): bool
     {
         return $this->externalService != null;
     }
 
-    public function getEventParticipant()
+    public function getEventParticipant(): ?EventParticipant
     {
         if ($this->eventParticipant === null) {
             return null;

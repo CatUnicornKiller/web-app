@@ -2,24 +2,16 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * LoginLog
  *
  * @ORM\Entity
- *
- * @property integer $id
- * @property datetime $loginTime
- * @property string $ipAddress
- * @property string $userAgent
- * @property User $user
  */
 class LoginLog
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -53,10 +45,32 @@ class LoginLog
         $this->user = $user;
         $this->ipAddress = $ipAddress;
         $this->userAgent = $userAgent;
-        $this->loginTime = new \DateTime;
+        $this->loginTime = new DateTime;
     }
 
-    public function getUser()
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getLoginTime(): DateTime
+    {
+        return $this->loginTime;
+    }
+
+    public function getIpAddress(): string
+    {
+        return $this->ipAddress;
+    }
+
+    public function getUserAgent(): string
+    {
+        return $this->userAgent;
+    }
+
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();

@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * ModifiedPage
@@ -13,8 +13,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class ModifiedPage
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -42,10 +40,27 @@ class ModifiedPage
     {
         $this->user = $user;
         $this->page = $page;
-        $this->modTime = new \DateTime;
+        $this->modTime = new DateTime;
     }
 
-    public function getUser()
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getPage(): Page
+    {
+        return $this->page;
+    }
+
+    public function getModTime(): DateTime
+    {
+        return $this->modTime;
+    }
+
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();

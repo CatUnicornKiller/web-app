@@ -3,27 +3,14 @@
 namespace App\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * Showroom
  *
  * @ORM\Entity
- *
- * @property string $profileImg
- * @property string $firstname
- * @property string $surname
- * @property string $role
- * @property string $startYear
- * @property string $endYear
- * @property string $profileImg
- * @property string $information
- * @property string $faculty
  */
 class Showroom
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -90,5 +77,52 @@ class Showroom
         $this->endYear = $endYear;
         $this->profileImg = $profileImg;
         $this->information = $information;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
+
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    public function getStartYear(): int
+    {
+        return $this->startYear;
+    }
+
+    public function getEndYear(): int
+    {
+        return $this->endYear;
+    }
+
+    public function getProfileImg(): string
+    {
+        return $this->profileImg;
+    }
+
+    public function getInformation(): string
+    {
+        return $this->information;
+    }
+
+    public function getFaculty(): string
+    {
+        return $this->faculty;
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -13,8 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class ExtraPoints
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -67,6 +64,33 @@ class ExtraPoints
         $this->modifications = new ArrayCollection;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getPoints(): int
+    {
+        return $this->points;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    public function getModifications(): ArrayCollection
+    {
+        return $this->modifications;
+    }
+
     public function modified(User $user)
     {
         $modified = new ModifiedExtraPoints($user, $this);
@@ -78,7 +102,7 @@ class ExtraPoints
         $this->deleted = true;
     }
 
-    public function getUser()
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();
@@ -88,7 +112,7 @@ class ExtraPoints
         }
     }
 
-    public function getAssignedByUser()
+    public function getAssignedByUser(): ?User
     {
         try {
             $this->assignedByUser->getDeleted();

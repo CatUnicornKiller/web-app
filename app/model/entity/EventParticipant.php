@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -14,8 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class EventParticipant
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -62,6 +59,33 @@ class EventParticipant
         $this->ecommTransactions = new ArrayCollection;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getPaid(): string
+    {
+        return $this->paid;
+    }
+
+    public function getEcommTransactions(): ArrayCollection
+    {
+        return $this->ecommTransactions;
+    }
+
+    public function getDeleted(): string
+    {
+        return $this->deleted;
+    }
+
+    public function getModifications(): ArrayCollection
+    {
+        return $this->modifications;
+    }
+
     public function modified(User $user)
     {
         $modified = new ModifiedEventParticipant($user, $this);
@@ -73,7 +97,7 @@ class EventParticipant
         $this->deleted = true;
     }
 
-    public function getUser()
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();
@@ -83,7 +107,7 @@ class EventParticipant
         }
     }
 
-    public function getEvent()
+    public function getEvent(): ?Event
     {
         try {
             $this->event->getDeleted();

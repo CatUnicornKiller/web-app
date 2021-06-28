@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -14,8 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Page
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -62,6 +59,43 @@ class Page
         $this->content = $content;
         $this->faculty = $faculty;
         $this->modifications = new ArrayCollection;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getPageName(): string
+    {
+        return $this->pageName;
+    }
+
+    public function getPageSubname(): string
+    {
+        return $this->pageSubname;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    public function getFaculty(): ?Faculty
+    {
+        return $this->faculty;
+    }
+
+    public function getModifications(): ArrayCollection
+    {
+        return $this->modifications;
     }
 
     public function modified(User $user)

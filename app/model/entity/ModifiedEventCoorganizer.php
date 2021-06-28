@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * ModifiedEventCoorganizer
@@ -13,8 +13,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class ModifiedEventCoorganizer
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -42,10 +40,22 @@ class ModifiedEventCoorganizer
     {
         $this->user = $user;
         $this->eventCoorganizer = $eventCoorganizer;
-        $this->modTime = new \DateTime;
+        $this->modTime = new DateTime;
     }
 
-    public function getUser()
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getModTime(): DateTime
+    {
+        return $this->modTime;
+    }
+
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();
@@ -55,7 +65,7 @@ class ModifiedEventCoorganizer
         }
     }
 
-    public function getEventCoorganizer()
+    public function getEventCoorganizer(): ?EventCoorganizer
     {
         try {
             $this->eventCoorganizer->getDeleted();

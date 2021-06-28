@@ -2,8 +2,9 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * ModifiedNews
@@ -13,8 +14,6 @@ use Kdyby\Doctrine\Entities\MagicAccessors;
  */
 class ModifiedNews
 {
-    use MagicAccessors;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -42,25 +41,37 @@ class ModifiedNews
     {
         $this->user = $user;
         $this->news = $news;
-        $this->modTime = new \DateTime;
+        $this->modTime = new DateTime;
     }
 
-    public function getUser()
+    ////////////////////////////////////////////////////////////////////////////
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getModTime(): DateTime
+    {
+        return $this->modTime;
+    }
+
+    public function getUser(): ?User
     {
         try {
             $this->user->getDeleted();
             return $this->user; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }
 
-    public function getNews()
+    public function getNews(): ?News
     {
         try {
             $this->news->getDeleted();
             return $this->news; // entity not deleted, return it
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (EntityNotFoundException $e) {
             return null; // could not fetch soft-deleted entity, return null
         }
     }
