@@ -1,6 +1,10 @@
 # CatUnicornKiller System
 
 [![CI](https://github.com/CatUnicornKiller/web-app/actions/workflows/ci.yml/badge.svg)](https://github.com/CatUnicornKiller/web-app/actions/workflows/ci.yml)
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/CatUnicornKiller/web-app/blob/master/LICENSE)
+[![Programmer Docs](https://img.shields.io/badge/docs-programmer-orange.svg)](https://github.com/CatUnicornKiller/programmer-doc/wiki)
+[![User Docs](https://img.shields.io/badge/docs-user-brightgreen.svg)](https://github.com/CatUnicornKiller/user-doc/wiki)
+[![GitHub release](https://img.shields.io/github/release/CatUnicornKiller/web-app.svg)](https://github.com/CatUnicornKiller/web-app/releases)
 
 CatUnicornKiller System (CUK) is web-based exchange system made for IFMSA student organization needs. The system is divided into two parts, the private one and public one. More detailed description of all features can be found in [User Documentation](https://github.com/CatUnicornKiller/user-doc/wiki). 
 
