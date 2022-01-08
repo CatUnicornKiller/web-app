@@ -158,12 +158,12 @@ class IfmsaPresenter extends BasePresenter
         }
 
         // Sorting
-        usort($personList, array('\App\Helpers\PersonEntry', 'cmp_PersonEntry'));
+        usort($personList, ['\App\Helpers\PersonEntry', 'cmp_PersonEntry']); // @phpstan-ignore-line
         $this->template->personList = $personList;
         $this->template->afList = $afList;
 
         // update or create entries in database about this person numbers
-        foreach ($this->template->personList as $person) {
+        foreach ($this->template->personList as $person) {  // @phpstan-ignore-line
             $ifmsaPerson = $this->ifmsaPersons->findByAfNumber($person->afNumber);
             if ($ifmsaPerson) {
                 $ifmsaPerson->setConfirmationNumber($person->confirmationNumber);

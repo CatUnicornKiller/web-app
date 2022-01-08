@@ -7,6 +7,11 @@ namespace App\Payment\EcommMerchant;
  */
 class FakeMerchant
 {
+    private $url;
+    private $keystore;
+    private $keystorepassword;
+    private $verbose;
+
     /**
      * Empty constructor.
      * @param string $url
@@ -14,8 +19,12 @@ class FakeMerchant
      * @param string $keystorepassword
      * @param bool $verbose
      */
-    public function __construct($url, $keystore, $keystorepassword, $verbose = 0)
+    public function __construct($url, $keystore, $keystorepassword, $verbose = false)
     {
+        $this->url = $url;
+        $this->keystore = $keystore;
+        $this->keystorepassword = $keystorepassword;
+        $this->verbose = $verbose;
     }
 
     /**
@@ -41,7 +50,7 @@ class FakeMerchant
     public function getTransResult($transactionId, $ip)
     {
         return "RESULT: NOK\nRESULT_CODE: 000\n3DSECURE: ok\nCARD_NUMBER: number\n"; // incorrect transaction
-        return "RESULT: OK\nRESULT_CODE: 000\n3DSECURE: ok\nCARD_NUMBER: number\n"; // correct transaction
+//        return "RESULT: OK\nRESULT_CODE: 000\n3DSECURE: ok\nCARD_NUMBER: number\n"; // correct transaction
     }
 
     /**

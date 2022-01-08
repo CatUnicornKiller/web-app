@@ -15,7 +15,7 @@ class MenuControl extends Nette\Application\UI\Control
      */
     protected function constructItems()
     {
-        $items = array();
+        $items = [];
         if (!$this->presenter->user->isLoggedIn()) {
             $items['Homepage'] = 'Homepage:default';
             $items['Login'] = 'Homepage:login';
@@ -43,7 +43,7 @@ class MenuControl extends Nette\Application\UI\Control
             }
 
             if ($this->presenter->user->isAllowed('ContactPersonsMenu', 'view')) {
-                $items["Events"]['Add Event'] = 'Events:addEvent';
+                $items["Events"]['Add Event'] = 'Events:addEvent'; // @phpstan-ignore-line
                 $items["Events"]['Events Calendar'] = 'Events:';
             }
 

@@ -3,17 +3,21 @@
 namespace App\Forms;
 
 use Nette\Forms\Container;
+use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Controls\Button;
 use Nette\Forms\Controls\Checkbox;
 use Nette\Forms\Controls\RadioList;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Forms\Controls\TextArea;
 use Nette\Forms\Form;
+use Nette\Forms\Rendering\DefaultFormRenderer;
 
 /**
  * Reimplementation of nette basic Form suitable for material-css framework.
  * Automatic rendering is somehow working, but it is recommended to write fresh
  * latte template for forms.
+ *
+ * @method BaseControl offsetGet($name)
  */
 class MySimpleForm extends Form
 {
@@ -25,6 +29,7 @@ class MySimpleForm extends Form
     {
         parent::__construct($name);
 
+        /** @var DefaultFormRenderer $renderer */
         $renderer = $this->getRenderer();
         $renderer->wrappers['error']['container'] = 'ul class="collection form-error"';
         $renderer->wrappers['error']['item'] = 'li class="collection-item red darken-3 white-text"';

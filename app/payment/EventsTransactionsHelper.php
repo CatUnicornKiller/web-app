@@ -70,7 +70,7 @@ class EventsTransactionsHelper
                 "IncID=" . $participant->getUser()->getId() . ";" .
                 "IncUname=" . substr($participant->getUser()->getUsername(), 0, 20) . ";";
         $desc = substr($desc, 0, 125);
-        $amount = $event->getPrice() . '00';
+        $amount = $event->getPrice() * 100;
         $ip = $this->httpRequest->getRemoteAddress();
 
         list($url, $transaction) =

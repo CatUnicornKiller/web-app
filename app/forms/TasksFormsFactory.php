@@ -136,7 +136,7 @@ class TasksFormsFactory
         $form->addHidden('id');
         $this->createBasicTaskForm($form);
 
-        $form->setDefaults($task->toArray());
+        $form->setDefaults($task->toArray()); // @phpstan-ignore-line
 
         $form->addSubmit('send', 'Edit Task');
         $form->onSuccess[] = array($this, 'editDefaultTaskFormSucceeded');
@@ -251,8 +251,7 @@ class TasksFormsFactory
         $cpTasks->setValues($defTmpTasks);
         $cpTasks->createOne();
 
-        $cpTasks->addSubmit('add', 'Add new task')
-                ->addCreateOnClick(true);
+        $cpTasks->addSubmit('add', 'Add new task')->addCreateOnClick(true); // @phpstan-ignore-line
 
         $form->addSubmit('send', 'Add Tasks');
         $form->onSuccess[] = array($this, 'addTasksFormSucceeded');

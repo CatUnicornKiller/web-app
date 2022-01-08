@@ -4,3 +4,10 @@ parameters:
   level: 5
   scanDirectories:
     - %rootDir%/../../../app
+  ignoreErrors:
+    - message: '#Property App\\Payment\\EcommMerchant\\EcommTransactionsHelper::\$merchant has unknown class EcommMerchant\\Merchant as its type.#'
+      path: app\payment\ecomm\EcommTransactionsHelper.php
+    - message: '#Call to method [a-zA-Z0-9]+\(\) on an unknown class EcommMerchant\\Merchant.#'
+      path: app\payment\ecomm\EcommTransactionsHelper.php
+    - message: '#Instantiated class EcommMerchant\\Merchant not found.#'
+      path: app\payment\ecomm\EcommTransactionsHelper.php

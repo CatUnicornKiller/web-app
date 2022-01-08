@@ -117,22 +117,22 @@ class EventsPaymentPresenter extends BasePresenter
         throw new PaymentException("Reversal not supported!");
         /* *** NOT SUPPORTED *** */
 
-        $transaction = $this->ecommTransactions->findOrThrow($id);
-        if (!$this->isLoggedIn() ||
-                !$this->user->isAllowed('EventTransaction', 'reverse')) {
-            $this->error("Access Denied");
-        }
-
-        $this->template->participant = $participant = $transaction->getEventParticipant();
-        if (!$participant) {
-            $this->error("Non existing participation");
-        }
-
-        try {
-            $this->eventsTransactionsHelper->reverseTransaction($participant, $transaction);
-        } catch (PaymentException $e) {
-            $this->error($e->getMessage());
-        }
+//        $transaction = $this->ecommTransactions->findOrThrow($id);
+//        if (!$this->isLoggedIn() ||
+//                !$this->user->isAllowed('EventTransaction', 'reverse')) {
+//            $this->error("Access Denied");
+//        }
+//
+//        $this->template->participant = $participant = $transaction->getEventParticipant();
+//        if (!$participant) {
+//            $this->error("Non existing participation");
+//        }
+//
+//        try {
+//            $this->eventsTransactionsHelper->reverseTransaction($participant, $transaction);
+//        } catch (PaymentException $e) {
+//            $this->error($e->getMessage());
+//        }
     }
 
     public function actionTransactionOk()

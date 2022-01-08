@@ -137,7 +137,7 @@ class UsersFormsFactory
         $form = new MyForm;
 
         $points = $form->addContainer('points');
-        $events = $user->organizedEvents;
+        $events = $user->getOrganizedEvents();
         foreach ($events as $event) {
             $points->addText($event->id, 'Event Points')
                     ->setHtmlType('number')
@@ -159,9 +159,9 @@ class UsersFormsFactory
      */
     public function modifyEventsPointsFormSucceeded(MyForm $form, $values)
     {
-        foreach ($values->points as $key => $val) {
+        foreach ($values["points"] as $key => $val) {
             $event = $this->events->findOrThrow($key);
-            $event->points = $val;
+            $event->setPoints($val);
             $this->events->flush();
         }
     }
@@ -177,7 +177,7 @@ class UsersFormsFactory
         $form = new MyForm;
 
         $points = $form->addContainer('points');
-        $events = $user->coorganizedEvents;
+        $events = $user->getCoorganizedEvents();
         foreach ($events as $eventCoorg) {
             $points->addText($eventCoorg->id, 'Event Points')
                     ->setHtmlType('number')
@@ -199,9 +199,9 @@ class UsersFormsFactory
      */
     public function modifyCoorgEventsPointsFormSucceeded(MyForm $form, $values)
     {
-        foreach ($values->points as $key => $val) {
+        foreach ($values["points"] as $key => $val) {
             $event = $this->eventCoorganizers->findOrThrow($key);
-            $event->points = $val;
+            $event->setPoints($val);
             $this->events->flush();
         }
     }
@@ -217,7 +217,7 @@ class UsersFormsFactory
     {
         $faculties = array();
         foreach ($this->faculties->findAll() as $faculty) {
-            $faculties[$faculty->id] = $faculty->facultyName;
+            $faculties[$faculty->getId()] = $faculty->getFacultyName();
         }
 
         $form = new MySimpleForm;

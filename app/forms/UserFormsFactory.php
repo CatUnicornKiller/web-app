@@ -243,7 +243,7 @@ class UserFormsFactory
     /**
      * If the current user fullfiled information requests, mark them as
      * completed in the database.
-     * @param array $values
+     * @param object $values
      */
     private function updateInfoRequests($values)
     {

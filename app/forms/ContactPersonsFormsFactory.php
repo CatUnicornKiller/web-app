@@ -161,7 +161,7 @@ class ContactPersonsFormsFactory
             $deps['dep4'] = $this->stringHelpers->getDepartmentDescription($personInfo['department4']);
         }
         $deps['other'] = '';
-        $form['department']->setItems($deps);
+        $form['department']->setItems($deps); // @phpstan-ignore-line
 
         // try to match saved department (in database) against given ones
         $defaultDep = $this->getDefaultDepartment($person->getDepartment(), $personInfo);
@@ -178,7 +178,7 @@ class ContactPersonsFormsFactory
                 $defs[$this->stringHelpers->alphaNumText($key)] = $value;
             }
         }
-        $form['personInfo']->setDefaults($defs);
+        $form['personInfo']->setDefaults($defs); // @phpstan-ignore-line
     }
 
     public function createAfAssignForm()

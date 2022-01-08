@@ -87,12 +87,12 @@ class FeedbackPdfFactory
         $pdf->setCellMargins(0, 5, 0, 1);
         $pdf->MultiCell($pageWidth, 0, $this->feedbackHelper->getItemDescription('preparationComplications'), 0, '');
         $pdf->setCellMargins(0, 1, 0, 1);
-        $pdf->MultiCell($pageWidth, 0, $feedback->getPreparationComplications(), 1, '', true);
+        $pdf->MultiCell($pageWidth, 0, strval($feedback->getPreparationComplications()), 1, '', true);
 
         $pdf->setCellMargins(0, 5, 0, 1);
         $pdf->MultiCell($pageWidth, 0, $this->feedbackHelper->getItemDescription('preparationMoney'), 0, '');
         $pdf->setCellMargins(0, 1, 0, 1);
-        $pdf->MultiCell($pageWidth, 0, $feedback->getPreparationMoney(), 1, '', true);
+        $pdf->MultiCell($pageWidth, 0, strval($feedback->getPreparationMoney()), 1, '', true);
 
         $pdf->setCellMargins(0, 5, 0, 1);
         $pdf->MultiCell($pageWidth, 0, $this->feedbackHelper->getItemDescription('accommodation'), 0, '');

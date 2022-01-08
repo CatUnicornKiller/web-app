@@ -83,7 +83,7 @@ class ShowroomFormsFactory
 
     /**
      * Create basic showroom form representing officer.
-     * @param User|null $officer
+     * @param User|Showroom|null $officer
      * @return MyForm
      */
     private function createOfficerForm($officer)
@@ -207,7 +207,7 @@ class ShowroomFormsFactory
 
     /**
      * Create showroom entry editation form.
-     * @param User $officer
+     * @param Showroom $officer
      * @return MyForm
      */
     public function createEditOfficerForm($officer)
@@ -217,9 +217,9 @@ class ShowroomFormsFactory
 
         try {
             $form->setDefaults(array(
-                'startYear' => $officer->startYear,
-                'endYear' => $officer->endYear,
-                'information' => $officer->information,
+                'startYear' => $officer->getStartYear(),
+                'endYear' => $officer->getEndYear(),
+                'information' => $officer->getInformation(),
                     ));
         } catch (Exception $e) {
         }
@@ -255,7 +255,7 @@ class ShowroomFormsFactory
         $showroom->setFirstname($values->firstname);
         $showroom->setSurname($values->surname);
         $showroom->setRole($values->role);
-        $showroom->setFaculty($faculty);
+        $showroom->setFaculty($faculty); // @phpstan-ignore-line
         $showroom->setStartYear($values->startYear);
         $showroom->setEndYear($values->endYear);
         $showroom->setInformation($values->information);

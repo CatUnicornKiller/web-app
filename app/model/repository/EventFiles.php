@@ -46,7 +46,7 @@ class EventFiles extends BaseRepository
         $files = array();
         while ($n > 0) {
             $file = $this->get(rand(1, $highest_id));
-            if ($file && $file->event) {
+            if ($file && $file->getEvent()) {
                 $n--;
                 $files[] = $file;
             }

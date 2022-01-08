@@ -69,6 +69,11 @@ class EventCoorganizer
         return $this->points;
     }
 
+    public function setPoints($points): void
+    {
+        $this->points = $points;
+    }
+
     public function getDeleted(): string
     {
         return $this->deleted;

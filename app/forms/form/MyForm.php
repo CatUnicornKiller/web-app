@@ -3,6 +3,7 @@
 namespace App\Forms;
 
 use App\Presenters\BasePresenter;
+use Kdyby\Replicator\Container;
 use Nette;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\Button;
@@ -11,6 +12,8 @@ use Nette\Forms\Controls\CheckboxList;
 use Nette\Forms\Controls\RadioList;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Forms\Controls\TextArea;
+use Nette\Forms\Controls\BaseControl;
+use Nette\Forms\Rendering\DefaultFormRenderer;
 
 /**
  * Reimplementation of nette application Form suitable for material-css
@@ -18,6 +21,8 @@ use Nette\Forms\Controls\TextArea;
  * write fresh latte template for forms.
  *
  * @property BasePresenter $presenter
+ * @method BaseControl offsetGet($name)
+ * @method Container addDynamic(string $name, callable $factory)
  */
 class MyForm extends Form
 {
@@ -30,6 +35,7 @@ class MyForm extends Form
     {
         parent::__construct($parent, $name);
 
+        /** @var DefaultFormRenderer $renderer */
         $renderer = $this->getRenderer();
         $renderer->wrappers['error']['container'] = 'ul class="collection form-error"';
         $renderer->wrappers['error']['item'] = 'li class="collection-item red darken-3 white-text"';

@@ -75,7 +75,7 @@ class EventParticipant
         return $this->paid;
     }
 
-    public function setPaid(int $paid): void
+    public function setPaid(bool $paid): void
     {
         $this->paid = $paid;
     }

@@ -367,7 +367,7 @@ class IfmsaConnectionHelper
 
     /**
      * Fetch list of outgoings from ifmsa.org and return it as output parameter.
-     * @param string $year
+     * @param int $year
      * @param string $bottomLimit
      * @param string $topLimit
      * @param array $personEntryList output param
@@ -474,7 +474,7 @@ class IfmsaConnectionHelper
 
     /**
      * Fetch list of incomings from ifmsa.org and return it as output parameter.
-     * @param string $year
+     * @param int $year
      * @param string $bottomLimit
      * @param string $topLimit
      * @param array $personEntryList output param

@@ -308,14 +308,14 @@ class FeedbackFormsFactory
 
         $countries = $this->countries->findAll();
         foreach ($countries as $country) {
-            $isIfmsa->addSelect($country->getId(), 'Choose Country', $this->getYesNo())
+            $isIfmsa->addSelect(strval($country->getId()), 'Choose Country', $this->getYesNo())
                     ->setDefaultValue($country->getIsIfmsa());
-            $clinicalContracts->addText($country->getId(), '')
+            $clinicalContracts->addText(strval($country->getId()), '')
                     ->setHtmlType('number')
                     ->setDefaultValue($country->getIfmsaClinicalContracts())
                     ->addRule(Form::INTEGER, 'Clinical contracts has to be integer')
                     ->setRequired('Clinical contracts are required');
-            $researchContracts->addText($country->getId(), '')
+            $researchContracts->addText(strval($country->getId()), '')
                     ->setHtmlType('number')
                     ->setDefaultValue($country->getIfmsaResearchContracts())
                     ->addRule(Form::INTEGER, 'Research contracts has to be integer')

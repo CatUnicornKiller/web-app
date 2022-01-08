@@ -89,6 +89,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
     protected function addLatteFilters()
     {
+        // @phpstan-ignore-next-line
         $this->template->addFilter('stripUnicode', new App\Latte\Filters\StripUnicodeFilter);
     }
 

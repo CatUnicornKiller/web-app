@@ -115,9 +115,6 @@ class EventsTableFactory
             $event = $this->events->findOrThrow($id);
             $coorganizers = $event->getCoorganizers();
             $participants = $event->getParticipants();
-            if (!$event) {
-                continue;
-            }
 
             $coord = "A" . $row;
             $arr = array( $event->getEventName() );

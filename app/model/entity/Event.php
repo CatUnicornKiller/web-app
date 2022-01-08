@@ -122,20 +122,21 @@ class Event
 
 
     public function __construct(
-        User $user,
-        $startDate,
-        $endDate,
-        $deadline,
-        $name,
-        $description,
-        $logo,
+        User  $user,
+              $startDate,
+              $endDate,
+              $deadline,
+              $name,
+              $description,
+              $logo,
         array $faculties,
-        $place,
-        $price,
-        $capacity,
-        $socialProgram = false,
-        $academicQuality = false
-    ) {
+              $place,
+              $price,
+              $capacity,
+              $socialProgram = false,
+              $academicQuality = false
+    )
+    {
 
         $this->user = $user;
         $this->date = $startDate;
@@ -261,6 +262,11 @@ class Event
     public function getPoints(): int
     {
         return $this->points;
+    }
+
+    public function setPoints(int $points): void
+    {
+        $this->points = $points;
     }
 
     public function getDeleted(): bool
